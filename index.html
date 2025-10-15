@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LumoGen - Transform Ideas Into Videos with AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Enhanced Color Palette from LumoGen */
+            --primary-blue: #2563eb;
+            --primary-green: #10b981;
+            --gradient-primary: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+            --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #059669 100%);
+            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #34d399 100%);
+            
+            /* Orange for content style buttons */
+            --style-orange: #f97316;
+            --style-orange-light: #fb923c;
+            --style-orange-dark: #ea580c;
+            
+            /* Dark theme (default) */
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --bg-card: #1e1e3f;
+            --bg-glass: rgba(30, 30, 63, 0.8);
+            --text-primary: #e8e8ff;
+            --text-secondary: #b8b8d6;
+            --text-muted: #8e8eb0;
+            --border-subtle: rgba(37, 99, 235, 0.1);
+            --border-medium: rgba(37, 99, 235, 0.2);
+            --shadow-soft: 0 4px 20px rgba(37, 99, 235, 0.1);
+            --shadow-medium: 0 8px 32px rgba(37, 99, 235, 0.2);
+            --shadow-strong: 0 20px 50px rgba(37, 99, 235, 0.3);
+        }
+
+        [data-theme="light"] {
+            /* Light theme colors */
+            --bg-primary: #fafbff;
+            --bg-secondary: #f4f5f9;
+            --bg-tertiary: #e8eaf6;
+            --bg-card: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.9);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-subtle: rgba(37, 99, 235, 0.1);
+            --border-medium: rgba(37, 99, 235, 0.2);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            font-size: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-medium);
+            transform: rotate(180deg);
+        }
+
+        .download-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Hero Section - Now without banner */
+        .hero {
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-medium);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-tertiary);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-link {
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .feature-link:hover {
+            gap: 1rem;
+        }
+
+        /* Content Styles Section */
+        .content-styles {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .content-image {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .content-card:hover .content-image img {
+            transform: scale(1.05);
+        }
+
+        .content-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7));
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+        }
+
+        .content-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .content-category {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+        }
+
+        .content-details {
+            padding: 1.5rem;
+        }
+
+        .content-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .content-feature i {
+            color: var(--primary-green);
+        }
+
+        /* Social Media Section */
+        .social-media {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .social-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .social-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .social-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border-radius: 20px;
+        }
+
+        .social-icon.youtube {
+            background: linear-gradient(135deg, #FF0000, #CC0000);
+            color: white;
+        }
+
+        .social-icon.facebook {
+            background: linear-gradient(135deg, #1877F2, #0C5FDB);
+            color: white;
+        }
+
+        .social-icon.tiktok {
+            background: linear-gradient(135deg, #000000, #1A1A1A);
+            color: white;
+        }
+
+        .social-icon.instagram {
+            background: linear-gradient(135deg, #E4405F, #C13584, #833AB4, #405DE6);
+            color: white;
+        }
+
+        .social-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .social-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-stats {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Workflow Section */
+        .workflow {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .workflow-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .workflow-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .workflow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border-medium);
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .step-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .pricing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .pricing-card.featured::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.25rem 3rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .plan-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .plan-duration {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features i {
+            color: var(--primary-green);
+        }
+
+        .plan-button {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .plan-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 6rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--border-medium);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .testimonial-content {
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .author-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .testimonial-rating {
+            margin-top: 1rem;
+            color: var(--style-orange);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 2rem;
+            background: var(--gradient-primary);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .cta p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-cta {
+            background: white;
+            color: var(--primary-blue);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-cta-secondary:hover {
+            background: white;
+            color: var(--primary-blue);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 2rem 2rem;
+            background: var(--bg-tertiary);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--gradient-primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .workflow-step:not(:last-child)::after {
+                display: none;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 5rem 1rem 3rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features-grid,
+            .content-grid,
+            .social-grid,
+            .workflow-steps,
+            .pricing-cards,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-cta,
+            .btn-cta-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>LumoGen</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#content-styles" class="nav-link">Content Styles</a>
+                <a href="#social-media" class="nav-link">Platforms</a>
+                <a href="#workflow" class="nav-link">How It Works</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+                <button class="download-btn" onclick="downloadApp()">
+                    <i class="fas fa-download"></i>
+                    Download for Windows (v1.0.0)
+                </button>
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Simplified without banner -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Transform Ideas Into Videos with AI</h1>
+            <p>Create stunning videos from text with our AI-powered content creation studio. Generate scripts, images, audio, and professional videos in minutes.</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn btn-primary" onclick="downloadApp(); return false;">
+                    <i class="fas fa-download"></i>
+                    Download Desktop App
+                </a>
+                <a href="#pricing" class="btn btn-secondary">
+                    <i class="fas fa-star"></i>
+                    View Plans
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-header">
+                <h2>Powerful Features for Content Creators</h2>
+                <p>Everything you need to transform your ideas into professional videos</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">AI Script Generation</h3>
+                    <p class="feature-desc">Intelligent content creation powered by advanced AI models including Qwen, Gemini, and Pollinations LLM</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3 class="feature-title">AI Image Generation</h3>
+                    <p class="feature-desc">Create stunning visuals with dual generation methods - Pollinations API and ImageFX</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3 class="feature-title">Voice Studio</h3>
+                    <p class="feature-desc">Natural text-to-speech with 400+ voices in 50+ languages and accents</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="feature-title">Professional Video Export</h3>
+                    <p class="feature-desc">Export in up to 4K quality with smooth transitions and Ken Burns effects</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-title">Content Styles</h3>
+                    <p class="feature-desc">Choose from various visual styles including Medieval, Modern, Fantasy, and more</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Performance Optimization</h3>
+                    <p class="feature-desc">Fast processing with GPU acceleration and batch processing options</p>
+                    <a href="#" class="feature-link">
+                        Learn more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Styles Section -->
+    <section class="content-styles" id="content-styles">
+        <div class="content-container">
+            <div class="section-header">
+                <h2>Content Styles for Every Story</h2>
+                <p>Choose from diverse visual styles to bring your unique vision to life</p>
+            </div>
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="content-image">
+                        <img src="https://picsum.photos/seed/medieval-castle-knights-battle/400/200.jpg" alt="Medieval Historical">
+                        <div class="content-overlay">
+                            <div>
+                                <h3 class="content-title">Medieval Historical</h3>
+                                <span class="content-category">Historical</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-details">
+                        <p class="content-desc">Transport your audience to castles, knights, and epic battles of the medieval era with authentic historical visuals.</p>
+                        <div class="content-features">
+                            <div class="content-feature"><i class="fas fa-check"></i> Castles & Fortresses</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Knights & Warriors</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Historical Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-image">
+                        <img src="https://picsum.photos/seed/modern-city-skyscrapers-night/400/200.jpg" alt="Modern Urban">
+                        <div class="content-overlay">
+                            <div>
+                                <h3 class="content-title">Modern Urban</h3>
+                                <span class="content-category">Contemporary</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-details">
+                        <p class="content-desc">Capture the energy of modern city life with sleek urban landscapes, skyscrapers, and contemporary settings.</p>
+                        <div class="content-features">
+                            <div class="content-feature"><i class="fas fa-check"></i> Cityscapes</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Urban Life</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Modern Architecture</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-image">
+                        <img src="https://picsum.photos/seed/sci-fi-spaceship-future-technology/400/200.jpg" alt="Sci-Fi Futuristic">
+                        <div class="content-overlay">
+                            <div>
+                                <h3 class="content-title">Sci-Fi Futuristic</h3>
+                                <span class="content-category">Science Fiction</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-details">
+                        <p class="content-desc">Explore distant galaxies, advanced technology, and futuristic worlds with stunning sci-fi visuals and effects.</p>
+                        <div class="content-features">
+                            <div class="content-feature"><i class="fas fa-check"></i> Spaceships</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Future Tech</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Alien Worlds</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-image">
+                        <img src="https://picsum.photos/seed/fantasy-dragons-magic-forest/400/200.jpg" alt="Fantasy Epic">
+                        <div class="content-overlay">
+                            <div>
+                                <h3 class="content-title">Fantasy Epic</h3>
+                                <span class="content-category">Fantasy</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-details">
+                        <p class="content-desc">Create magical worlds filled with dragons, wizards, enchanted forests, and epic fantasy adventures.</p>
+                        <div class="content-features">
+                            <div class="content-feature"><i class="fas fa-check"></i> Magical Creatures</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Enchanted Lands</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Epic Battles</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-image">
+                        <img src="https://picsum.photos/seed/nature-documentary-wildlife-forest/400/200.jpg" alt="Nature Documentary">
+                        <div class="content-overlay">
+                            <div>
+                                <h3 class="content-title">Nature Documentary</h3>
+                                <span class="content-category">Documentary</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-details">
+                        <p class="content-desc">Showcase the beauty of the natural world with stunning wildlife, landscapes, and environmental documentaries.</p>
+                        <div class="content-features">
+                            <div class="content-feature"><i class="fas fa-check"></i> Wildlife</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Landscapes</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Environmental</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card">
+                    <div class="content-image">
+                        <img src="https://picsum.photos/seed/folktale-storybook-illustration/400/200.jpg" alt="Folktale Stories">
+                        <div class="content-overlay">
+                            <div>
+                                <h3 class="content-title">Folktale Stories</h3>
+                                <span class="content-category">Storytelling</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-details">
+                        <p class="content-desc">Bring timeless folktales and cultural stories to life with charming illustrations and narrative visuals.</p>
+                        <div class="content-features">
+                            <div class="content-feature"><i class="fas fa-check"></i> Cultural Tales</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Mythical Stories</div>
+                            <div class="content-feature"><i class="fas fa-check"></i> Traditional Art</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Platforms Section -->
+    <section class="social-media" id="social-media">
+        <div class="social-container">
+            <div class="section-header">
+                <h2>Create Content for Every Platform</h2>
+                <p>Optimize your videos for YouTube, Facebook, TikTok, Instagram and more</p>
+            </div>
+            <div class="social-grid">
+                <div class="social-card">
+                    <div class="social-icon youtube">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 class="social-title">YouTube</h3>
+                    <p class="social-desc">Create engaging long-form content with perfect SEO optimization</p>
+                    <div class="social-stats">
+                        <div class="stat">
+                            <div class="stat-number">16:9</div>
+                            <div class="stat-label">Aspect Ratio</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">4K</div>
+                            <div class="stat-label">Max Quality</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-icon facebook">
+                        <i class="fab fa-facebook"></i>
+                    </div>
+                    <h3 class="social-title">Facebook</h3>
+                    <p class="social-desc">Perfect for shareable content and community engagement</p>
+                    <div class="social-stats">
+                        <div class="stat">
+                            <div class="stat-number">1:1</div>
+                            <div class="stat-label">Square Format</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1080p</div>
+                            <div class="stat-label">Recommended</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-icon tiktok">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3 class="social-title">TikTok</h3>
+                    <p class="social-desc">Create viral short-form content with trending effects</p>
+                    <div class="social-stats">
+                        <div class="stat">
+                            <div class="stat-number">9:16</div>
+                            <div class="stat-label">Vertical</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">60s</div>
+                            <div class="stat-label">Max Duration</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="social-card">
+                    <div class="social-icon instagram">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <h3 class="social-title">Instagram</h3>
+                    <p class="social-desc">Stunning visuals for Stories, Reels and Feed posts</p>
+                    <div class="social-stats">
+                        <div class="stat">
+                            <div class="stat-number">4:5</div>
+                            <div class="stat-label">Portrait</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1080p</div>
+                            <div class="stat-label">HD Quality</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section class="workflow" id="workflow">
+        <div class="workflow-container">
+            <div class="section-header">
+                <h2>How LumoGen Works</h2>
+                <p>Transform your ideas into videos in four simple steps</p>
+            </div>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Input Your Content</h3>
+                    <p class="step-desc">Write a prompt, paste your script, or upload an audio file</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Customize Settings</h3>
+                    <p class="step-desc">Choose voice, style, quality, and generation preferences</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">AI Generation</h3>
+                    <p class="step-desc">Our AI creates script, images, audio, and assembles your video</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Export & Share</h3>
+                    <p class="step-desc">Download your video in high quality and share with the world</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="pricing-container">
+            <div class="section-header">
+                <h2>Choose Your Plan</h2>
+                <p>Select the perfect plan for your content creation needs</p>
+            </div>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3 class="plan-name">Free</h3>
+                    <div class="plan-price">$0</div>
+                    <div class="plan-duration">Forever</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> 720p HD video quality</li>
+                        <li><i class="fas fa-check"></i> 3 generations per month</li>
+                        <li><i class="fas fa-check"></i> Basic voice options</li>
+                        <li><i class="fas fa-check"></i> Standard image generation</li>
+                        <li><i class="fas fa-check"></i> Community support</li>
+                    </ul>
+                    <button class="plan-button">Get Started</button>
+                </div>
+                <div class="pricing-card featured">
+                    <h3 class="plan-name">Creator</h3>
+                    <div class="plan-price">$20</div>
+                    <div class="plan-duration">per month</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Up to 2K QHD video quality</li>
+                        <li><i class="fas fa-check"></i> Unlimited generations</li>
+                        <li><i class="fas fa-check"></i> Premium voice options</li>
+                        <li><i class="fas fa-check"></i> Advanced image generation</li>
+                        <li><i class="fas fa-check"></i> Ken Burns effects</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                    </ul>
+                    <button class="plan-button">Start Free Trial</button>
+                </div>
+                <div class="pricing-card">
+                    <h3 class="plan-name">Enterprise</h3>
+                    <div class="plan-price">$70</div>
+                    <div class="plan-duration">per month</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Up to 4K UHD video quality</li>
+                        <li><i class="fas fa-check"></i> Unlimited generations</li>
+                        <li><i class="fas fa-check"></i> All premium voices</li>
+                        <li><i class="fas fa-check"></i> Advanced image generation</li>
+                        <li><i class="fas fa-check"></i> All effects & features</li>
+                        <li><i class="fas fa-check"></i> Dedicated support</li>
+                        <li><i class="fas fa-check"></i> API access</li>
+                    </ul>
+                    <button class="plan-button">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="testimonials-container">
+            <div class="section-header">
+                <h2>What Our Users Say</h2>
+                <p>Join thousands of content creators using LumoGen</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">LumoGen has completely transformed my content creation workflow. What used to take hours now takes minutes!</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://picsum.photos/seed/user1/100/100.jpg" alt="Sarah Johnson">
+                        </div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Content Creator</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">The AI-generated images are stunning and the voice quality is incredibly natural. It's like having a production studio in my computer!</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://picsum.photos/seed/user2/100/100.jpg" alt="Michael Chen">
+                        </div>
+                        <div class="author-info">
+                            <h4>Michael Chen</h4>
+                            <p>Marketing Professional</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">I've tried many video creation tools, but LumoGen is by far the most intuitive and powerful. The quality is exceptional!</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://picsum.photos/seed/user3/100/100.jpg" alt="Emily Rodriguez">
+                        </div>
+                        <div class="author-info">
+                            <h4>Emily Rodriguez</h4>
+                            <p>YouTuber</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" id="download">
+        <div class="cta-container">
+            <h2>Ready to Transform Your Ideas?</h2>
+            <p>Download LumoGen today and start creating amazing videos with AI</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn-cta" onclick="downloadApp(); return false;">
+                    <i class="fas fa-download"></i>
+                    Download for Windows
+                </a>
+                <a href="#" class="btn-cta-secondary">
+                    <i class="fab fa-github"></i>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>LumoGen</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Transform ideas into videos with AI-powered content creation.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Product</h3>
+                <ul class="footer-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#workflow">How It Works</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="#">Download</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumoGen. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
+            }
+        });
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .content-card, .social-card, .workflow-step, .pricing-card, .testimonial-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Download functionality
+        function downloadApp() {
+            const downloadUrl = 'https://github.com/YOUR_GITHUB_USERNAME/lumogen/releases/latest/download/LumoGen-Setup.exe';
+            
+            // Track download (optional analytics)
+            if (window.plausible) {
+                plausible('Download', {
+                    props: {
+                        version: 'v1.0.0',
+                        platform: 'Windows'
+                    }
+                });
+            }
+            
+            // Start download
+            window.location.href = downloadUrl;
+            
+            // Show confirmation
+            showToast('Download started! Check your downloads folder.', 'success');
+        }
+
+        // Helper function for notifications
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} show`;
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--bg-card);
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+                z-index: 10000;
+                border-left: 4px solid ${type === 'success' ? '#10b981' : '#2563eb'};
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Plan button functionality
+        document.querySelectorAll('.plan-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const planName = btn.closest('.pricing-card').querySelector('.plan-name').textContent;
+                if (planName === 'Free') {
+                    alert('Starting your free trial...');
+                } else if (planName === 'Creator') {
+                    alert('Starting your Creator plan free trial...');
+                } else if (planName === 'Enterprise') {
+                    alert('Contacting sales team...');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
