@@ -743,8 +743,6 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        '';
-        
         const RECOMMENDED_VOICES = [
             { name: 'William', gender: 'Male', short_name: 'en-AU-WilliamNeural' },
             { name: 'Natasha', gender: 'Female', short_name: 'en-AU-NatashaNeural' },
@@ -873,7 +871,7 @@
             updateOutput('Loading voice database...');
             
             try {
-                const response = await fetch(API_BASE_URL + '/api/voices');
+                const response = await fetch('/api/voices');
                 const data = await response.json();
                 
                 const languageSelect = document.getElementById('languageSelect');
@@ -913,7 +911,7 @@
             const language = query ? 'All' : document.getElementById('languageSelect').value;
 
             try {
-                const url = API_BASE_URL + '/api/filter_voices?language=' + encodeURIComponent(language) + '&search=' + encodeURIComponent(query) + '&gender=' + encodeURIComponent(gender);
+                const url = '/api/filter_voices?language=' + encodeURIComponent(language) + '&search=' + encodeURIComponent(query) + '&gender=' + encodeURIComponent(gender);
                 const response = await fetch(url);
                 const data = await response.json();
 
@@ -958,7 +956,7 @@
             updateOutput('Generating preview...');
             
             try {
-                const response = await fetch(API_BASE_URL + '/api/preview', {
+                const response = await fetch('/api/preview', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -976,8 +974,8 @@
                 }
                 
                 const player = document.getElementById('player');
-                player.src = API_BASE_URL + data.audio_url;
-                currentAudioUrl = API_BASE_URL + data.audio_url;
+                player.src = data.audio_url;
+                currentAudioUrl = data.audio_url;
                 currentAudioFilename = 'preview.mp3';
                 
                 try {
@@ -1016,7 +1014,7 @@
             updateOutput('Generating audio...');
             
             try {
-                const response = await fetch(API_BASE_URL + '/api/generate', {
+                const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ voice: voice, speed: speed, text: text })
@@ -1030,8 +1028,8 @@
                 }
                 
                 const player = document.getElementById('player');
-                player.src = API_BASE_URL + data.audio_url;
-                currentAudioUrl = API_BASE_URL + data.audio_url;
+                player.src = data.audio_url;
+                currentAudioUrl = data.audio_url;
                 currentAudioFilename = data.filename;
                 updateOutput('Audio generated: ' + data.filename, 'success');
                 
@@ -1091,7 +1089,7 @@
                 formData.append('model', 'small');
                 formData.append('device', 'cpu');
                 
-                const transcribeResponse = await fetch(API_BASE_URL + '/api/transcribe_generated', {
+                const transcribeResponse = await fetch('/api/transcribe_generated', {
                     method: 'POST',
                     body: formData
                 });
@@ -1141,7 +1139,7 @@
                 formData.append('model', 'small');
                 formData.append('device', 'cpu');
                 
-                const response = await fetch(API_BASE_URL + '/api/transcribe_upload', {
+                const response = await fetch('/api/transcribe_upload', {
                     method: 'POST',
                     body: formData
                 });
@@ -1180,7 +1178,7 @@
             updateOutput('Cleaning up...');
             
             try {
-                await fetch(API_BASE_URL + '/api/cleanup', { method: 'POST' });
+                await fetch('/api/cleanup', { method: 'POST' });
                 
                 document.getElementById('player').src = '';
                 document.querySelectorAll('.voice-chip').forEach(c => c.classList.remove('selected'));
@@ -1277,5 +1275,3 @@
     </script>
 </body>
 </html>
-
-
