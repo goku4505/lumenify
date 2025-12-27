@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://huggingface.co/spaces/chichigoku/lumenify-backend/api/:path*"
+      "destination": "https://chichigoku-lumenify-backend.hf.space/api/:path*"
     },
     {
       "source": "/audio/:path*",
-      "destination": "https://huggingface.co/spaces/chichigoku/lumenify-backend/audio/:path*"
+      "destination": "https://chichigoku-lumenify-backend.hf.space/audio/:path*"
     }
   ]
 }
