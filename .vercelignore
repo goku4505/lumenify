@@ -1,3 +1,12 @@
+# Ignore Python backend files
 *.py
-__pycache__
 *.pyc
+__pycache__/
+requirements.txt
+.env
+.venv/
+venv/
+*.egg-info/
+
+# Keep frontend files only
+!vercel.json
