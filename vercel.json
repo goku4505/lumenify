@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://chichigoku-lumenify-backend.hf.space/api/:path*"
+    },
+    {
+      "source": "/audio/:path*",
+      "destination": "https://chichigoku-lumenify-backend.hf.space/audio/:path*"
+    }
+  ]
+}
