@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional AI-Powered Text-to-Speech, Audio Transcription & YouTube Clipper">
-    <title>Lumenify Voice Studio - Professional AI Voice Generation & YouTube Clipper</title>
+    <meta name="description" content="Professional AI-Powered Text-to-Speech & Audio Transcription">
+    <title>Lumenify Voice Studio - Professional AI Voice Generation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -260,58 +260,27 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            height: 8px;
-            border-radius: 5px;
-            background: var(--bg-tertiary);
-            outline: none;
+        /* Range Slider Styling adjustments */
+        input[type=range].form-control {
             padding: 0;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
+            height: 6px;
+            background: var(--bg-secondary);
             appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            cursor: pointer;
             border: none;
-            transition: all 0.3s ease;
         }
 
-        input[type="range"]::-moz-range-thumb:hover {
+        input[type=range].form-control::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        input[type=range].form-control::-webkit-slider-thumb:hover {
             transform: scale(1.2);
-            box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
-        }
-
-        .pitch-value-display {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: var(--primary-blue);
-            padding: 0.5rem;
-            background: var(--bg-tertiary);
-            border-radius: 8px;
-            border: 2px solid var(--border-subtle);
         }
 
         textarea.form-control {
@@ -371,11 +340,6 @@
 
         .btn-transcribe {
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-        }
-
-        .btn-youtube {
-            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
             color: white;
         }
 
@@ -554,51 +518,6 @@
             animation: pulse 2s infinite;
         }
 
-        /* YouTube Preview Card */
-        .yt-preview-card {
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 2px solid var(--border-subtle);
-            display: none;
-        }
-
-        .yt-preview-card.show {
-            display: block;
-            animation: fadeInUp 0.5s ease-out;
-        }
-
-        .yt-thumbnail {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: #000;
-        }
-
-        .yt-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            line-height: 1.4;
-        }
-
-        .yt-duration {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Time Input Grid */
-        .time-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
         .toast {
             position: fixed;
             top: 100px;
@@ -692,10 +611,6 @@
             .audio-actions .btn {
                 width: 100%;
             }
-
-            .time-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -718,7 +633,7 @@
         <section class="hero">
             <div class="hero-content">
                 <h1>Transform Ideas Into Professional Audio</h1>
-                <p>Create stunning voiceovers with AI-powered text-to-speech technology. Choose from hundreds of voices, multiple languages, and clip YouTube videos effortlessly.</p>
+                <p>Create stunning voiceovers with AI-powered text-to-speech technology. Choose from hundreds of voices, multiple languages, and customize every detail.</p>
             </div>
         </section>
 
@@ -766,31 +681,35 @@
                             <input id="speed" type="number" class="form-control" value="1.0" min="0.5" max="2.0" step="0.1" />
                         </div>
 
+                        <!-- START ADDED PITCH SLIDER -->
                         <div class="form-group">
                             <label class="form-label" for="pitch">
-                                Voice Pitch (Naturalness Control)
-                                <span style="font-size: 0.875rem; opacity: 0.7; font-weight: normal;">(-20 to +20 Hz)</span>
+                                Voice Pitch (Naturalness)
+                                <span style="font-size: 0.875rem; opacity: 0.7;">(-20 to +20 Hz)</span>
                             </label>
-                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
                                 <span style="font-size: 0.8em; color: var(--text-muted);">Deeper</span>
                                 <input 
                                     id="pitch" 
                                     type="range" 
+                                    class="form-control" 
                                     value="0" 
                                     min="-20" 
                                     max="20" 
                                     step="1"
                                     style="flex: 1;"
+                                    oninput="document.getElementById('pitchValue').textContent = (this.value > 0 ? '+' : '') + this.value + ' Hz'"
                                 />
                                 <span style="font-size: 0.8em; color: var(--text-muted);">Higher</span>
                             </div>
-                            <div class="pitch-value-display">
+                            <div style="text-align: center; margin-top: 0.5rem; font-family: monospace; font-weight: bold; color: var(--primary-blue);">
                                 <span id="pitchValue">+0 Hz</span>
                             </div>
-                            <small style="color: var(--text-muted); display: block; margin-top: 0.75rem; line-height: 1.4;">
-                                💡 <strong>Pro Tip:</strong> Keep between <strong>-10 Hz</strong> and <strong>+10 Hz</strong> for most natural-sounding voices. Extreme values create character effects.
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                💡 Keep between -10 and +10 Hz for most natural results
                             </small>
                         </div>
+                        <!-- END ADDED PITCH SLIDER -->
 
                         <button id="refreshVoices" class="btn btn-secondary">
                             <i class="fas fa-sync-alt"></i> Refresh Voices
@@ -806,7 +725,6 @@
             </aside>
 
             <section class="main-panel">
-                <!-- Text Input Section -->
                 <div class="card">
                     <div class="section">
                         <h2 class="section-title">Text Input</h2>
@@ -828,57 +746,6 @@
                     </div>
                 </div>
 
-                <!-- YouTube Clipper Section -->
-                <div class="card">
-                    <div class="section">
-                        <h2 class="section-title"><i class="fab fa-youtube" style="color: #ff0000;"></i> YouTube Clipper</h2>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="ytUrlInput">YouTube URL</label>
-                            <input id="ytUrlInput" class="form-control" placeholder="Paste YouTube URL here..." />
-                        </div>
-
-                        <!-- Video Preview Card -->
-                        <div id="ytPreviewCard" class="yt-preview-card">
-                            <img id="ytThumbnail" class="yt-thumbnail" src="" alt="Video Thumbnail" />
-                            <div class="yt-title" id="ytTitle">Video Title</div>
-                            <div class="yt-duration" id="ytDuration">Duration: 00:00</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="ytQuality">Quality</label>
-                            <select id="ytQuality" class="form-control">
-                                <option value="1080p">1080p (Full HD)</option>
-                                <option value="720p" selected>720p (HD)</option>
-                                <option value="360p">360p (SD)</option>
-                            </select>
-                        </div>
-
-                        <div class="time-grid">
-                            <div class="form-group">
-                                <label class="form-label" for="ytStartTime">Start Time (HH:MM:SS)</label>
-                                <input id="ytStartTime" class="form-control" placeholder="00:00:10" />
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="ytEndTime">End Time (HH:MM:SS)</label>
-                                <input id="ytEndTime" class="form-control" placeholder="00:01:30" />
-                            </div>
-                        </div>
-
-                        <button id="clipBtn" class="btn btn-youtube">
-                            <i class="fas fa-cut"></i> <span id="clipBtnText">Clip Video</span>
-                        </button>
-
-                        <div id="ytProgress" class="hidden" style="margin-top: 1rem;">
-                            <div style="background: var(--bg-tertiary); height: 8px; border-radius: 8px; overflow: hidden;">
-                                <div id="ytProgressBar" style="height: 100%; background: var(--gradient-primary); width: 0%; transition: width 0.3s;"></div>
-                            </div>
-                            <div id="ytProgressText" style="text-align: center; margin-top: 0.5rem; color: var(--text-muted);">Preparing...</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Audio Upload Section -->
                 <div class="card">
                     <div class="section">
                         <h2 class="section-title">Audio Upload</h2>
@@ -898,7 +765,6 @@
                     </div>
                 </div>
 
-                <!-- Audio Player Section -->
                 <div class="card">
                     <div class="section">
                         <h2 class="section-title">Audio Player</h2>
@@ -917,7 +783,6 @@
                     </div>
                 </div>
 
-                <!-- Output Section -->
                 <div class="card">
                     <div class="section">
                         <h2 class="section-title">Output</h2>
@@ -946,7 +811,6 @@
         let uploadedAudioFile = null;
         let currentAudioUrl = null;
         let currentAudioFilename = null;
-        let ytPreviewTimeout = null;
 
         function toggleTheme() {
             const html = document.documentElement;
@@ -975,14 +839,6 @@
                 document.documentElement.setAttribute('data-theme', 'light');
                 themeIcon.className = 'fas fa-sun';
             }
-        }
-
-        function updatePitchDisplay() {
-            const pitchSlider = document.getElementById('pitch');
-            const pitchValue = document.getElementById('pitchValue');
-            const value = parseInt(pitchSlider.value);
-            const prefix = value > 0 ? '+' : '';
-            pitchValue.textContent = `${prefix}${value} Hz`;
         }
 
         function showToast(message, type = 'info') {
@@ -1138,7 +994,7 @@
             const text = document.getElementById('text').value.trim();
             const voice = document.getElementById('voiceSelect').value;
             const speed = parseFloat(document.getElementById('speed').value || '1.0');
-            const pitch = document.getElementById('pitch').value;
+            const pitch = document.getElementById('pitch').value;  // ✅ ADD THIS
             
             if (!text) {
                 updateOutput('Please enter text to preview', 'error');
@@ -1151,7 +1007,7 @@
             }
             
             setLoading(true);
-            updateOutput('Generating preview with pitch: ' + pitch + ' Hz...');
+            updateOutput('Generating preview...');
             
             try {
                 const response = await fetch('/api/preview', {
@@ -1160,7 +1016,7 @@
                     body: JSON.stringify({
                         voice: voice,
                         speed: speed,
-                        pitch: pitch,
+                        pitch: pitch,  // ✅ ADD THIS
                         text: text.substring(0, 200)
                     })
                 });
@@ -1179,7 +1035,7 @@
                 
                 try {
                     await player.play();
-                    updateOutput('Preview playing (Pitch: ' + pitch + ' Hz)', 'success');
+                    updateOutput('Preview playing', 'success');
                     showAudioActions();
                 } catch {
                     updateOutput('Preview ready (tap play)', 'success');
@@ -1197,7 +1053,7 @@
             const text = document.getElementById('text').value.trim();
             const voice = document.getElementById('voiceSelect').value;
             const speed = parseFloat(document.getElementById('speed').value || '1.0');
-            const pitch = document.getElementById('pitch').value;
+            const pitch = document.getElementById('pitch').value;  // ✅ ADD THIS
             const generateBtn = document.getElementById('generateBtn');
             
             if (!text) {
@@ -1211,7 +1067,7 @@
             }
             
             setButtonLoading(generateBtn, true);
-            updateOutput('Generating audio with pitch: ' + pitch + ' Hz...');
+            updateOutput('Generating audio...');
             
             try {
                 const response = await fetch('/api/generate', {
@@ -1220,7 +1076,7 @@
                     body: JSON.stringify({ 
                         voice: voice, 
                         speed: speed, 
-                        pitch: pitch,
+                        pitch: pitch, // ✅ ADD THIS
                         text: text 
                     })
                 });
@@ -1236,7 +1092,7 @@
                 player.src = data.audio_url;
                 currentAudioUrl = data.audio_url;
                 currentAudioFilename = data.filename;
-                updateOutput('Audio generated: ' + data.filename + ' (Pitch: ' + pitch + ' Hz)', 'success');
+                updateOutput('Audio generated: ' + data.filename, 'success');
                 
                 try {
                     await player.play();
@@ -1406,136 +1262,6 @@
             }
         }
 
-        // --- YouTube Clipper Logic ---
-
-        function fetchYouTubeMetadata() {
-            const urlInput = document.getElementById('ytUrlInput');
-            const previewCard = document.getElementById('ytPreviewCard');
-            const thumbnail = document.getElementById('ytThumbnail');
-            const title = document.getElementById('ytTitle');
-            const duration = document.getElementById('ytDuration');
-            
-            const url = urlInput.value.trim();
-            
-            if (!url) {
-                previewCard.classList.remove('show');
-                return;
-            }
-
-            // Simple client-side ID extraction for thumbnail preview
-            // In a real app, you'd use an API endpoint to get full title/duration due to CORS
-            let videoId = '';
-            if (url.includes('youtube.com/watch?v=')) {
-                videoId = url.split('v=')[1].split('&')[0];
-            } else if (url.includes('youtu.be/')) {
-                videoId = url.split('youtu.be/')[1];
-            }
-
-            if (videoId) {
-                thumbnail.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                title.textContent = 'YouTube Video Detected';
-                duration.textContent = 'Duration available on request';
-                previewCard.classList.add('show');
-                
-                // Optional: Attempt to fetch real metadata via backend
-                fetch('/api/yt_meta?url=' + encodeURIComponent(url))
-                    .then(res => res.json())
-                    .then(data => {
-                        if(data.title) title.textContent = data.title;
-                        if(data.duration) duration.textContent = 'Duration: ' + data.duration;
-                    })
-                    .catch(() => {}); // Silent fail, we have the thumbnail at least
-            } else {
-                previewCard.classList.remove('show');
-            }
-        }
-
-        async function startClipProcess() {
-            const url = document.getElementById('ytUrlInput').value.trim();
-            const start = document.getElementById('ytStartTime').value;
-            const end = document.getElementById('ytEndTime').value;
-            const quality = document.getElementById('ytQuality').value;
-            const clipBtn = document.getElementById('clipBtn');
-            const progressContainer = document.getElementById('ytProgress');
-            const progressBar = document.getElementById('ytProgressBar');
-            const progressText = document.getElementById('ytProgressText');
-
-            if (!url) {
-                updateOutput('Please enter a YouTube URL', 'error');
-                return;
-            }
-            if (!start || !end) {
-                updateOutput('Please enter start and end times', 'error');
-                return;
-            }
-
-            setButtonLoading(clipBtn, true);
-            progressContainer.classList.remove('hidden');
-            progressBar.style.width = '10%';
-            progressText.textContent = 'Initializing...';
-
-            try {
-                // Mocking the API call for the frontend structure
-                // In production, this would hit your backend (e.g., the clipper.py logic exposed via API)
-                const response = await fetch('/api/clip', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        url: url,
-                        start: start,
-                        end: end,
-                        quality: quality
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Server error');
-                }
-
-                // Simulating progress updates since simple HTTP requests don't stream progress easily
-                progressBar.style.width = '50%';
-                progressText.textContent = 'Downloading Video...';
-                
-                await new Promise(r => setTimeout(r, 1000)); // Fake delay
-                
-                progressBar.style.width = '80%';
-                progressText.textContent = 'Processing Audio & Merging...';
-
-                const data = await response.json();
-
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-
-                progressBar.style.width = '100%';
-                progressText.textContent = 'Completed!';
-
-                updateOutput('Clip created successfully: ' + data.filename, 'success');
-                
-                // Allow downloading the clip
-                if(data.download_url) {
-                    const a = document.createElement('a');
-                    a.href = data.download_url;
-                    a.download = data.filename || 'clip.mp4';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                }
-
-            } catch (error) {
-                progressBar.style.width = '0%';
-                progressContainer.classList.add('hidden');
-                updateOutput('Clipping failed: ' + error.message, 'error');
-            } finally {
-                setButtonLoading(clipBtn, false);
-                setTimeout(() => {
-                    progressContainer.classList.add('hidden');
-                    progressBar.style.width = '0%';
-                }, 3000);
-            }
-        }
-
-
         function handleFileUpload() {
             const audioUpload = document.getElementById('audioUpload');
             const uploadLabel = document.getElementById('uploadLabel');
@@ -1593,24 +1319,11 @@
             document.getElementById('downloadAudioBtn').addEventListener('click', downloadAudio);
             document.getElementById('transcribeAudioBtn').addEventListener('click', transcribeAudio);
             
-            // Pitch Slider Listener
-            document.getElementById('pitch').addEventListener('input', updatePitchDisplay);
-
-            // Speed Validation
             document.getElementById('speed').addEventListener('input', (e) => {
                 const value = parseFloat(e.target.value);
                 if (value < 0.5) e.target.value = '0.5';
                 if (value > 2.0) e.target.value = '2.0';
             });
-
-            // YouTube Clipper Listeners
-            const ytUrlInput = document.getElementById('ytUrlInput');
-            ytUrlInput.addEventListener('input', () => {
-                clearTimeout(ytPreviewTimeout);
-                ytPreviewTimeout = setTimeout(fetchYouTubeMetadata, 800);
-            });
-            
-            document.getElementById('clipBtn').addEventListener('click', startClipProcess);
         });
 
         window.addEventListener('load', () => {
