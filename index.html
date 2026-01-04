@@ -1049,62 +1049,121 @@
             }
         }
 
+        // CHANGE 6: REPLACE GENERATESPEECH FUNCTION
         async function generateSpeech() {
-            const text = document.getElementById('text').value.trim();
-            const voice = document.getElementById('voiceSelect').value;
-            const speed = parseFloat(document.getElementById('speed').value || '1.0');
-            const pitch = document.getElementById('pitch').value;  // ✅ ADD THIS
+          const text = document.getElementById('text').value.trim();
+          const speed = parseFloat(document.getElementById('speed').value || '1.0');
+          const pitch = document.getElementById('pitch').value || '0';
+          
+          // Compatibility: Map existing DOM structure to the variable name used in the requested replacement code
+          const selectedVoiceShortName = document.getElementById('voiceSelect').value;
+          
+          if (!text) {
+            updateOutput('Please enter text', 'error');
+            return;
+          }
+          
+          if (!selectedVoiceShortName) {
+            updateOutput('Please select a voice first', 'error');
+            return;
+          }
+          
+          const generateBtn = document.getElementById('generateBtn');
+          generateBtn.innerHTML = '<div class="loading-spinner"></div>Submitting...';
+          generateBtn.disabled = true;
+          updateOutput('📤 Submitting audio generation task...');
+          
+          try {
+            // Step 1: Submit the job
+            const response = await fetch('/api/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                voice: selectedVoiceShortName, 
+                speed: speed, 
+                pitch: pitch,
+                text: text 
+              })
+            });
+            
+            const data = await response.json();
+            
+            if (response.status !== 202) {
+              throw new Error(data.error || 'Submission failed');
+            }
+            
+            const jobId = data.job_id;
+            updateOutput('⏳ Task queued (ID: ' + jobId.substring(0, 8) + '...). Starting generation...', 'info');
+            
+            // Step 2: Start polling
+            await pollForCompletion(jobId);
+            
+          } catch (error) {
+            updateOutput('❌ Generation failed: ' + error.message, 'error');
             const generateBtn = document.getElementById('generateBtn');
-            
-            if (!text) {
-                updateOutput('Please enter text', 'error');
-                return;
+            generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+            generateBtn.disabled = false;
+          }
+        }
+
+        // CHANGE 7: ADD POLLING FUNCTION
+        async function pollForCompletion(jobId) {
+          const pollInterval = 1000;
+          const maxAttempts = 300;
+          let attempts = 0;
+          
+          const checkStatus = async () => {
+            if (attempts >= maxAttempts) {
+              updateOutput('⏱️ Task timed out after 5 minutes', 'error');
+              const generateBtn = document.getElementById('generateBtn');
+              generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+              generateBtn.disabled = false;
+              return;
             }
-            
-            if (!voice) {
-                updateOutput('Please select a voice', 'error');
-                return;
-            }
-            
-            setButtonLoading(generateBtn, true);
-            updateOutput('Generating audio...');
             
             try {
-                const response = await fetch('/api/generate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        voice: voice, 
-                        speed: speed, 
-                        pitch: pitch, // ✅ ADD THIS
-                        text: text 
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    updateOutput('Generation failed: ' + data.error, 'error');
-                    return;
-                }
-                
+              const response = await fetch('/api/jobs/' + jobId);
+              const data = await response.json();
+              
+              if (data.status === 'completed') {
                 const player = document.getElementById('player');
                 player.src = data.audio_url;
                 currentAudioUrl = data.audio_url;
                 currentAudioFilename = data.filename;
-                updateOutput('Audio generated: ' + data.filename, 'success');
+                
+                updateOutput('✅ Audio generated successfully: ' + data.filename, 'success');
+                
+                const generateBtn = document.getElementById('generateBtn');
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+                generateBtn.disabled = false;
                 
                 try {
-                    await player.play();
-                } catch {}
+                  await player.play();
+                } catch (e) {}
                 
                 showAudioActions();
                 
+              } else if (data.status === 'failed') {
+                throw new Error(data.error || 'Unknown error during processing');
+                
+              } else {
+                attempts++;
+                const statusIcon = data.status === 'processing' ? '⚙️' : '⏳';
+                const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+                updateOutput(statusIcon + ' ' + statusText + '... (Check ' + attempts + '/300)');
+                
+                setTimeout(checkStatus, pollInterval);
+              }
+              
             } catch (error) {
-                updateOutput('Generation failed: ' + error.message, 'error');
-            } finally {
-                setButtonLoading(generateBtn, false);
+              updateOutput('❌ Polling error: ' + error.message, 'error');
+              const generateBtn = document.getElementById('generateBtn');
+              generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+              generateBtn.disabled = false;
             }
+          };
+          
+          checkStatus();
         }
 
         async function downloadAudio() {
