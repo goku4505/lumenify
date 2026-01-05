@@ -1175,7 +1175,7 @@
             }
         }
 
-        // UPDATED: Simplified generateSpeech function
+        // UPDATED: generateSpeech with polling logic
         async function generateSpeech() {
             const text = document.getElementById('text').value.trim();
             const speed = parseFloat(document.getElementById('speed').value || '1.0');
@@ -1192,33 +1192,21 @@
                 return;
             }
             
-            // Show time estimate for long texts
             const charCount = text.length;
             const estimatedMinutes = Math.ceil(charCount / 1000);
             
-            if (charCount > 10000) {
-                const confirmMsg = `📝 Long text detected: ${charCount.toLocaleString()} characters\n\n` +
-                                   `⏱️ Estimated generation time: ${estimatedMinutes} minutes\n\n` +
-                                   `The page may become unresponsive during generation.\n\n` +
-                                   `Continue?`;
-                
-                if (!confirm(confirmMsg)) {
-                    updateOutput('Generation cancelled', 'info');
-                    return;
-                }
-            }
-            
             const generateBtn = document.getElementById('generateBtn');
-            generateBtn.innerHTML = '<div class="loading-spinner"></div>Generating...';
+            generateBtn.innerHTML = '<div class="loading-spinner"></div>Submitting...';
             generateBtn.disabled = true;
             
             const startTime = Date.now();
-            updateOutput('Generating audio for ' + charCount.toLocaleString() + ' characters...');
+            updateOutput(`📤 Submitting ${charCount.toLocaleString()} chars (est. ${estimatedMinutes} min)...`);
             
             try {
                 // Refresh token
                 currentUserToken = await auth.currentUser.getIdToken();
                 
+                // Submit job
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 
@@ -1233,36 +1221,95 @@
                     })
                 });
                 
+                if (!response.ok) {
+                    let errorMsg;
+                    try {
+                        const data = await response.json();
+                        errorMsg = data.error || 'Unknown error';
+                    } catch (e) {
+                        errorMsg = `Server error (${response.status})`;
+                    }
+                    throw new Error(errorMsg);
+                }
+                
                 const data = await response.json();
                 
                 if (data.error) {
-                    updateOutput('Generation failed: ' + data.error, 'error');
-                    return;
+                    throw new Error(data.error);
                 }
                 
-                const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
+                // Start polling
+                const jobId = data.job_id;
+                updateOutput(`⏳ Processing (ID: ${jobId.substring(0, 8)}...)...`);
                 
-                const player = document.getElementById('player');
-                player.src = data.audio_url;
-                currentAudioUrl = data.audio_url;
-                currentAudioFilename = data.filename;
-                
-                updateOutput('✅ Audio generated in ' + elapsedTime + 's: ' + data.filename, 'success');
-                
-                try {
-                    await player.play();
-                } catch (e) {
-                    // Autoplay blocked
-                }
-                
-                showAudioActions();
+                await pollJobStatus(jobId, startTime, generateBtn);
                 
             } catch (error) {
-                updateOutput('Generation failed: ' + error.message, 'error');
-            } finally {
+                updateOutput('❌ ' + error.message, 'error');
                 generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
                 generateBtn.disabled = false;
             }
+        }
+
+        // NEW: Helper function for polling job status
+        async function pollJobStatus(jobId, startTime, generateBtn) {
+            const pollInterval = 2000; // 2 seconds
+            let attempts = 0;
+            
+            const poll = async () => {
+                attempts++;
+                const elapsed = Math.ceil((Date.now() - startTime) / 1000);
+                
+                try {
+                    const response = await fetch(`/api/jobs/${jobId}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Polling failed: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.status === 'completed') {
+                        const player = document.getElementById('player');
+                        player.src = data.audio_url;
+                        currentAudioUrl = data.audio_url;
+                        currentAudioFilename = data.filename;
+                        
+                        updateOutput(`✅ Generated in ${elapsed}s: ${data.filename}`, 'success');
+                        
+                        generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+                        generateBtn.disabled = false;
+                        
+                        try {
+                            await player.play();
+                        } catch (e) {}
+                        
+                        showAudioActions();
+                        
+                    } else if (data.status === 'failed') {
+                        throw new Error(data.error || 'Generation failed');
+                        
+                    } else {
+                        // Still processing
+                        const statusEmoji = '⚙️';
+                        updateOutput(`${statusEmoji} Processing... ${elapsed}s elapsed (${attempts} checks)`);
+                        
+                        // Update button
+                        generateBtn.innerHTML = `<div class="loading-spinner"></div>Processing (${elapsed}s)...`;
+                        
+                        // Continue polling
+                        setTimeout(poll, pollInterval);
+                    }
+                    
+                } catch (error) {
+                    updateOutput('❌ Polling error: ' + error.message, 'error');
+                    generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+                    generateBtn.disabled = false;
+                }
+            };
+            
+            // Start polling
+            poll();
         }
 
         async function downloadAudio() {
