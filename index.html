@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Professional AI-Powered Text-to-Speech & Audio Transcription">
-    <title>Lumenify Voice Studio - Professional AI Voice Generation</title>
+    <title>Lumen - Professional AI Voice Generation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Step 4.1: Add Firebase SDKs to <head> -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
@@ -24,8 +24,6 @@
             --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #059669 100%);
             --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #34d399 100%);
             --style-orange: #f97316;
-            --style-orange-light: #fb923c;
-            --style-orange-dark: #ea580c;
             --bg-primary: #0a0a0f;
             --bg-secondary: #1a1a2e;
             --bg-tertiary: #16213e;
@@ -63,7 +61,7 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -84,7 +82,7 @@
         }
 
         .nav-container {
-            max-width: 1400px;
+            max-width: 100%;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -134,14 +132,16 @@
         }
 
         .main-container {
-            max-width: 1400px;
+            max-width: 1600px; /* Increased for 3-col layout */
             margin: 0 auto;
             padding: 80px 20px 40px;
+            padding-left: 0; /* Adjusted for sidebar */
+            padding-right: 0;
         }
 
         .hero {
             text-align: center;
-            padding: 1.5rem 0 2rem;
+            padding: 1.5rem 2rem 2rem;
             position: relative;
             overflow: hidden;
         }
@@ -165,7 +165,7 @@
 
         .hero-content h1 {
             font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 900;
+            font-weight: 800;
             line-height: 1.2;
             margin-bottom: 0.75rem;
             background: var(--gradient-primary);
@@ -183,13 +183,14 @@
 
         .grid {
             display: grid;
-            gap: 30px;
+            gap: 0; /* No gap between columns, borders handle separation */
             grid-template-columns: 1fr;
+            height: calc(100vh - 160px);
         }
 
         @media (min-width: 1024px) {
             .grid {
-                grid-template-columns: 400px 1fr;
+                grid-template-columns: 70px 1fr 380px;
             }
         }
 
@@ -201,6 +202,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            margin-bottom: 2rem;
         }
 
         .card::before {
@@ -267,7 +269,7 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* Range Slider Styling adjustments */
+        /* Range Slider Styling */
         input[type=range].form-control {
             padding: 0;
             height: 6px;
@@ -598,36 +600,349 @@
             display: none;
         }
 
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
+        /* =========================================
+           NEW STYLES ADDED
+           ========================================= */
+
+        /* Left Icon Sidebar */
+        .sidebar-icons {
+            background: var(--bg-card);
+            width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid var(--border-subtle);
+            padding: 1.5rem 0;
+        }
+
+        .icon-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .nav-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .nav-icon:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-icon.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Right Settings Panel */
+        .settings-panel {
+            background: var(--bg-card);
+            width: 380px;
+            border-left: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0;
+            background: var(--bg-tertiary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--primary-blue);
+            background: var(--bg-card);
+        }
+
+        .settings-content {
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Slider Improvements */
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .slider-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            min-width: 50px;
+        }
+
+        .slider-input {
+            flex: 1;
+            padding: 0 !important;
+            height: 6px !important;
+            background: var(--bg-secondary) !important;
+            border: none !important;
+            border-radius: 3px;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .slider-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider-input::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-value {
+            text-align: center;
+            margin-top: 0.5rem;
+            font-family: monospace;
+            font-weight: bold;
+            color: var(--primary-blue);
+            font-size: 0.95rem;
+        }
+
+        /* Large Textarea */
+        .large-textarea {
+            min-height: 250px !important;
+            font-size: 1.05rem;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .button-row .btn {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* Auth Page Styling */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            padding: 2rem;
+        }
+
+        .auth-container-inner {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow-strong);
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo i {
+            font-size: 2.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .auth-logo h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .auth-welcome {
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+        }
+
+        .auth-footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            line-height: 1.5;
+        }
+
+        /* Style Firebase UI to match */
+        #firebaseui-auth-container {
+            margin: 0;
+        }
+
+        #firebaseui-auth-container .firebaseui-card-content {
+            padding: 0;
+        }
+
+        #firebaseui-auth-container .firebaseui-idp-button {
+            border-radius: 12px !important;
+            padding: 14px !important;
+            font-weight: 600 !important;
+            transition: all 0.2s !important;
+        }
+
+        #firebaseui-auth-container .firebaseui-idp-button:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Main Panel Scroll */
+        .main-panel {
+            height: 100%;
+            overflow-y: auto;
+            padding: 2rem;
+            background: var(--bg-primary);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr !important;
+                height: auto;
+                display: block;
+            }
+            
+            /* Move icon sidebar to bottom */
+            .sidebar-icons {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 70px;
+                border-right: none;
+                border-top: 1px solid var(--border-subtle);
+                z-index: 1000;
+                background: var(--bg-card);
+                padding: 0.75rem 0;
+            }
+            
+            .icon-nav {
+                flex-direction: row;
+                justify-content: space-around;
+                gap: 0;
+            }
+            
+            /* Settings panel full width on mobile */
+            .settings-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-subtle);
+                height: auto;
+                max-height: 500px;
+            }
+            
+            /* Add bottom padding to main panel for fixed nav */
+            .main-panel {
+                padding-bottom: 90px;
+                padding: 1rem;
             }
 
             .main-container {
-                padding: 70px 10px 20px;
+                padding: 80px 10px 20px;
             }
+        }
 
+        @media (max-width: 768px) {
             .hero {
                 padding: 1rem 0;
             }
-
+            
+            .button-row {
+                flex-direction: column;
+            }
+            
+            .button-row .btn {
+                width: 100%;
+                min-width: 100%;
+            }
+            
             .audio-actions {
                 flex-direction: column;
             }
-
+            
             .audio-actions .btn {
                 width: 100%;
             }
         }
     </style>
 </head>
-<!-- Step 4.2: Add Login UI Container to <body> -->
 <body>
     <!-- Auth Container (Shows before login) -->
-    <div id="auth-container" style="text-align: center; padding: 50px; background: var(--bg-primary); min-height: 100vh;">
-        <h1 style="color: var(--text-primary);">Welcome to Lumenify</h1>
-        <p style="color: var(--text-secondary);">Sign in to access Voice Studio</p>
-        <div id="firebaseui-auth-container"></div>
+    <div id="auth-container" class="auth-page">
+        <div class="auth-container-inner">
+            <div class="auth-logo">
+                <i class="fas fa-microphone-alt"></i>
+                <h1>Lumen</h1>
+            </div>
+            
+            <h2 class="auth-welcome">Welcome back</h2>
+            
+            <div id="firebaseui-auth-container"></div>
+            
+            <p class="auth-footer">
+                By continuing, you agree to our Terms of Service and Privacy Policy
+            </p>
+        </div>
     </div>
 
     <!-- App Container (Shows after login) -->
@@ -636,22 +951,21 @@
             <div class="nav-container">
                 <div class="logo">
                     <i class="fas fa-microphone-alt"></i>
-                    <span>Lumenify Voice Studio</span>
+                    <span>Lumen</span>
                 </div>
                 <div class="nav-links">
                     <button class="theme-toggle" id="theme-toggle">
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
-                    <button onclick="logout()" class="btn btn-secondary">Sign Out</button>
+                    <button onclick="logout()" class="btn btn-secondary" style="width: auto;">Sign Out</button>
                 </div>
             </div>
         </nav>
         
-        <!-- Your existing main content goes here -->
         <div class="main-container">
             <section class="hero">
                 <div class="hero-content">
-                    <h1>Transform Ideas Into Professional Audio</h1>
+                    <h1>Text to Speech</h1>
                     <p>Create stunning voiceovers with AI-powered text-to-speech technology. Choose from hundreds of voices, multiple languages, and customize every detail.</p>
                 </div>
             </section>
@@ -661,93 +975,34 @@
                 <span>Loading...</span>
             </div>
 
-            <div class="grid">
-                <aside class="sidebar">
-                    <div class="card">
-                        <section class="section">
-                            <h2 class="section-title">Voice Selection</h2>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="voiceSearch">Search Voices</label>
-                                <input id="voiceSearch" class="form-control" placeholder="Search voices..." />
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="languageSelect">Language</label>
-                                <select id="languageSelect" class="form-control">
-                                    <option>Loading...</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="genderSelect">Gender</label>
-                                <select id="genderSelect" class="form-control">
-                                    <option value="All">All</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="voiceSelect">Available Voices</label>
-                                <select id="voiceSelect" class="form-control" size="8">
-                                    <option>Loading...</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="speed">Speed (0.5 - 2.0)</label>
-                                <input id="speed" type="number" class="form-control" value="1.0" min="0.5" max="2.0" step="0.1" />
-                            </div>
-
-                            <!-- START ADDED PITCH SLIDER -->
-                            <div class="form-group">
-                                <label class="form-label" for="pitch">
-                                    Voice Pitch (Naturalness)
-                                    <span style="font-size: 0.875rem; opacity: 0.7;">(-20 to +20 Hz)</span>
-                                </label>
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <span style="font-size: 0.8em; color: var(--text-muted);">Deeper</span>
-                                    <input 
-                                        id="pitch" 
-                                        type="range" 
-                                        class="form-control" 
-                                        value="0" 
-                                        min="-20" 
-                                        max="20" 
-                                        step="1"
-                                        style="flex: 1;"
-                                        oninput="document.getElementById('pitchValue').textContent = (this.value > 0 ? '+' : '') + this.value + ' Hz'"
-                                    />
-                                    <span style="font-size: 0.8em; color: var(--text-muted);">Higher</span>
-                                </div>
-                                <div style="text-align: center; margin-top: 0.5rem; font-family: monospace; font-weight: bold; color: var(--primary-blue);">
-                                    <span id="pitchValue">+0 Hz</span>
-                                </div>
-                                <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
-                                    💡 Keep between -10 and +10 Hz for most natural results
-                                </small>
-                            </div>
-                            <!-- END ADDED PITCH SLIDER -->
-
-                            <button id="refreshVoices" class="btn btn-secondary">
-                                <i class="fas fa-sync-alt"></i> Refresh Voices
-                            </button>
-                            
-                            <div class="voice-recommendations">
-                                <h3>✨ Recommended Voices</h3>
-                                <div class="recommended-voices" id="recommendedVoices">
-                                </div>
-                            </div>
-                        </section>
-                    </div>
+            <div class="grid" id="mainGrid">
+                <!-- LEFT ICON SIDEBAR -->
+                <aside class="sidebar-icons">
+                    <nav class="icon-nav">
+                        <button class="nav-icon" title="Home">
+                            <i class="fas fa-home"></i>
+                        </button>
+                        <button class="nav-icon active" title="Text to Speech">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                        <button class="nav-icon" title="Voice Library">
+                            <i class="fas fa-book"></i>
+                        </button>
+                        <button class="nav-icon" title="History">
+                            <i class="fas fa-history"></i>
+                        </button>
+                        <button class="nav-icon" title="Settings">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </nav>
                 </aside>
 
+                <!-- CENTER MAIN PANEL -->
                 <section class="main-panel">
-                    <div class="card">
+                    <!-- Text Input Card -->
+                    <div class="card text-input-card">
                         <div class="section">
                             <h2 class="section-title">Text Input</h2>
-                            <!-- CHANGE 2.1: Updated Textarea with Character Counter -->
                             <div class="form-group">
                                 <label class="form-label" for="text">
                                     Enter Text 
@@ -757,26 +1012,31 @@
                                 </label>
                                 <textarea 
                                     id="text" 
-                                    class="form-control" 
+                                    class="form-control large-textarea" 
                                     placeholder="Type your text here..."
                                     maxlength="50000"
                                     oninput="updateCharCounter()"
-                                >Welcome to Lumenify Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
+                                >Welcome to Lumen! This is a demonstration of our advanced text-to-speech technology.</textarea>
                             </div>
-                            <button id="previewBtn" class="btn btn-secondary">
-                                <i class="fas fa-play"></i> Preview
-                            </button>
-                            <button id="generateBtn" class="btn btn-primary">
-                                <span class="btn-text">
-                                    <i class="fas fa-magic"></i> Generate Audio
-                                </span>
-                            </button>
-                            <button id="cleanupBtn" class="btn btn-secondary">
-                                <i class="fas fa-broom"></i> Clean Up
-                            </button>
+                            
+                            <!-- Action Buttons -->
+                            <div class="button-row">
+                                <button id="previewBtn" class="btn btn-secondary">
+                                    <i class="fas fa-play"></i> Preview
+                                </button>
+                                <button id="generateBtn" class="btn btn-primary">
+                                    <span class="btn-text">
+                                        <i class="fas fa-magic"></i> Generate Audio
+                                    </span>
+                                </button>
+                                <button id="cleanupBtn" class="btn btn-secondary">
+                                    <i class="fas fa-broom"></i> Clean Up
+                                </button>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Audio Upload Card -->
                     <div class="card">
                         <div class="section">
                             <h2 class="section-title">Audio Upload</h2>
@@ -796,6 +1056,7 @@
                         </div>
                     </div>
 
+                    <!-- Audio Player Card -->
                     <div class="card">
                         <div class="section">
                             <h2 class="section-title">Audio Player</h2>
@@ -814,13 +1075,106 @@
                         </div>
                     </div>
 
+                    <!-- Output Card -->
                     <div class="card">
                         <div class="section">
                             <h2 class="section-title">Output</h2>
-                            <div id="output" class="output-content">🚀 Lumenify Voice Studio ready. Select a voice and enter text to begin creating professional audio.</div>
+                            <div id="output" class="output-content">🚀 Lumen ready. Select a voice and enter text to begin creating professional audio.</div>
                         </div>
                     </div>
                 </section>
+
+                <!-- RIGHT SETTINGS PANEL (ALL OLD SIDEBAR CONTENT MOVED HERE) -->
+                <aside class="settings-panel">
+                    <div class="settings-tabs">
+                        <button class="tab-btn active">Settings</button>
+                        <button class="tab-btn">History</button>
+                    </div>
+                    
+                    <div class="settings-content">
+                        <!-- Voice Search -->
+                        <div class="form-group">
+                            <label class="form-label" for="voiceSearch">Search Voices</label>
+                            <input id="voiceSearch" class="form-control" placeholder="Search voices..." />
+                        </div>
+
+                        <!-- Voice Recommendations (KEPT!) -->
+                        <div class="voice-recommendations">
+                            <h3>✨ Recommended Voices</h3>
+                            <div class="recommended-voices" id="recommendedVoices">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Language Selection -->
+                        <div class="form-group">
+                            <label class="form-label" for="languageSelect">Language</label>
+                            <select id="languageSelect" class="form-control">
+                                <option>Loading...</option>
+                            </select>
+                        </div>
+
+                        <!-- Gender Selection -->
+                        <div class="form-group">
+                            <label class="form-label" for="genderSelect">Gender</label>
+                            <select id="genderSelect" class="form-control">
+                                <option value="All">All</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <!-- Available Voices -->
+                        <div class="form-group">
+                            <label class="form-label" for="voiceSelect">Available Voices</label>
+                            <select id="voiceSelect" class="form-control" size="6">
+                                <option>Loading...</option>
+                            </select>
+                        </div>
+
+                        <!-- Speed Slider (KEPT!) -->
+                        <div class="form-group">
+                            <label class="form-label" for="speed">Speed (0.5 - 2.0)</label>
+                            <div class="slider-wrapper">
+                                <span class="slider-label">Slower</span>
+                                <input id="speed" type="range" class="form-control slider-input" value="1.0" min="0.5" max="2.0" step="0.1" />
+                                <span class="slider-label">Faster</span>
+                            </div>
+                            <div class="slider-value" id="speedValue">1.0x</div>
+                        </div>
+
+                        <!-- Pitch Slider (KEPT!) -->
+                        <div class="form-group">
+                            <label class="form-label" for="pitch">
+                                Voice Pitch (Naturalness)
+                                <span style="font-size: 0.875rem; opacity: 0.7;">(-20 to +20 Hz)</span>
+                            </label>
+                            <div class="slider-wrapper">
+                                <span class="slider-label">Deeper</span>
+                                <input 
+                                    id="pitch" 
+                                    type="range" 
+                                    class="form-control slider-input" 
+                                    value="0" 
+                                    min="-20" 
+                                    max="20" 
+                                    step="1"
+                                    oninput="document.getElementById('pitchValue').textContent = (this.value > 0 ? '+' : '') + this.value + ' Hz'"
+                                />
+                                <span class="slider-label">Higher</span>
+                            </div>
+                            <div class="slider-value" id="pitchValue">+0 Hz</div>
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                💡 Keep between -10 and +10 Hz for most natural results
+                            </small>
+                        </div>
+
+                        <!-- Refresh Button -->
+                        <button id="refreshVoices" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i> Refresh Voices
+                        </button>
+                    </div>
+                </aside>
             </div>
         </div>
     </div>
@@ -829,7 +1183,7 @@
 
     <script>
         // ==================== FIREBASE AUTH ====================
-        // 1. Firebase Config (REPLACE with YOUR config from Phase 2)
+        // 1. Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAjskmFLh22fAPVpTPRXQ1exNINGOg7-2M",
             authDomain: "lumogen-auth.firebaseapp.com",
@@ -873,10 +1227,9 @@
                 document.getElementById('app-container').style.display = 'block';
                 currentUserToken = await user.getIdToken();
                 console.log("Logged in:", user.email);
-                // Load voices after successful login to ensure API calls have token
                 loadVoices(); 
             } else {
-                document.getElementById('auth-container').style.display = 'block';
+                document.getElementById('auth-container').style.display = 'flex';
                 document.getElementById('app-container').style.display = 'none';
                 currentUserToken = null;
                 ui.start('#firebaseui-auth-container', uiConfig);
@@ -935,7 +1288,6 @@
             }
         }
 
-        // CHANGE 2.2: Add Character Counter Function
         function updateCharCounter() {
             const text = document.getElementById('text').value;
             const counter = document.getElementById('charCounter');
@@ -943,15 +1295,14 @@
             
             counter.textContent = length.toLocaleString() + ' / 50,000 characters';
             
-            // Color coding based on length
             if (length > 45000) {
-                counter.style.color = '#ef4444'; // Red
+                counter.style.color = '#ef4444';
             } else if (length > 30000) {
-                counter.style.color = '#f97316'; // Orange
+                counter.style.color = '#f97316';
             } else if (length > 15000) {
-                counter.style.color = '#eab308'; // Yellow
+                counter.style.color = '#eab308';
             } else {
-                counter.style.color = 'var(--text-muted)'; // Default
+                counter.style.color = 'var(--text-muted)';
             }
         }
 
@@ -1130,7 +1481,6 @@
             updateOutput('Generating preview...');
             
             try {
-                // Refresh token
                 if (auth.currentUser) currentUserToken = await auth.currentUser.getIdToken();
 
                 const response = await fetch('/api/preview', {
@@ -1175,7 +1525,6 @@
             }
         }
 
-        // UPDATED: generateSpeech with polling logic
         async function generateSpeech() {
             const text = document.getElementById('text').value.trim();
             const speed = parseFloat(document.getElementById('speed').value || '1.0');
@@ -1355,7 +1704,6 @@
                 formData.append('model', 'small');
                 formData.append('device', 'cpu');
                 
-                // Add token if available
                 const headers = {};
                 if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
 
@@ -1410,7 +1758,6 @@
                 formData.append('model', 'small');
                 formData.append('device', 'cpu');
                 
-                // Add token if available
                 const headers = {};
                 if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
 
@@ -1539,22 +1886,21 @@
             document.getElementById('transcribeUploadBtn').addEventListener('click', transcribeUpload);
             document.getElementById('downloadAudioBtn').addEventListener('click', downloadAudio);
             document.getElementById('transcribeAudioBtn').addEventListener('click', transcribeAudio);
-            
+
+            // Speed slider value display listener
             document.getElementById('speed').addEventListener('input', (e) => {
                 const value = parseFloat(e.target.value);
                 if (value < 0.5) e.target.value = '0.5';
                 if (value > 2.0) e.target.value = '2.0';
+                document.getElementById('speedValue').textContent = value.toFixed(1) + 'x';
             });
         });
 
-        // CHANGE 2.5: Initialize Character Counter
         window.addEventListener('load', () => {
             initTheme();
             populateRecommendedVoices();
-            // loadVoices() is now called inside auth.onAuthStateChanged to ensure we have a token
             handleFileUpload();
-            updateCharCounter(); // ✅ ADD THIS LINE
-            document.querySelector('.main-container').classList.add('fade-in');
+            updateCharCounter();
         });
     </script>
 </body>
