@@ -728,9 +728,21 @@
                 <div class="card">
                     <div class="section">
                         <h2 class="section-title">Text Input</h2>
+                        <!-- CHANGE 2.1: Updated Textarea with Character Counter -->
                         <div class="form-group">
-                            <label class="form-label" for="text">Enter Text</label>
-                            <textarea id="text" class="form-control" placeholder="Type your text here...">Welcome to Lumenify Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
+                            <label class="form-label" for="text">
+                                Enter Text 
+                                <span id="charCounter" style="float: right; font-size: 0.9em; color: var(--text-muted);">
+                                    0 / 50,000 characters
+                                </span>
+                            </label>
+                            <textarea 
+                                id="text" 
+                                class="form-control" 
+                                placeholder="Type your text here..."
+                                maxlength="50000"
+                                oninput="updateCharCounter()"
+                            >Welcome to Lumenify Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
                         </div>
                         <button id="previewBtn" class="btn btn-secondary">
                             <i class="fas fa-play"></i> Preview
@@ -838,6 +850,26 @@
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
                 themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        // CHANGE 2.2: Add Character Counter Function
+        function updateCharCounter() {
+            const text = document.getElementById('text').value;
+            const counter = document.getElementById('charCounter');
+            const length = text.length;
+            
+            counter.textContent = length.toLocaleString() + ' / 50,000 characters';
+            
+            // Color coding based on length
+            if (length > 45000) {
+                counter.style.color = '#ef4444'; // Red
+            } else if (length > 30000) {
+                counter.style.color = '#f97316'; // Orange
+            } else if (length > 15000) {
+                counter.style.color = '#eab308'; // Yellow
+            } else {
+                counter.style.color = 'var(--text-muted)'; // Default
             }
         }
 
@@ -994,7 +1026,7 @@
             const text = document.getElementById('text').value.trim();
             const voice = document.getElementById('voiceSelect').value;
             const speed = parseFloat(document.getElementById('speed').value || '1.0');
-            const pitch = document.getElementById('pitch').value;  // ✅ ADD THIS
+            const pitch = document.getElementById('pitch').value;
             
             if (!text) {
                 updateOutput('Please enter text to preview', 'error');
@@ -1016,7 +1048,7 @@
                     body: JSON.stringify({
                         voice: voice,
                         speed: speed,
-                        pitch: pitch,  // ✅ ADD THIS
+                        pitch: pitch,
                         text: text.substring(0, 200)
                     })
                 });
@@ -1049,13 +1081,11 @@
             }
         }
 
-        // CHANGE 6: REPLACE GENERATESPEECH FUNCTION
+        // CHANGE 2.3: Add Estimation Warning (Enhanced generateSpeech)
         async function generateSpeech() {
           const text = document.getElementById('text').value.trim();
           const speed = parseFloat(document.getElementById('speed').value || '1.0');
           const pitch = document.getElementById('pitch').value || '0';
-          
-          // Compatibility: Map existing DOM structure to the variable name used in the requested replacement code
           const selectedVoiceShortName = document.getElementById('voiceSelect').value;
           
           if (!text) {
@@ -1068,13 +1098,29 @@
             return;
           }
           
+          // ✅ NEW: Show time estimate for long texts
+          const charCount = text.length;
+          const estimatedMinutes = Math.ceil(charCount / 1000); // ~1000 chars per minute
+          
+          if (charCount > 10000) {
+            const confirmMsg = `📝 Long text detected: ${charCount.toLocaleString()} characters\n\n` +
+                               `⏱️ Estimated generation time: ${estimatedMinutes} minutes\n\n` +
+                               `💡 The page will stay responsive while generation happens in the background.\n` +
+                               `You can continue using other features while waiting.\n\n` +
+                               `Continue with generation?`;
+            
+            if (!confirm(confirmMsg)) {
+              updateOutput('Generation cancelled by user', 'info');
+              return;
+            }
+          }
+          
           const generateBtn = document.getElementById('generateBtn');
           generateBtn.innerHTML = '<div class="loading-spinner"></div>Submitting...';
           generateBtn.disabled = true;
-          updateOutput('📤 Submitting audio generation task...');
+          updateOutput('📤 Submitting audio generation task (' + charCount.toLocaleString() + ' characters)...');
           
           try {
-            // Step 1: Submit the job
             const response = await fetch('/api/generate', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1093,28 +1139,26 @@
             }
             
             const jobId = data.job_id;
-            updateOutput('⏳ Task queued (ID: ' + jobId.substring(0, 8) + '...). Starting generation...', 'info');
+            updateOutput('⏳ Task queued (ID: ' + jobId.substring(0, 8) + '...). Estimated time: ' + estimatedMinutes + ' min', 'info');
             
-            // Step 2: Start polling
-            await pollForCompletion(jobId);
+            await pollForCompletion(jobId, estimatedMinutes);
             
           } catch (error) {
             updateOutput('❌ Generation failed: ' + error.message, 'error');
-            const generateBtn = document.getElementById('generateBtn');
             generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
             generateBtn.disabled = false;
           }
         }
 
-        // CHANGE 7: ADD POLLING FUNCTION
-        async function pollForCompletion(jobId) {
-          const pollInterval = 1000;
-          const maxAttempts = 300;
+        // CHANGE 2.4: Update Polling for Long Operations (Extended pollForCompletion)
+        async function pollForCompletion(jobId, estimatedMinutes) {
+          const pollInterval = 2000; // Poll every 2 seconds
+          const maxAttempts = Math.max(600, estimatedMinutes * 40); // At least 20 minutes, or 40 checks per estimated minute
           let attempts = 0;
           
           const checkStatus = async () => {
             if (attempts >= maxAttempts) {
-              updateOutput('⏱️ Task timed out after 5 minutes', 'error');
+              updateOutput('⏱️ Task timed out after ' + Math.ceil(maxAttempts * 2 / 60) + ' minutes', 'error');
               const generateBtn = document.getElementById('generateBtn');
               generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
               generateBtn.disabled = false;
@@ -1131,7 +1175,8 @@
                 currentAudioUrl = data.audio_url;
                 currentAudioFilename = data.filename;
                 
-                updateOutput('✅ Audio generated successfully: ' + data.filename, 'success');
+                const elapsedMinutes = Math.ceil((attempts * pollInterval) / 60000);
+                updateOutput('✅ Audio generated successfully in ' + elapsedMinutes + ' min: ' + data.filename, 'success');
                 
                 const generateBtn = document.getElementById('generateBtn');
                 generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
@@ -1150,7 +1195,10 @@
                 attempts++;
                 const statusIcon = data.status === 'processing' ? '⚙️' : '⏳';
                 const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-                updateOutput(statusIcon + ' ' + statusText + '... (Check ' + attempts + '/300)');
+                const elapsedTime = Math.ceil((attempts * pollInterval) / 60000);
+                const progressPercent = Math.min(Math.ceil((attempts / maxAttempts) * 100), 99);
+                
+                updateOutput(statusIcon + ' ' + statusText + '... ' + elapsedTime + ' min elapsed (' + progressPercent + '%)');
                 
                 setTimeout(checkStatus, pollInterval);
               }
@@ -1385,11 +1433,13 @@
             });
         });
 
+        // CHANGE 2.5: Initialize Character Counter
         window.addEventListener('load', () => {
             initTheme();
             populateRecommendedVoices();
             loadVoices();
             handleFileUpload();
+            updateCharCounter(); // ✅ ADD THIS LINE
             document.querySelector('.main-container').classList.add('fade-in');
         });
     </script>
