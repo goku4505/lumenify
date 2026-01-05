@@ -131,88 +131,90 @@
             transform: rotate(180deg);
         }
 
+        /* FIX 5: Fix Main Container Padding */
         .main-container {
-            max-width: 1600px; /* Increased for 3-col layout */
-            margin: 0 auto;
-            padding: 80px 20px 40px;
-            padding-left: 0; /* Adjusted for sidebar */
-            padding-right: 0;
+            max-width: 100%;
+            margin: 0;
+            padding: 80px 0 0 0;
+            height: calc(100vh - 80px);
         }
 
+        @media (max-width: 1023px) {
+            .main-container {
+                height: auto;
+                padding: 80px 0 90px 0;
+            }
+        }
+
+        /* Hero styles - only used inside main panel now (FIX 10) */
         .hero {
             text-align: center;
-            padding: 1.5rem 2rem 2rem;
-            position: relative;
-            overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .hero-content h1 {
-            font-size: clamp(2rem, 4vw, 3rem);
+        .hero h1 {
             font-weight: 800;
             line-height: 1.2;
-            margin-bottom: 0.75rem;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
 
-        .hero-content p {
-            font-size: 1.1rem;
+        .hero p {
             color: var(--text-secondary);
-            margin-bottom: 1.5rem;
             line-height: 1.6;
         }
 
+        /* FIX 8: Fix Hero Inside Main Panel */
+        .main-panel .hero {
+            background: none;
+            padding: 0;
+            margin-bottom: 1rem;
+        }
+
+        .main-panel .hero::before {
+            display: none;
+        }
+
+        .main-panel .hero-content {
+            animation: none;
+        }
+
+        .main-panel .hero h1 {
+            font-size: 2rem !important;
+            margin-bottom: 0.5rem !important;
+        }
+
+        .main-panel .hero p {
+            font-size: 0.95rem !important;
+            margin-bottom: 0 !important;
+        }
+
+        /* FIX 3: Update Grid CSS */
         .grid {
             display: grid;
-            gap: 0; /* No gap between columns, borders handle separation */
+            gap: 0;
             grid-template-columns: 1fr;
-            height: calc(100vh - 160px);
+            min-height: calc(100vh - 80px);
         }
 
         @media (min-width: 1024px) {
             .grid {
                 grid-template-columns: 70px 1fr 380px;
+                height: calc(100vh - 80px);
             }
         }
 
+        /* FIX 7: Improve Card Spacing */
         .card {
             background: var(--bg-card);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 1.75rem;
             box-shadow: var(--shadow-soft);
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            margin-bottom: 2rem;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--gradient-primary);
+            margin-bottom: 1.5rem;
         }
 
         .section {
@@ -269,7 +271,6 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
-        /* Range Slider Styling */
         input[type=range].form-control {
             padding: 0;
             height: 6px;
@@ -600,10 +601,6 @@
             display: none;
         }
 
-        /* =========================================
-           NEW STYLES ADDED
-           ========================================= */
-
         /* Left Icon Sidebar */
         .sidebar-icons {
             background: var(--bg-card);
@@ -612,7 +609,8 @@
             flex-direction: column;
             align-items: center;
             border-right: 1px solid var(--border-subtle);
-            padding: 1.5rem 0;
+            padding: 2rem 0;
+            height: 100%;
         }
 
         .icon-nav {
@@ -658,6 +656,7 @@
             flex-direction: column;
             overflow-y: auto;
             height: 100%;
+            max-height: calc(100vh - 80px);
         }
 
         .settings-tabs {
@@ -768,6 +767,20 @@
             min-width: 150px;
         }
 
+        /* FIX 4: Main Panel Scroll */
+        .main-panel {
+            height: 100%;
+            overflow-y: auto;
+            padding: 0 2rem 2rem 2rem;
+            background: var(--bg-primary);
+        }
+
+        @media (min-width: 1024px) {
+            .main-panel {
+                max-height: calc(100vh - 80px);
+            }
+        }
+
         /* Auth Page Styling */
         .auth-page {
             min-height: 100vh;
@@ -825,7 +838,6 @@
             line-height: 1.5;
         }
 
-        /* Style Firebase UI to match */
         #firebaseui-auth-container {
             margin: 0;
         }
@@ -845,23 +857,16 @@
             transform: translateY(-2px);
         }
 
-        /* Main Panel Scroll */
-        .main-panel {
-            height: 100%;
-            overflow-y: auto;
-            padding: 2rem;
-            background: var(--bg-primary);
-        }
-
-        /* Mobile Responsiveness */
+        /* FIX 11: Fix Mobile Layout */
         @media (max-width: 1024px) {
             .grid {
                 grid-template-columns: 1fr !important;
-                height: auto;
-                display: block;
+                height: auto !important;
+                min-height: auto !important;
+                display: flex;
+                flex-direction: column;
             }
             
-            /* Move icon sidebar to bottom */
             .sidebar-icons {
                 position: fixed;
                 bottom: 0;
@@ -874,6 +879,7 @@
                 z-index: 1000;
                 background: var(--bg-card);
                 padding: 0.75rem 0;
+                order: 3;
             }
             
             .icon-nav {
@@ -882,8 +888,16 @@
                 gap: 0;
             }
             
-            /* Settings panel full width on mobile */
+            .main-panel {
+                order: 1;
+                padding: 1rem;
+                padding-bottom: 90px;
+                height: auto;
+                max-height: none;
+            }
+            
             .settings-panel {
+                order: 2;
                 width: 100%;
                 border-left: none;
                 border-top: 1px solid var(--border-subtle);
@@ -891,22 +905,13 @@
                 max-height: 500px;
             }
             
-            /* Add bottom padding to main panel for fixed nav */
-            .main-panel {
-                padding-bottom: 90px;
-                padding: 1rem;
-            }
-
             .main-container {
-                padding: 80px 10px 20px;
+                padding: 80px 0 0 0;
+                height: auto;
             }
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 1rem 0;
-            }
-            
             .button-row {
                 flex-direction: column;
             }
@@ -923,11 +928,19 @@
             .audio-actions .btn {
                 width: 100%;
             }
+
+            .main-panel .hero h1 {
+                font-size: 1.75rem !important;
+            }
+            
+            .main-panel .hero p {
+                font-size: 0.9rem !important;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Auth Container (Shows before login) -->
+    <!-- Auth Container -->
     <div id="auth-container" class="auth-page">
         <div class="auth-container-inner">
             <div class="auth-logo">
@@ -945,7 +958,7 @@
         </div>
     </div>
 
-    <!-- App Container (Shows after login) -->
+    <!-- App Container -->
     <div id="app-container" style="display:none;">
         <nav>
             <div class="nav-container">
@@ -962,19 +975,8 @@
             </div>
         </nav>
         
+        <!-- FIX 1: Move Hero & Status Inside Main Panel -->
         <div class="main-container">
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Text to Speech</h1>
-                    <p>Create stunning voiceovers with AI-powered text-to-speech technology. Choose from hundreds of voices, multiple languages, and customize every detail.</p>
-                </div>
-            </section>
-
-            <div id="statusIndicator" class="status-indicator">
-                <div class="status-dot"></div>
-                <span>Loading...</span>
-            </div>
-
             <div class="grid" id="mainGrid">
                 <!-- LEFT ICON SIDEBAR -->
                 <aside class="sidebar-icons">
@@ -999,6 +1001,21 @@
 
                 <!-- CENTER MAIN PANEL -->
                 <section class="main-panel">
+                    <!-- FIX 2: Add Hero & Status Inside Center Panel -->
+                    <!-- Hero Section -->
+                    <section class="hero" style="padding: 2rem 0 1rem; margin: 0;">
+                        <div class="hero-content" style="max-width: 100%;">
+                            <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Text to Speech</h1>
+                            <p style="font-size: 0.95rem; margin-bottom: 0;">Create stunning voiceovers with AI-powered text-to-speech technology.</p>
+                        </div>
+                    </section>
+
+                    <!-- Status Indicator -->
+                    <div id="statusIndicator" class="status-indicator" style="margin: 1rem 0;">
+                        <div class="status-dot"></div>
+                        <span>Loading...</span>
+                    </div>
+
                     <!-- Text Input Card -->
                     <div class="card text-input-card">
                         <div class="section">
@@ -1084,7 +1101,7 @@
                     </div>
                 </section>
 
-                <!-- RIGHT SETTINGS PANEL (ALL OLD SIDEBAR CONTENT MOVED HERE) -->
+                <!-- RIGHT SETTINGS PANEL -->
                 <aside class="settings-panel">
                     <div class="settings-tabs">
                         <button class="tab-btn active">Settings</button>
@@ -1098,7 +1115,7 @@
                             <input id="voiceSearch" class="form-control" placeholder="Search voices..." />
                         </div>
 
-                        <!-- Voice Recommendations (KEPT!) -->
+                        <!-- Voice Recommendations -->
                         <div class="voice-recommendations">
                             <h3>✨ Recommended Voices</h3>
                             <div class="recommended-voices" id="recommendedVoices">
@@ -1132,7 +1149,7 @@
                             </select>
                         </div>
 
-                        <!-- Speed Slider (KEPT!) -->
+                        <!-- Speed Slider -->
                         <div class="form-group">
                             <label class="form-label" for="speed">Speed (0.5 - 2.0)</label>
                             <div class="slider-wrapper">
@@ -1143,7 +1160,7 @@
                             <div class="slider-value" id="speedValue">1.0x</div>
                         </div>
 
-                        <!-- Pitch Slider (KEPT!) -->
+                        <!-- Pitch Slider -->
                         <div class="form-group">
                             <label class="form-label" for="pitch">
                                 Voice Pitch (Naturalness)
@@ -1183,7 +1200,6 @@
 
     <script>
         // ==================== FIREBASE AUTH ====================
-        // 1. Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyAjskmFLh22fAPVpTPRXQ1exNINGOg7-2M",
             authDomain: "lumogen-auth.firebaseapp.com",
@@ -1193,12 +1209,10 @@
             appId: "1:7440317744:web:c9cd20a74b3f6813b21cf5"
         };
 
-        // 2. Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         let currentUserToken = null;
 
-        // 3. Setup FirebaseUI
         const ui = new firebaseui.auth.AuthUI(auth);
 
         const uiConfig = {
@@ -1220,7 +1234,6 @@
             signInFlow: 'popup'
         };
 
-        // 4. Auth State Listener
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 document.getElementById('auth-container').style.display = 'none';
@@ -1236,12 +1249,11 @@
             }
         });
 
-        // 5. Logout Function
         function logout() {
             auth.signOut();
         }
 
-        // ==================== EXISTING APP LOGIC ====================
+        // ==================== APP LOGIC ====================
         
         const RECOMMENDED_VOICES = [
             { name: 'William', gender: 'Male', short_name: 'en-AU-WilliamNeural' },
@@ -1525,6 +1537,7 @@
             }
         }
 
+        // generateSpeech with polling logic
         async function generateSpeech() {
             const text = document.getElementById('text').value.trim();
             const speed = parseFloat(document.getElementById('speed').value || '1.0');
@@ -1600,7 +1613,7 @@
             }
         }
 
-        // NEW: Helper function for polling job status
+        // Helper function for polling job status
         async function pollJobStatus(jobId, startTime, generateBtn) {
             const pollInterval = 2000; // 2 seconds
             let attempts = 0;
