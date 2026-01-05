@@ -7,52 +7,46 @@
     <title>Lumenify Voice Studio - Professional AI Voice Generation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- CHANGE 2: Switch to Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Step 4.1: Add Firebase SDKs to <head> -->
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
 
     <style>
+        /* CHANGE 1: Update Color Palette */
         :root {
-            --primary-blue: #2563eb;
-            --primary-green: #10b981;
+            /* Zinc Palette - ElevenLabs Style */
+            --background: #09090b;
+            --foreground: #fafafa;
+            --card: #18181b;
+            --border: #27272a;
+            --input: #27272a;
+            --muted-foreground: #a1a1aa;
+            --primary: #fafafa;
+            --primary-foreground: #18181b;
+            --ring: #d4d4d8;
+            --radius: 0.5rem;
+            
+            /* Keep gradients for accent buttons */
             --gradient-primary: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
-            --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #059669 100%);
-            --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #34d399 100%);
             --style-orange: #f97316;
-            --style-orange-light: #fb923c;
-            --style-orange-dark: #ea580c;
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #1a1a2e;
-            --bg-tertiary: #16213e;
-            --bg-card: #1e1e3f;
-            --bg-glass: rgba(30, 30, 63, 0.8);
-            --text-primary: #e8e8ff;
-            --text-secondary: #b8b8d6;
-            --text-muted: #8e8eb0;
-            --border-subtle: rgba(37, 99, 235, 0.1);
-            --border-medium: rgba(37, 99, 235, 0.2);
-            --shadow-soft: 0 4px 20px rgba(37, 99, 235, 0.1);
-            --shadow-medium: 0 8px 32px rgba(37, 99, 235, 0.2);
-            --shadow-strong: 0 20px 50px rgba(37, 99, 235, 0.3);
         }
 
         [data-theme="light"] {
-            --bg-primary: #fafbff;
-            --bg-secondary: #f4f5f9;
-            --bg-tertiary: #e8eaf6;
-            --bg-card: #ffffff;
-            --bg-glass: rgba(255, 255, 255, 0.9);
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-muted: #64748b;
-            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
-            --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --background: #ffffff;
+            --foreground: #09090b;
+            --card: #f4f4f5;
+            --border: #e4e4e7;
+            --input: #e4e4e7;
+            --muted-foreground: #71717a;
+            --primary: #18181b;
+            --primary-foreground: #fafafa;
+            --ring: #18181b;
         }
 
         * {
@@ -63,28 +57,30 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            /* CHANGE 2: Font Family */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--foreground);
             line-height: 1.6;
             min-height: 100vh;
             transition: all 0.3s ease;
             overflow-x: hidden;
         }
 
+        /* Navigation Styles */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
             padding: 1rem 2rem;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
             z-index: 1000;
             transition: all 0.3s ease;
         }
 
         .nav-container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -94,14 +90,15 @@
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--text-primary);
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
         }
 
         .logo i {
-            font-size: 2rem;
+            font-size: 1.5rem;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             background-clip: text;
@@ -110,419 +107,32 @@
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             align-items: center;
         }
 
         .theme-toggle {
-            background: var(--bg-tertiary);
-            border: none;
+            background: var(--input);
+            border: 1px solid var(--border);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--text-primary);
+            color: var(--foreground);
             transition: all 0.3s ease;
         }
 
         .theme-toggle:hover {
-            background: var(--border-medium);
+            background: var(--border);
             transform: rotate(180deg);
         }
 
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 80px 20px 40px;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 1.5rem 0 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .hero-content h1 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 0.75rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero-content p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .grid {
-            display: grid;
-            gap: 30px;
-            grid-template-columns: 1fr;
-        }
-
-        @media (min-width: 1024px) {
-            .grid {
-                grid-template-columns: 400px 1fr;
-            }
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--shadow-soft);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--gradient-primary);
-        }
-
-        .section {
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--border-subtle);
-            border-radius: 12px;
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            font-size: 16px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            min-height: 48px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        /* Range Slider Styling adjustments */
-        input[type=range].form-control {
-            padding: 0;
-            height: 6px;
-            background: var(--bg-secondary);
-            appearance: none;
-            border: none;
-        }
-
-        input[type=range].form-control::-webkit-slider-thumb {
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            background: var(--primary-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        input[type=range].form-control::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        textarea.form-control {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            width: 100%;
-        }
-
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: white;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 2px solid var(--border-medium);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-tertiary);
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
-            color: white;
-        }
-
-        .btn-download {
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            color: white;
-        }
-
-        .btn-transcribe {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white;
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .voice-recommendations {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
-            border: 2px solid var(--border-medium);
-            border-radius: 20px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .voice-recommendations h3 {
-            margin: 0 0 1rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            text-align: center;
-            color: var(--text-primary);
-        }
-
-        .recommended-voices {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }
-
-        .voice-chip {
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .voice-chip:hover {
-            border-color: var(--primary-blue);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .voice-chip.selected {
-            background: var(--gradient-primary);
-            color: white;
-            border-color: var(--primary-blue);
-        }
-
-        .voice-chip.best::after {
-            content: '👑';
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--style-orange);
-            color: white;
-            font-size: 14px;
-            padding: 2px 6px;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .voice-name {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .voice-gender {
-            font-size: 0.875rem;
-            opacity: 0.8;
-        }
-
-        .audio-player {
-            width: 100%;
-            margin: 1.5rem 0;
-            border-radius: 12px;
-            height: 54px;
-            background: var(--bg-tertiary);
-        }
-
-        .audio-actions {
-            display: flex;
-            gap: 1rem;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .output-content {
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--border-subtle);
-        }
-
-        .file-upload {
-            position: relative;
-            width: 100%;
-        }
-
-        .file-upload-input {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-upload-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 2rem;
-            border: 2px dashed var(--border-medium);
-            border-radius: 12px;
-            background: var(--bg-tertiary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 100px;
-            text-align: center;
-        }
-
-        .file-upload-label:hover {
-            border-color: var(--primary-blue);
-            background: rgba(37, 99, 235, 0.1);
-        }
-
-        .file-upload-label.has-file {
-            border-color: var(--primary-green);
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--primary-green);
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            justify-content: center;
-        }
-
-        .status-indicator.online {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--primary-green);
-            border: 2px solid rgba(16, 185, 129, 0.2);
-        }
-
-        .status-indicator.offline {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-            border: 2px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: currentColor;
-            animation: pulse 2s infinite;
+        /* Global UI Utilities */
+        .hidden {
+            display: none !important;
         }
 
         .toast {
@@ -530,298 +140,455 @@
             top: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--bg-card);
-            border: 2px solid var(--border-medium);
-            border-radius: 12px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 1rem 1.5rem;
-            box-shadow: var(--shadow-medium);
-            z-index: 1000;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+            z-index: 2000;
             opacity: 0;
             transition: all 0.3s ease;
             max-width: calc(100vw - 40px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .toast.show {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
+            transform: translateX(-50%) translateY(10px);
         }
 
-        .toast.success {
-            border-color: var(--primary-green);
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--primary-green);
-        }
-
-        .toast.error {
-            border-color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
-        }
-
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
+        .toast.success { border-color: #10b981; color: #10b981; }
+        .toast.error { border-color: #ef4444; color: #ef4444; }
 
         .loading-spinner {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             border: 2px solid transparent;
             border-top: 2px solid currentColor;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-right: 0.5rem;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Auth & Utility Overlays */
+        #auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--background);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        #auth-container h1 { margin-bottom: 1rem; }
+        #auth-container p { color: var(--muted-foreground); margin-bottom: 2rem; }
+
+        /* Main App Layout */
+        #app-container {
+            padding-top: 80px; /* Nav height */
+            min-height: 100vh;
+        }
+
+        /* CHANGE 3: Three-Column Grid Layout */
+        .grid {
+            display: grid;
+            gap: 0;
+            grid-template-columns: 1fr;
+            min-height: calc(100vh - 80px);
+        }
+
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: 280px 1fr 340px; /* Left | Center | Right */
             }
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* CHANGE 5: New CSS Classes */
+        .sidebar-left {
+            background: var(--background);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .main-canvas {
+            display: flex;
+            flex-direction: column;
+            background: var(--background);
+            overflow-y: auto;
+            position: relative;
         }
 
-        .hidden {
-            display: none;
+        .editor-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
+        .clean-editor {
+            width: 100%;
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 1.125rem;
+            line-height: 1.6;
+            color: var(--foreground);
+            font-family: inherit;
+            min-height: 500px;
+        }
+
+        .clean-editor::placeholder {
+            color: var(--muted-foreground);
+            opacity: 0.7;
+        }
+
+        .editor-footer {
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            text-align: right;
+        }
+
+        .char-counter {
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+        }
+
+        .settings-panel {
+            background: var(--background);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--foreground);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .control-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--foreground);
+            display: block;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--input);
+            color: var(--foreground);
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 1px #2563eb;
+        }
+
+        select.form-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23a1a1aa' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+
+        .slider-control {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: var(--muted-foreground);
+            font-weight: 500;
+        }
+
+        .styled-slider {
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            outline: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .styled-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--foreground);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            border: 2px solid var(--background);
+        }
+
+        .styled-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .styled-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--foreground);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary-full,
+        .btn-secondary-full,
+        .btn-download-full {
+            width: 100%;
+            padding: 0.875rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary-full {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-secondary-full {
+            background: var(--card);
+            color: var(--foreground);
+            border: 1px solid var(--border);
+        }
+
+        .btn-download-full {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+        }
+
+        .btn-primary-full:hover:not(:disabled),
+        .btn-secondary-full:hover,
+        .btn-download-full:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary-full:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .audio-player {
+            width: 100%;
+            height: 48px;
+            border-radius: var(--radius);
+            margin-top: 0.5rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .sidebar-left,
+            .settings-panel {
+                border: none;
+                border-bottom: 1px solid var(--border);
+                max-height: none;
+                padding: 1.5rem;
+            }
+            
+            .main-canvas {
+                min-height: 500px;
+                border-bottom: 1px solid var(--border);
             }
 
-            .main-container {
-                padding: 70px 10px 20px;
-            }
-
-            .hero {
-                padding: 1rem 0;
-            }
-
-            .audio-actions {
-                flex-direction: column;
-            }
-
-            .audio-actions .btn {
-                width: 100%;
+            .editor-wrapper {
+                padding: 1.5rem;
             }
         }
     </style>
 </head>
-<!-- Step 4.2: Add Login UI Container to <body> -->
 <body>
     <!-- Auth Container (Shows before login) -->
-    <div id="auth-container" style="text-align: center; padding: 50px; background: var(--bg-primary); min-height: 100vh;">
-        <h1 style="color: var(--text-primary);">Welcome to Lumenify</h1>
-        <p style="color: var(--text-secondary);">Sign in to access Voice Studio</p>
+    <div id="auth-container">
+        <div style="margin-bottom: 2rem;">
+            <i class="fas fa-microphone-alt" style="font-size: 3rem; background: var(--gradient-primary); -webkit-background-clip: text; color: transparent;"></i>
+        </div>
+        <h1>Welcome to Lumenify</h1>
+        <p>Sign in to access the professional Voice Studio</p>
         <div id="firebaseui-auth-container"></div>
     </div>
 
     <!-- App Container (Shows after login) -->
-    <div id="app-container" style="display:none;">
+    <div id="app-container" class="hidden">
         <nav>
             <div class="nav-container">
-                <div class="logo">
+                <a href="#" class="logo">
                     <i class="fas fa-microphone-alt"></i>
                     <span>Lumenify Voice Studio</span>
-                </div>
+                </a>
                 <div class="nav-links">
-                    <button class="theme-toggle" id="theme-toggle">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Theme">
                         <i class="fas fa-moon" id="theme-icon"></i>
                     </button>
-                    <button onclick="logout()" class="btn btn-secondary">Sign Out</button>
+                    <button onclick="logout()" class="btn btn-secondary-full" style="width: auto; padding: 0.5rem 1rem;">
+                        Sign Out
+                    </button>
                 </div>
             </div>
         </nav>
         
-        <!-- Your existing main content goes here -->
-        <div class="main-container">
-            <section class="hero">
-                <div class="hero-content">
-                    <h1>Transform Ideas Into Professional Audio</h1>
-                    <p>Create stunning voiceovers with AI-powered text-to-speech technology. Choose from hundreds of voices, multiple languages, and customize every detail.</p>
+        <!-- CHANGE 4: Update HTML Structure (3-Column) -->
+        <div class="grid">
+            <!-- LEFT COLUMN: Voice Selection -->
+            <aside class="sidebar-left">
+                <div class="section">
+                    <h2 class="section-title">Voices</h2>
+                    
+                    <div class="form-group">
+                        <label class="control-label" for="voiceSearch">Search</label>
+                        <input id="voiceSearch" class="form-control" placeholder="Search voices..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="languageSelect">Language</label>
+                        <select id="languageSelect" class="form-control">
+                            <option>Loading...</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="genderSelect">Gender</label>
+                        <select id="genderSelect" class="form-control">
+                            <option value="All">All</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Available Voices</label>
+                        <select id="voiceSelect" class="form-control" size="8">
+                            <option>Loading...</option>
+                        </select>
+                    </div>
                 </div>
-            </section>
-
-            <div id="statusIndicator" class="status-indicator">
-                <div class="status-dot"></div>
-                <span>Loading...</span>
-            </div>
-
-            <div class="grid">
-                <aside class="sidebar">
-                    <div class="card">
-                        <section class="section">
-                            <h2 class="section-title">Voice Selection</h2>
-                            
-                            <div class="form-group">
-                                <label class="form-label" for="voiceSearch">Search Voices</label>
-                                <input id="voiceSearch" class="form-control" placeholder="Search voices..." />
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="languageSelect">Language</label>
-                                <select id="languageSelect" class="form-control">
-                                    <option>Loading...</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="genderSelect">Gender</label>
-                                <select id="genderSelect" class="form-control">
-                                    <option value="All">All</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="voiceSelect">Available Voices</label>
-                                <select id="voiceSelect" class="form-control" size="8">
-                                    <option>Loading...</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label" for="speed">Speed (0.5 - 2.0)</label>
-                                <input id="speed" type="number" class="form-control" value="1.0" min="0.5" max="2.0" step="0.1" />
-                            </div>
-
-                            <!-- START ADDED PITCH SLIDER -->
-                            <div class="form-group">
-                                <label class="form-label" for="pitch">
-                                    Voice Pitch (Naturalness)
-                                    <span style="font-size: 0.875rem; opacity: 0.7;">(-20 to +20 Hz)</span>
-                                </label>
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <span style="font-size: 0.8em; color: var(--text-muted);">Deeper</span>
-                                    <input 
-                                        id="pitch" 
-                                        type="range" 
-                                        class="form-control" 
-                                        value="0" 
-                                        min="-20" 
-                                        max="20" 
-                                        step="1"
-                                        style="flex: 1;"
-                                        oninput="document.getElementById('pitchValue').textContent = (this.value > 0 ? '+' : '') + this.value + ' Hz'"
-                                    />
-                                    <span style="font-size: 0.8em; color: var(--text-muted);">Higher</span>
-                                </div>
-                                <div style="text-align: center; margin-top: 0.5rem; font-family: monospace; font-weight: bold; color: var(--primary-blue);">
-                                    <span id="pitchValue">+0 Hz</span>
-                                </div>
-                                <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
-                                    💡 Keep between -10 and +10 Hz for most natural results
-                                </small>
-                            </div>
-                            <!-- END ADDED PITCH SLIDER -->
-
-                            <button id="refreshVoices" class="btn btn-secondary">
-                                <i class="fas fa-sync-alt"></i> Refresh Voices
-                            </button>
-                            
-                            <div class="voice-recommendations">
-                                <h3>✨ Recommended Voices</h3>
-                                <div class="recommended-voices" id="recommendedVoices">
-                                </div>
-                            </div>
-                        </section>
+            </aside>
+            
+            <!-- CENTER COLUMN: Text Editor -->
+            <main class="main-canvas">
+                <div class="editor-wrapper">
+                    <h2 style="font-weight: 600; font-size: 1.5rem; margin-bottom: 2rem;">Text to Speech</h2>
+                    <textarea 
+                        id="text" 
+                        class="clean-editor" 
+                        placeholder="Start typing here or paste any text you want to turn into lifelike speech..."
+                        maxlength="50000"
+                        oninput="updateCharCounter()"
+                    >Welcome to Lumenify Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
+                    <div class="editor-footer">
+                        <span id="charCounter" class="char-counter">0 / 50,000 characters</span>
                     </div>
-                </aside>
-
-                <section class="main-panel">
-                    <div class="card">
-                        <div class="section">
-                            <h2 class="section-title">Text Input</h2>
-                            <!-- CHANGE 2.1: Updated Textarea with Character Counter -->
-                            <div class="form-group">
-                                <label class="form-label" for="text">
-                                    Enter Text 
-                                    <span id="charCounter" style="float: right; font-size: 0.9em; color: var(--text-muted);">
-                                        0 / 50,000 characters
-                                    </span>
-                                </label>
-                                <textarea 
-                                    id="text" 
-                                    class="form-control" 
-                                    placeholder="Type your text here..."
-                                    maxlength="50000"
-                                    oninput="updateCharCounter()"
-                                >Welcome to Lumenify Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
-                            </div>
-                            <button id="previewBtn" class="btn btn-secondary">
-                                <i class="fas fa-play"></i> Preview
-                            </button>
-                            <button id="generateBtn" class="btn btn-primary">
-                                <span class="btn-text">
-                                    <i class="fas fa-magic"></i> Generate Audio
-                                </span>
-                            </button>
-                            <button id="cleanupBtn" class="btn btn-secondary">
-                                <i class="fas fa-broom"></i> Clean Up
-                            </button>
+                </div>
+            </main>
+            
+            <!-- RIGHT COLUMN: Settings & Controls -->
+            <aside class="settings-panel">
+                <div class="control-group">
+                    <label class="control-label">Voice Settings</label>
+                    
+                    <div class="slider-control">
+                        <div class="slider-header">
+                            <span>Speed</span>
+                            <span id="speedValue">1.0x</span>
                         </div>
+                        <input type="range" id="speed" min="0.5" max="2.0" step="0.1" value="1.0" class="styled-slider">
                     </div>
 
-                    <div class="card">
-                        <div class="section">
-                            <h2 class="section-title">Audio Upload</h2>
-                            <div class="form-group">
-                                <div class="file-upload">
-                                    <input id="audioUpload" type="file" class="file-upload-input" accept="audio/*" />
-                                    <label for="audioUpload" class="file-upload-label" id="uploadLabel">
-                                        <i class="fas fa-cloud-upload-alt" style="font-size: 2rem;"></i>
-                                        <span>Choose audio file or drag & drop</span>
-                                        <span style="font-size: 0.875rem; opacity: 0.7;">MP3, WAV, M4A supported</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <button id="transcribeUploadBtn" class="btn btn-success">
-                                <i class="fas fa-closed-captioning"></i> Transcribe Upload
-                            </button>
+                    <div class="slider-control">
+                        <div class="slider-header">
+                            <span>Pitch</span>
+                            <span id="pitchValue">0Hz</span>
                         </div>
+                        <input type="range" id="pitch" min="-20" max="20" step="1" value="0" class="styled-slider">
                     </div>
+                </div>
 
-                    <div class="card">
-                        <div class="section">
-                            <h2 class="section-title">Audio Player</h2>
-                            <audio id="player" class="audio-player" controls>
-                                Your browser doesn't support HTML audio.
-                            </audio>
-                            
-                            <div id="audioActions" class="audio-actions hidden">
-                                <button id="downloadAudioBtn" class="btn btn-download">
-                                    <i class="fas fa-download"></i> Download Audio
-                                </button>
-                                <button id="transcribeAudioBtn" class="btn btn-transcribe">
-                                    <i class="fas fa-closed-captioning"></i> Transcribe Audio
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <button id="previewBtn" class="btn-secondary-full">
+                    <i class="fas fa-play"></i> Preview
+                </button>
+                
+                <button id="generateBtn" class="btn-primary-full">
+                    <i class="fas fa-magic"></i> Generate Speech
+                </button>
 
-                    <div class="card">
-                        <div class="section">
-                            <h2 class="section-title">Output</h2>
-                            <div id="output" class="output-content">🚀 Lumenify Voice Studio ready. Select a voice and enter text to begin creating professional audio.</div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+                <div class="control-group" style="margin-top: 1rem;">
+                    <audio id="player" class="audio-player" controls>
+                        Your browser doesn't support HTML audio.
+                    </audio>
+                </div>
+
+                <div id="audioActions" class="hidden">
+                    <button id="downloadAudioBtn" class="btn-download-full">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+                
+                <!-- Output Log (Hidden/Minimal in new design but useful for debug) -->
+                <div id="output" style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: auto; padding-top: 1rem;">
+                    Ready.
+                </div>
+            </aside>
         </div>
     </div>
 
@@ -829,7 +596,6 @@
 
     <script>
         // ==================== FIREBASE AUTH ====================
-        // 1. Firebase Config (REPLACE with YOUR config from Phase 2)
         const firebaseConfig = {
             apiKey: "AIzaSyAjskmFLh22fAPVpTPRXQ1exNINGOg7-2M",
             authDomain: "lumogen-auth.firebaseapp.com",
@@ -839,22 +605,20 @@
             appId: "1:7440317744:web:c9cd20a74b3f6813b21cf5"
         };
 
-        // 2. Initialize Firebase
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         let currentUserToken = null;
 
-        // 3. Setup FirebaseUI
+        // Setup FirebaseUI
         const ui = new firebaseui.auth.AuthUI(auth);
 
         const uiConfig = {
             callbacks: {
                 signInSuccessWithAuthResult: function(authResult) {
                     authResult.user.getIdToken().then(token => {
-                        fetch('/api/auth/sync', {
-                            method: 'POST',
-                            headers: {'X-Auth-Token': token}
-                        });
+                        // Optional: Sync with backend if needed
+                        // fetch('/api/auth/sync', { method: 'POST', headers: {'X-Auth-Token': token} });
                     });
                     return false;
                 }
@@ -866,29 +630,27 @@
             signInFlow: 'popup'
         };
 
-        // 4. Auth State Listener
+        // Auth State Listener
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('app-container').style.display = 'block';
+                document.getElementById('app-container').classList.remove('hidden');
                 currentUserToken = await user.getIdToken();
                 console.log("Logged in:", user.email);
-                // Load voices after successful login to ensure API calls have token
                 loadVoices(); 
             } else {
-                document.getElementById('auth-container').style.display = 'block';
-                document.getElementById('app-container').style.display = 'none';
+                document.getElementById('auth-container').style.display = 'flex';
+                document.getElementById('app-container').classList.add('hidden');
                 currentUserToken = null;
                 ui.start('#firebaseui-auth-container', uiConfig);
             }
         });
 
-        // 5. Logout Function
         function logout() {
             auth.signOut();
         }
 
-        // ==================== EXISTING APP LOGIC ====================
+        // ==================== APP LOGIC ====================
         
         const RECOMMENDED_VOICES = [
             { name: 'William', gender: 'Male', short_name: 'en-AU-WilliamNeural' },
@@ -901,8 +663,6 @@
             { name: 'Brian', gender: 'Male', short_name: 'en-US-BrianNeural' }
         ];
 
-        let isLoading = false;
-        let uploadedAudioFile = null;
         let currentAudioUrl = null;
         let currentAudioFilename = null;
 
@@ -935,7 +695,6 @@
             }
         }
 
-        // CHANGE 2.2: Add Character Counter Function
         function updateCharCounter() {
             const text = document.getElementById('text').value;
             const counter = document.getElementById('charCounter');
@@ -943,100 +702,31 @@
             
             counter.textContent = length.toLocaleString() + ' / 50,000 characters';
             
-            // Color coding based on length
             if (length > 45000) {
-                counter.style.color = '#ef4444'; // Red
+                counter.style.color = '#ef4444'; 
             } else if (length > 30000) {
-                counter.style.color = '#f97316'; // Orange
-            } else if (length > 15000) {
-                counter.style.color = '#eab308'; // Yellow
+                counter.style.color = '#f97316'; 
             } else {
-                counter.style.color = 'var(--text-muted)'; // Default
+                counter.style.color = 'var(--muted-foreground)'; 
             }
         }
 
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> <span>${message}</span>`;
             toast.className = 'toast ' + type;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
-        function setLoading(loading) {
-            isLoading = loading;
-            document.body.classList.toggle('loading', loading);
-        }
-
-        function setButtonLoading(button, loading) {
-            const btnText = button.querySelector('.btn-text') || button;
-
-            if (loading) {
-                const originalText = btnText.innerHTML;
-                button.setAttribute('data-original-text', originalText);
-                button.disabled = true;
-                btnText.innerHTML = '<div class="loading-spinner"></div>Processing...';
-            } else {
-                const originalText = button.getAttribute('data-original-text');
-                button.disabled = false;
-                btnText.innerHTML = originalText;
-            }
-        }
-
-        function updateOutput(message, type = 'info') {
+        function updateOutput(message) {
             const output = document.getElementById('output');
             const timestamp = new Date().toLocaleTimeString();
-            const prefix = type === 'error' ? '⛔' : type === 'success' ? '✅' : 'ℹ️';
-            output.textContent = '[' + timestamp + '] ' + prefix + ' ' + message;
-            
-            if (type === 'error' || type === 'success') {
-                showToast(message, type);
-            }
-        }
-
-        function createVoiceChip(voice) {
-            const chip = document.createElement('div');
-            chip.className = 'voice-chip' + (voice.best ? ' best' : '');
-            chip.innerHTML = '<div class="voice-name">' + voice.name + '</div><div class="voice-gender">' + voice.gender + '</div>';
-            
-            chip.addEventListener('click', () => {
-                document.querySelectorAll('.voice-chip').forEach(c => c.classList.remove('selected'));
-                chip.classList.add('selected');
-                
-                const voiceSelect = document.getElementById('voiceSelect');
-                for (let i = 0; i < voiceSelect.options.length; i++) {
-                    if (voiceSelect.options[i].dataset.shortName === voice.short_name) {
-                        voiceSelect.selectedIndex = i;
-                        break;
-                    }
-                }
-                
-                updateOutput('Selected voice: ' + voice.name + ' (' + voice.gender + ')', 'success');
-            });
-            
-            return chip;
-        }
-
-        function populateRecommendedVoices() {
-            const container = document.getElementById('recommendedVoices');
-            container.innerHTML = '';
-            RECOMMENDED_VOICES.forEach(voice => {
-                container.appendChild(createVoiceChip(voice));
-            });
-        }
-
-        function showAudioActions() {
-            document.getElementById('audioActions').classList.remove('hidden');
-        }
-
-        function hideAudioActions() {
-            document.getElementById('audioActions').classList.add('hidden');
+            output.textContent = '[' + timestamp + '] ' + message;
         }
 
         async function loadVoices() {
-            setLoading(true);
-            updateOutput('Loading voice database...');
-            
+            updateOutput('Loading voices...');
             try {
                 const headers = {};
                 if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
@@ -1045,12 +735,6 @@
                 const data = await response.json();
                 
                 const languageSelect = document.getElementById('languageSelect');
-                const statusIndicator = document.getElementById('statusIndicator');
-                
-                const statusClass = data.offline_mode ? 'offline' : 'online';
-                const statusText = data.offline_mode ? 'Offline - Limited Voices' : 'Online - ' + data.total_voices + ' Voices';
-                statusIndicator.className = 'status-indicator ' + statusClass;
-                statusIndicator.querySelector('span').textContent = statusText;
                 
                 languageSelect.innerHTML = '<option value="All">All Languages</option>';
                 const languages = data.languages || [];
@@ -1065,13 +749,21 @@
                     languageSelect.value = 'English';
                 }
                 
-                updateOutput('Loaded ' + data.total_voices + ' voices', 'success');
+                updateOutput('Loaded ' + data.total_voices + ' voices');
                 await filterVoices();
                 
             } catch (error) {
-                updateOutput('Failed to load voices: ' + error.message, 'error');
-            } finally {
-                setLoading(false);
+                console.error(error);
+                updateOutput('Using offline demo mode');
+                // Fallback for demo if API fails
+                const voiceSelect = document.getElementById('voiceSelect');
+                voiceSelect.innerHTML = '';
+                RECOMMENDED_VOICES.forEach(voice => {
+                    const option = document.createElement('option');
+                    option.value = voice.short_name;
+                    option.textContent = voice.name;
+                    voiceSelect.appendChild(option);
+                });
             }
         }
 
@@ -1079,6 +771,22 @@
             const query = document.getElementById('voiceSearch').value.trim();
             const gender = document.getElementById('genderSelect').value;
             const language = query ? 'All' : document.getElementById('languageSelect').value;
+
+            // If API is not available, filter locally from RECOMMENDED_VOICES
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                 // Simple local filter for demo
+                 const voiceSelect = document.getElementById('voiceSelect');
+                 voiceSelect.innerHTML = '';
+                 let filtered = RECOMMENDED_VOICES;
+                 if (gender !== 'All') filtered = filtered.filter(v => v.gender === gender);
+                 filtered.forEach(voice => {
+                    const option = document.createElement('option');
+                    option.value = voice.short_name;
+                    option.textContent = voice.name;
+                    voiceSelect.appendChild(option);
+                 });
+                 return;
+            }
 
             try {
                 const headers = {};
@@ -1096,17 +804,14 @@
                         const option = document.createElement('option');
                         option.value = voice.short_name;
                         option.textContent = voice.display_name;
-                        option.dataset.shortName = voice.short_name;
                         voiceSelect.appendChild(option);
                     });
                     updateOutput('Found ' + data.voices.length + ' voices');
                 } else {
                     voiceSelect.innerHTML = '<option>No voices found</option>';
-                    updateOutput('No voices found', 'error');
                 }
-
             } catch (error) {
-                updateOutput('Filter failed: ' + error.message, 'error');
+                updateOutput('Filter failed: ' + error.message);
             }
         }
 
@@ -1117,20 +822,17 @@
             const pitch = document.getElementById('pitch').value;
             
             if (!text) {
-                updateOutput('Please enter text to preview', 'error');
+                showToast('Please enter text to preview', 'error');
                 return;
             }
             
-            if (!voice) {
-                updateOutput('Please select a voice', 'error');
-                return;
-            }
-            
-            setLoading(true);
             updateOutput('Generating preview...');
-            
+            const btn = document.getElementById('previewBtn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<div class="loading-spinner"></div> Loading...';
+            btn.disabled = true;
+
             try {
-                // Refresh token
                 if (auth.currentUser) currentUserToken = await auth.currentUser.getIdToken();
 
                 const response = await fetch('/api/preview', {
@@ -1150,8 +852,7 @@
                 const data = await response.json();
                 
                 if (data.error) {
-                    updateOutput('Preview failed: ' + data.error, 'error');
-                    return;
+                    throw new Error(data.error);
                 }
                 
                 const player = document.getElementById('player');
@@ -1159,167 +860,85 @@
                 currentAudioUrl = data.audio_url;
                 currentAudioFilename = 'preview.mp3';
                 
-                try {
-                    await player.play();
-                    updateOutput('Preview playing', 'success');
-                    showAudioActions();
-                } catch {
-                    updateOutput('Preview ready (tap play)', 'success');
-                    showAudioActions();
-                }
+                await player.play();
+                showToast('Preview playing', 'success');
+                document.getElementById('audioActions').classList.remove('hidden');
                 
             } catch (error) {
-                updateOutput('Preview failed: ' + error.message, 'error');
+                console.error(error);
+                showToast('Preview failed. Check console.', 'error');
             } finally {
-                setLoading(false);
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
             }
         }
 
-        // CHANGE 2.3: Add Estimation Warning (Enhanced generateSpeech)
         async function generateSpeech() {
-          const text = document.getElementById('text').value.trim();
-          const speed = parseFloat(document.getElementById('speed').value || '1.0');
-          const pitch = document.getElementById('pitch').value || '0';
-          const selectedVoiceShortName = document.getElementById('voiceSelect').value;
-          
-          if (!text) {
-            updateOutput('Please enter text', 'error');
-            return;
-          }
-          
-          if (!selectedVoiceShortName) {
-            updateOutput('Please select a voice first', 'error');
-            return;
-          }
-          
-          // ✅ NEW: Show time estimate for long texts
-          const charCount = text.length;
-          const estimatedMinutes = Math.ceil(charCount / 1000); // ~1000 chars per minute
-          
-          if (charCount > 10000) {
-            const confirmMsg = `📝 Long text detected: ${charCount.toLocaleString()} characters\n\n` +
-                               `⏱️ Estimated generation time: ${estimatedMinutes} minutes\n\n` +
-                               `💡 The page will stay responsive while generation happens in the background.\n` +
-                               `You can continue using other features while waiting.\n\n` +
-                               `Continue with generation?`;
+            const text = document.getElementById('text').value.trim();
+            const speed = parseFloat(document.getElementById('speed').value || '1.0');
+            const pitch = document.getElementById('pitch').value || '0';
+            const selectedVoiceShortName = document.getElementById('voiceSelect').value;
             
-            if (!confirm(confirmMsg)) {
-              updateOutput('Generation cancelled by user', 'info');
-              return;
-            }
-          }
-          
-          const generateBtn = document.getElementById('generateBtn');
-          generateBtn.innerHTML = '<div class="loading-spinner"></div>Submitting...';
-          generateBtn.disabled = true;
-          updateOutput('📤 Submitting audio generation task (' + charCount.toLocaleString() + ' characters)...');
-          
-          try {
-            // Refresh token
-            currentUserToken = await auth.currentUser.getIdToken();
-
-            const response = await fetch('/api/generate', {
-              method: 'POST',
-              headers: { 
-                'Content-Type': 'application/json',
-                'X-Auth-Token': currentUserToken  // <--- ADD THIS
-              },
-              body: JSON.stringify({ 
-                voice: selectedVoiceShortName, 
-                speed: speed, 
-                pitch: pitch,
-                text: text 
-              })
-            });
-            
-            const data = await response.json();
-            
-            if (response.status !== 202) {
-              throw new Error(data.error || 'Submission failed');
+            if (!text) {
+                showToast('Please enter text', 'error');
+                return;
             }
             
-            const jobId = data.job_id;
-            updateOutput('⏳ Task queued (ID: ' + jobId.substring(0, 8) + '...). Estimated time: ' + estimatedMinutes + ' min', 'info');
-            
-            await pollForCompletion(jobId, estimatedMinutes);
-            
-          } catch (error) {
-            updateOutput('❌ Generation failed: ' + error.message, 'error');
-            generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-            generateBtn.disabled = false;
-          }
-        }
-
-        // CHANGE 2.4: Update Polling for Long Operations (Extended pollForCompletion)
-        async function pollForCompletion(jobId, estimatedMinutes) {
-          const pollInterval = 2000; // Poll every 2 seconds
-          const maxAttempts = Math.max(600, estimatedMinutes * 40); // At least 20 minutes, or 40 checks per estimated minute
-          let attempts = 0;
-          
-          const checkStatus = async () => {
-            if (attempts >= maxAttempts) {
-              updateOutput('⏱️ Task timed out after ' + Math.ceil(maxAttempts * 2 / 60) + ' minutes', 'error');
-              const generateBtn = document.getElementById('generateBtn');
-              generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-              generateBtn.disabled = false;
-              return;
+            if (!selectedVoiceShortName) {
+                showToast('Please select a voice', 'error');
+                return;
             }
+            
+            const charCount = text.length;
+            const generateBtn = document.getElementById('generateBtn');
+            const originalText = generateBtn.innerHTML;
+            
+            generateBtn.innerHTML = '<div class="loading-spinner"></div> Generating...';
+            generateBtn.disabled = true;
+            updateOutput('Generating audio for ' + charCount.toLocaleString() + ' characters...');
             
             try {
-              const headers = {};
-              if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
+                if (auth.currentUser) currentUserToken = await auth.currentUser.getIdToken();
 
-              const response = await fetch('/api/jobs/' + jobId, { headers });
-              const data = await response.json();
-              
-              if (data.status === 'completed') {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': currentUserToken
+                    },
+                    body: JSON.stringify({ 
+                        voice: selectedVoiceShortName, 
+                        speed: speed, 
+                        pitch: pitch,
+                        text: text 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+
                 const player = document.getElementById('player');
                 player.src = data.audio_url;
                 currentAudioUrl = data.audio_url;
-                currentAudioFilename = data.filename;
+                currentAudioFilename = data.filename || 'speech.mp3';
                 
-                const elapsedMinutes = Math.ceil((attempts * pollInterval) / 60000);
-                updateOutput('✅ Audio generated successfully in ' + elapsedMinutes + ' min: ' + data.filename, 'success');
-                
-                const generateBtn = document.getElementById('generateBtn');
-                generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-                generateBtn.disabled = false;
-                
-                try {
-                  await player.play();
-                } catch (e) {}
-                
-                showAudioActions();
-                
-              } else if (data.status === 'failed') {
-                throw new Error(data.error || 'Unknown error during processing');
-                
-              } else {
-                attempts++;
-                const statusIcon = data.status === 'processing' ? '⚙️' : '⏳';
-                const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-                const elapsedTime = Math.ceil((attempts * pollInterval) / 60000);
-                const progressPercent = Math.min(Math.ceil((attempts / maxAttempts) * 100), 99);
-                
-                updateOutput(statusIcon + ' ' + statusText + '... ' + elapsedTime + ' min elapsed (' + progressPercent + '%)');
-                
-                setTimeout(checkStatus, pollInterval);
-              }
-              
+                showToast('Audio generated successfully!', 'success');
+                document.getElementById('audioActions').classList.remove('hidden');
+                await player.play();
+
             } catch (error) {
-              updateOutput('❌ Polling error: ' + error.message, 'error');
-              const generateBtn = document.getElementById('generateBtn');
-              generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-              generateBtn.disabled = false;
+                console.error(error);
+                showToast('Generation failed: ' + error.message, 'error');
+            } finally {
+                generateBtn.innerHTML = originalText;
+                generateBtn.disabled = false;
             }
-          };
-          
-          checkStatus();
         }
 
         async function downloadAudio() {
             if (!currentAudioUrl) {
-                updateOutput('No audio available to download', 'error');
+                showToast('No audio available', 'error');
                 return;
             }
             
@@ -1334,232 +953,39 @@
                 a.click();
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
-                
-                updateOutput('Downloaded: ' + currentAudioFilename, 'success');
+                showToast('Download started', 'success');
             } catch (error) {
-                updateOutput('Download failed: ' + error.message, 'error');
+                showToast('Download failed', 'error');
             }
-        }
-
-        async function transcribeAudio() {
-            if (!currentAudioUrl) {
-                updateOutput('No audio available to transcribe', 'error');
-                return;
-            }
-            
-            const transcribeAudioBtn = document.getElementById('transcribeAudioBtn');
-            setButtonLoading(transcribeAudioBtn, true);
-            updateOutput('Transcribing audio...');
-            
-            try {
-                const response = await fetch(currentAudioUrl);
-                const blob = await response.blob();
-                
-                const formData = new FormData();
-                formData.append('audio', blob, currentAudioFilename);
-                formData.append('model', 'small');
-                formData.append('device', 'cpu');
-                
-                // Add token if available
-                const headers = {};
-                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
-
-                const transcribeResponse = await fetch('/api/transcribe_generated', {
-                    method: 'POST',
-                    headers: headers,
-                    body: formData
-                });
-                
-                const data = await transcribeResponse.json();
-                
-                if (data.error) {
-                    updateOutput('Transcription failed: ' + data.error, 'error');
-                    return;
-                }
-                
-                const transcript = data.transcript || data.full_text || 'Transcription completed';
-                
-                const txtBlob = new Blob([transcript], { type: 'text/plain' });
-                const txtUrl = window.URL.createObjectURL(txtBlob);
-                const a = document.createElement('a');
-                a.href = txtUrl;
-                a.download = 'transcript_' + Date.now() + '.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(txtUrl);
-                
-                updateOutput('Transcription completed and saved as txt file:\n\n' + transcript, 'success');
-                
-            } catch (error) {
-                updateOutput('Transcription failed: ' + error.message, 'error');
-            } finally {
-                setButtonLoading(transcribeAudioBtn, false);
-            }
-        }
-
-        async function transcribeUpload() {
-            if (!uploadedAudioFile) {
-                updateOutput('Please upload an audio file first', 'error');
-                return;
-            }
-            
-            const transcribeUploadBtn = document.getElementById('transcribeUploadBtn');
-            setButtonLoading(transcribeUploadBtn, true);
-            setLoading(true);
-            updateOutput('Transcribing audio...');
-            
-            try {
-                const formData = new FormData();
-                formData.append('audio', uploadedAudioFile);
-                formData.append('model', 'small');
-                formData.append('device', 'cpu');
-                
-                // Add token if available
-                const headers = {};
-                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
-
-                const response = await fetch('/api/transcribe_upload', {
-                    method: 'POST',
-                    headers: headers,
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    updateOutput('Transcription failed: ' + data.error, 'error');
-                    return;
-                }
-                
-                const transcript = data.transcript || data.full_text || 'Transcription completed';
-                
-                const txtBlob = new Blob([transcript], { type: 'text/plain' });
-                const txtUrl = window.URL.createObjectURL(txtBlob);
-                const a = document.createElement('a');
-                a.href = txtUrl;
-                a.download = 'transcript_upload_' + Date.now() + '.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(txtUrl);
-                
-                updateOutput('Transcription completed and saved as txt file:\n\n' + transcript, 'success');
-                
-            } catch (error) {
-                updateOutput('Transcription failed: ' + error.message, 'error');
-            } finally {
-                setButtonLoading(transcribeUploadBtn, false);
-                setLoading(false);
-            }
-        }
-
-        async function cleanupSession() {
-            setLoading(true);
-            updateOutput('Cleaning up...');
-            
-            try {
-                const headers = {};
-                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
-
-                await fetch('/api/cleanup', { 
-                    method: 'POST',
-                    headers: headers
-                });
-                
-                document.getElementById('player').src = '';
-                document.querySelectorAll('.voice-chip').forEach(c => c.classList.remove('selected'));
-                
-                uploadedAudioFile = null;
-                currentAudioUrl = null;
-                currentAudioFilename = null;
-                
-                const uploadLabel = document.getElementById('uploadLabel');
-                uploadLabel.innerHTML = '<i class="fas fa-cloud-upload-alt" style="font-size: 2rem;"></i><span>Choose audio file or drag & drop</span><span style="font-size: 0.875rem; opacity: 0.7;">MP3, WAV, M4A supported</span>';
-                uploadLabel.classList.remove('has-file');
-                
-                hideAudioActions();
-                updateOutput('Session cleaned up', 'success');
-                
-            } catch (error) {
-                updateOutput('Cleanup failed: ' + error.message, 'error');
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        function handleFileUpload() {
-            const audioUpload = document.getElementById('audioUpload');
-            const uploadLabel = document.getElementById('uploadLabel');
-            
-            audioUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    uploadedAudioFile = file;
-                    uploadLabel.innerHTML = '<i class="fas fa-check-circle" style="font-size: 2rem; color: var(--primary-green);"></i><span>' + file.name + '</span><span style="font-size: 0.875rem; opacity: 0.7;">(' + (file.size / 1024 / 1024).toFixed(1) + ' MB)</span>';
-                    uploadLabel.classList.add('has-file');
-                    updateOutput('File uploaded: ' + file.name, 'success');
-                }
-            });
-            
-            uploadLabel.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadLabel.style.borderColor = 'var(--primary-blue)';
-            });
-            
-            uploadLabel.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                uploadLabel.style.borderColor = 'var(--border-medium)';
-            });
-            
-            uploadLabel.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadLabel.style.borderColor = 'var(--border-medium)';
-                
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    const file = files[0];
-                    if (file.type.startsWith('audio/')) {
-                        uploadedAudioFile = file;
-                        audioUpload.files = files;
-                        uploadLabel.innerHTML = '<i class="fas fa-check-circle" style="font-size: 2rem; color: var(--primary-green);"></i><span>' + file.name + '</span><span style="font-size: 0.875rem; opacity: 0.7;">(' + (file.size / 1024 / 1024).toFixed(1) + ' MB)</span>';
-                        uploadLabel.classList.add('has-file');
-                        updateOutput('File uploaded: ' + file.name, 'success');
-                    } else {
-                        showToast('Please upload an audio file', 'error');
-                    }
-                }
-            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle
             document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-            document.getElementById('refreshVoices').addEventListener('click', loadVoices);
+            
+            // Voice Filters
             document.getElementById('voiceSearch').addEventListener('input', filterVoices);
             document.getElementById('languageSelect').addEventListener('change', filterVoices);
             document.getElementById('genderSelect').addEventListener('change', filterVoices);
+            
+            // Actions
             document.getElementById('previewBtn').addEventListener('click', previewVoice);
             document.getElementById('generateBtn').addEventListener('click', generateSpeech);
-            document.getElementById('cleanupBtn').addEventListener('click', cleanupSession);
-            document.getElementById('transcribeUploadBtn').addEventListener('click', transcribeUpload);
             document.getElementById('downloadAudioBtn').addEventListener('click', downloadAudio);
-            document.getElementById('transcribeAudioBtn').addEventListener('click', transcribeAudio);
-            
-            document.getElementById('speed').addEventListener('input', (e) => {
-                const value = parseFloat(e.target.value);
-                if (value < 0.5) e.target.value = '0.5';
-                if (value > 2.0) e.target.value = '2.0';
-            });
-        });
 
-        // CHANGE 2.5: Initialize Character Counter
-        window.addEventListener('load', () => {
+            // CHANGE 6: Update JavaScript for Slider Values
+            document.getElementById('speed').addEventListener('input', (e) => {
+                document.getElementById('speedValue').textContent = e.target.value + 'x';
+            });
+
+            document.getElementById('pitch').addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.getElementById('pitchValue').textContent = (val > 0 ? '+' : '') + val + 'Hz';
+            });
+
+            // Init
             initTheme();
-            populateRecommendedVoices();
-            // loadVoices() is now called inside auth.onAuthStateChanged to ensure we have a token
-            handleFileUpload();
-            updateCharCounter(); // ✅ ADD THIS LINE
-            document.querySelector('.main-container').classList.add('fade-in');
+            updateCharCounter();
         });
     </script>
 </body>
