@@ -1175,146 +1175,94 @@
             }
         }
 
-        // CHANGE 2.3: Add Estimation Warning (Enhanced generateSpeech)
+        // UPDATED: Simplified generateSpeech function
         async function generateSpeech() {
-          const text = document.getElementById('text').value.trim();
-          const speed = parseFloat(document.getElementById('speed').value || '1.0');
-          const pitch = document.getElementById('pitch').value || '0';
-          const selectedVoiceShortName = document.getElementById('voiceSelect').value;
-          
-          if (!text) {
-            updateOutput('Please enter text', 'error');
-            return;
-          }
-          
-          if (!selectedVoiceShortName) {
-            updateOutput('Please select a voice first', 'error');
-            return;
-          }
-          
-          // ✅ NEW: Show time estimate for long texts
-          const charCount = text.length;
-          const estimatedMinutes = Math.ceil(charCount / 1000); // ~1000 chars per minute
-          
-          if (charCount > 10000) {
-            const confirmMsg = `📝 Long text detected: ${charCount.toLocaleString()} characters\n\n` +
-                               `⏱️ Estimated generation time: ${estimatedMinutes} minutes\n\n` +
-                               `💡 The page will stay responsive while generation happens in the background.\n` +
-                               `You can continue using other features while waiting.\n\n` +
-                               `Continue with generation?`;
+            const text = document.getElementById('text').value.trim();
+            const speed = parseFloat(document.getElementById('speed').value || '1.0');
+            const pitch = document.getElementById('pitch').value || '0';
+            const selectedVoiceShortName = document.getElementById('voiceSelect').value;
             
-            if (!confirm(confirmMsg)) {
-              updateOutput('Generation cancelled by user', 'info');
-              return;
-            }
-          }
-          
-          const generateBtn = document.getElementById('generateBtn');
-          generateBtn.innerHTML = '<div class="loading-spinner"></div>Submitting...';
-          generateBtn.disabled = true;
-          updateOutput('📤 Submitting audio generation task (' + charCount.toLocaleString() + ' characters)...');
-          
-          try {
-            // Refresh token
-            currentUserToken = await auth.currentUser.getIdToken();
-
-            const response = await fetch('/api/generate', {
-              method: 'POST',
-              headers: { 
-                'Content-Type': 'application/json',
-                'X-Auth-Token': currentUserToken  // <--- ADD THIS
-              },
-              body: JSON.stringify({ 
-                voice: selectedVoiceShortName, 
-                speed: speed, 
-                pitch: pitch,
-                text: text 
-              })
-            });
-            
-            const data = await response.json();
-            
-            if (response.status !== 202) {
-              throw new Error(data.error || 'Submission failed');
+            if (!text) {
+                updateOutput('Please enter text', 'error');
+                return;
             }
             
-            const jobId = data.job_id;
-            updateOutput('⏳ Task queued (ID: ' + jobId.substring(0, 8) + '...). Estimated time: ' + estimatedMinutes + ' min', 'info');
-            
-            await pollForCompletion(jobId, estimatedMinutes);
-            
-          } catch (error) {
-            updateOutput('❌ Generation failed: ' + error.message, 'error');
-            generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-            generateBtn.disabled = false;
-          }
-        }
-
-        // CHANGE 2.4: Update Polling for Long Operations (Extended pollForCompletion)
-        async function pollForCompletion(jobId, estimatedMinutes) {
-          const pollInterval = 2000; // Poll every 2 seconds
-          const maxAttempts = Math.max(600, estimatedMinutes * 40); // At least 20 minutes, or 40 checks per estimated minute
-          let attempts = 0;
-          
-          const checkStatus = async () => {
-            if (attempts >= maxAttempts) {
-              updateOutput('⏱️ Task timed out after ' + Math.ceil(maxAttempts * 2 / 60) + ' minutes', 'error');
-              const generateBtn = document.getElementById('generateBtn');
-              generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-              generateBtn.disabled = false;
-              return;
+            if (!selectedVoiceShortName) {
+                updateOutput('Please select a voice first', 'error');
+                return;
             }
+            
+            // Show time estimate for long texts
+            const charCount = text.length;
+            const estimatedMinutes = Math.ceil(charCount / 1000);
+            
+            if (charCount > 10000) {
+                const confirmMsg = `📝 Long text detected: ${charCount.toLocaleString()} characters\n\n` +
+                                   `⏱️ Estimated generation time: ${estimatedMinutes} minutes\n\n` +
+                                   `The page may become unresponsive during generation.\n\n` +
+                                   `Continue?`;
+                
+                if (!confirm(confirmMsg)) {
+                    updateOutput('Generation cancelled', 'info');
+                    return;
+                }
+            }
+            
+            const generateBtn = document.getElementById('generateBtn');
+            generateBtn.innerHTML = '<div class="loading-spinner"></div>Generating...';
+            generateBtn.disabled = true;
+            
+            const startTime = Date.now();
+            updateOutput('Generating audio for ' + charCount.toLocaleString() + ' characters...');
             
             try {
-              const headers = {};
-              if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
-
-              const response = await fetch('/api/jobs/' + jobId, { headers });
-              const data = await response.json();
-              
-              if (data.status === 'completed') {
+                // Refresh token
+                currentUserToken = await auth.currentUser.getIdToken();
+                
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': currentUserToken
+                    },
+                    body: JSON.stringify({ 
+                        voice: selectedVoiceShortName, 
+                        speed: speed, 
+                        pitch: pitch,
+                        text: text 
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    updateOutput('Generation failed: ' + data.error, 'error');
+                    return;
+                }
+                
+                const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
+                
                 const player = document.getElementById('player');
                 player.src = data.audio_url;
                 currentAudioUrl = data.audio_url;
                 currentAudioFilename = data.filename;
                 
-                const elapsedMinutes = Math.ceil((attempts * pollInterval) / 60000);
-                updateOutput('✅ Audio generated successfully in ' + elapsedMinutes + ' min: ' + data.filename, 'success');
-                
-                const generateBtn = document.getElementById('generateBtn');
-                generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-                generateBtn.disabled = false;
+                updateOutput('✅ Audio generated in ' + elapsedTime + 's: ' + data.filename, 'success');
                 
                 try {
-                  await player.play();
-                } catch (e) {}
+                    await player.play();
+                } catch (e) {
+                    // Autoplay blocked
+                }
                 
                 showAudioActions();
                 
-              } else if (data.status === 'failed') {
-                throw new Error(data.error || 'Unknown error during processing');
-                
-              } else {
-                attempts++;
-                const statusIcon = data.status === 'processing' ? '⚙️' : '⏳';
-                const statusText = data.status.charAt(0).toUpperCase() + data.status.slice(1);
-                const elapsedTime = Math.ceil((attempts * pollInterval) / 60000);
-                const progressPercent = Math.min(Math.ceil((attempts / maxAttempts) * 100), 99);
-                
-                updateOutput(statusIcon + ' ' + statusText + '... ' + elapsedTime + ' min elapsed (' + progressPercent + '%)');
-                
-                setTimeout(checkStatus, pollInterval);
-              }
-              
             } catch (error) {
-              updateOutput('❌ Polling error: ' + error.message, 'error');
-              const generateBtn = document.getElementById('generateBtn');
-              generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
-              generateBtn.disabled = false;
+                updateOutput('Generation failed: ' + error.message, 'error');
+            } finally {
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
+                generateBtn.disabled = false;
             }
-          };
-          
-          checkStatus();
         }
 
         async function downloadAudio() {
