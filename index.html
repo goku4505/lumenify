@@ -1210,7 +1210,7 @@
                         </button>
                         <button class="btn btn-primary" onclick="generateSpeech()" id="generateBtn">
                             <i class="fas fa-magic"></i>
-                            Generate Audio
+                            <span>Generate Audio</span>
                         </button>
                         <button class="btn btn-secondary" onclick="clearSession()">
                             <i class="fas fa-broom"></i>
@@ -2411,22 +2411,31 @@
                 
             } catch (error) {
                 updateOutput('❌ ' + error.message, 'error');
-                generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Audio';
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
                 generateBtn.disabled = false;
             }
         }
 
         // Poll job status
         async function pollJobStatus(jobId, startTime, generateBtn) {
-            const pollInterval = 2000;
+            let pollInterval = 500; // ✅ Faster polling - 500ms instead of 2000ms
+            const maxInterval = 2000;
             let attempts = 0;
+            
+            if (!startTime) {
+                startTime = Date.now();
+            }
+            
+            if (!generateBtn) {
+                generateBtn = document.getElementById('generateBtn');
+            }
             
             const poll = async () => {
                 attempts++;
                 const elapsed = Math.ceil((Date.now() - startTime) / 1000);
                 
                 try {
-                    const response = await fetch('/api/jobs/' + jobId);
+                    const response = await fetch('/api/jobs/' + jobId); // ✅ Relative path
                     
                     if (!response.ok) {
                         throw new Error('Polling failed: ' + response.status);
@@ -2442,7 +2451,7 @@
                         
                         updateOutput('✅ Generated in ' + elapsed + 's: ' + data.filename, 'success');
                         
-                        generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Audio';
+                        generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
                         generateBtn.disabled = false;
                         
                         try {
@@ -2454,14 +2463,18 @@
                     } else if (data.status === 'failed') {
                         throw new Error(data.error || 'Generation failed');
                     } else {
+                        // Still processing - gradually increase interval
                         updateOutput('⚙️ Processing... ' + elapsed + 's elapsed (' + attempts + ' checks)');
                         generateBtn.innerHTML = '<div class="loading-spinner"></div>Processing (' + elapsed + 's)...';
+                        
+                        // Exponential backoff: 500ms -> 750ms -> 1125ms -> 1687ms -> 2000ms
+                        pollInterval = Math.min(pollInterval * 1.5, maxInterval);
                         setTimeout(poll, pollInterval);
                     }
                     
                 } catch (error) {
                     updateOutput('❌ Polling error: ' + error.message, 'error');
-                    generateBtn.innerHTML = '<i class="fas fa-magic"></i> Generate Audio';
+                    generateBtn.innerHTML = '<i class="fas fa-magic"></i><span>Generate Audio</span>';
                     generateBtn.disabled = false;
                 }
             };
