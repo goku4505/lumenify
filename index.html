@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional AI-Powered Text-to-Speech & Audio Transcription">
-    <title>Lumen • AI Voice Studio</title>
+    <meta name="description" content="Professional AI-Powered Text-to-Speech Studio">
+    <title>Lumen Voice Studio</title>
+    
+    <!-- Inter Font Family -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <!-- Firebase SDKs -->
@@ -18,28 +22,38 @@
 
     <style>
         :root {
+            /* Existing Color Variables - Preserved */
             --primary-blue: #2563eb;
             --primary-green: #10b981;
             --gradient-primary: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
             --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #059669 100%);
             --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #34d399 100%);
-            
+            --style-orange: #f97316;
+            --style-orange-light: #fb923c;
+            --style-orange-dark: #ea580c;
             --bg-primary: #0a0a0f;
             --bg-secondary: #1a1a2e;
             --bg-tertiary: #16213e;
             --bg-card: #1e1e3f;
             --bg-glass: rgba(30, 30, 63, 0.8);
-            --text-primary: #ffffff;
+            --text-primary: #e8e8ff;
             --text-secondary: #b8b8d6;
             --text-muted: #8e8eb0;
-            
-            --border-radius: 12px;
-            --border-subtle: rgba(255, 255, 255, 0.1);
-            --border-medium: rgba(37, 99, 235, 0.3);
-            
+            --border-subtle: rgba(37, 99, 235, 0.1);
+            --border-medium: rgba(37, 99, 235, 0.2);
             --shadow-soft: 0 4px 20px rgba(37, 99, 235, 0.1);
             --shadow-medium: 0 8px 32px rgba(37, 99, 235, 0.2);
             --shadow-strong: 0 20px 50px rgba(37, 99, 235, 0.3);
+            
+            /* New Layout Variables */
+            --nav-width: 70px;
+            --controls-width: 380px;
+            --workspace-gap: 24px;
+            --header-height: 60px;
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 16px;
+            --transition-default: 200ms ease;
         }
 
         [data-theme="light"] {
@@ -51,12 +65,12 @@
             --text-primary: #1e293b;
             --text-secondary: #475569;
             --text-muted: #64748b;
-            --border-subtle: rgba(0, 0, 0, 0.1);
             --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
             --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
 
+        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -68,310 +82,635 @@
             font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
+            line-height: 1.5;
+            height: 100vh;
+            overflow: hidden;
+            transition: all var(--transition-default);
         }
 
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
-            z-index: 1000;
+        /* Main Layout Structure */
+        .app-container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .theme-toggle:hover {
-            color: var(--text-primary);
-        }
-
-        /* Login Container */
-        #auth-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            background: var(--bg-primary);
-        }
-
-        .login-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 3rem;
+            height: 100vh;
             width: 100%;
-            max-width: 400px;
-            box-shadow: var(--shadow-strong);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-header h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-header p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
-
-        .login-form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .login-form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        .login-input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.875rem;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .login-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .login-divider {
-            text-align: center;
-            margin: 2rem 0;
-            color: var(--text-muted);
-            font-size: 0.875rem;
             position: relative;
         }
 
-        .login-divider::before,
-        .login-divider::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40%;
-            height: 1px;
-            background: var(--border-subtle);
-        }
-
-        .login-divider::before {
-            left: 0;
-        }
-
-        .login-divider::after {
-            right: 0;
-        }
-
-        .social-login {
+        /* Left Navigation */
+        .side-navigation {
+            width: var(--nav-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 100;
         }
 
-        .social-btn {
+        .nav-logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
-            padding: 0.875rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-primary);
             border-radius: 8px;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .nav-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-md);
+            color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--transition-default);
+            position: relative;
         }
 
-        .social-btn:hover {
-            background: var(--bg-secondary);
-            border-color: var(--border-medium);
+        .nav-item:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
         }
 
-        .login-footer {
-            text-align: center;
-            margin-top: 2rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        .login-footer a {
+        .nav-item.active {
+            background: var(--bg-tertiary);
             color: var(--primary-blue);
-            text-decoration: none;
-            font-weight: 600;
         }
 
-        .login-footer a:hover {
-            text-decoration: underline;
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--gradient-primary);
+            border-radius: 0 2px 2px 0;
         }
 
-        /* Main App Container */
-        #app-container {
-            display: none;
-            padding-top: 80px;
+        .nav-item i {
+            font-size: 18px;
         }
 
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 2rem;
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        .nav-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
         }
 
-        @media (max-width: 1024px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
+        /* Main Workspace */
+        .workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            overflow: hidden;
+            gap: var(--workspace-gap);
         }
 
-        /* Text Input Area */
-        .text-input-card {
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .workspace-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .workspace-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Text Composition Area */
+        .text-composition-card {
+            flex: 1;
             background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             box-shadow: var(--shadow-soft);
             border: 1px solid var(--border-subtle);
         }
 
-        .text-header {
+        .text-composition-header {
+            padding: 20px 24px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
         }
 
-        .text-header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
+        .text-composition-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .char-counter {
-            color: var(--text-muted);
-            font-size: 0.875rem;
+        .text-composition-counter {
+            font-size: 13px;
             font-weight: 500;
+            color: var(--text-muted);
         }
 
-        .text-area-container {
-            position: relative;
-            margin-bottom: 1.5rem;
+        .text-composition-area {
+            flex: 1;
+            padding: 20px 24px;
         }
 
-        .text-area {
+        .text-composition-textarea {
             width: 100%;
-            min-height: 200px;
-            padding: 1.5rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius);
+            height: 100%;
+            background: transparent;
+            border: none;
+            resize: none;
             color: var(--text-primary);
             font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            font-size: 16px;
             line-height: 1.6;
-            resize: vertical;
-            transition: border-color 0.3s ease;
-        }
-
-        .text-area:focus {
             outline: none;
-            border-color: var(--primary-blue);
+            padding: 0;
         }
 
-        .text-area::placeholder {
+        .text-composition-textarea::placeholder {
             color: var(--text-muted);
             opacity: 0.7;
         }
 
-        .action-buttons {
+        .text-composition-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-subtle);
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            justify-content: flex-end;
+            gap: 12px;
         }
 
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
+        /* Audio Workspace */
+        .audio-workspace-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .audio-workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .audio-workspace-title {
+            font-size: 18px;
             font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .audio-player-container {
+            margin-bottom: 20px;
+        }
+
+        .audio-player {
+            width: 100%;
+            height: 48px;
+            border-radius: var(--border-radius-md);
+            background: var(--bg-tertiary);
+        }
+
+        .audio-workspace-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Media Import */
+        .media-import-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .media-import-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--border-radius-md);
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--bg-tertiary);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--transition-default);
+            margin-bottom: 16px;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-blue);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .file-upload-area.has-file {
+            border-color: var(--primary-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .file-upload-icon {
+            font-size: 32px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .file-upload-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .file-upload-subtext {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Output Panel */
+        .output-panel-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .output-panel-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .output-content {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            overflow-y: auto;
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* Right Controls Panel */
+        .controls-panel {
+            width: var(--controls-width);
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .controls-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .controls-tabs {
+            display: flex;
+            gap: 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .control-tab {
+            padding: 12px 0;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: color var(--transition-default);
+        }
+
+        .control-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .control-tab.active {
+            color: var(--primary-blue);
+        }
+
+        .control-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 1px;
+        }
+
+        .controls-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Voice Library */
+        .voice-library-section {
+            margin-bottom: 8px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-action {
+            font-size: 13px;
+            color: var(--primary-blue);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 4px;
+        }
+
+        .voice-search {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius-md);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .voice-search:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .voice-filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius-md);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .voice-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius-md);
+            padding: 12px;
+            cursor: pointer;
+            transition: all var(--transition-default);
+            position: relative;
+        }
+
+        .voice-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .voice-card.selected {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+        }
+
+        .voice-card.best::after {
+            content: '👑';
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: var(--style-orange);
+            color: white;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .voice-details {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+
+        /* Recommended Voices */
+        .recommended-voices-section {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1px solid var(--border-medium);
+            border-radius: var(--border-radius-md);
+            padding: 16px;
+        }
+
+        .recommended-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        /* Audio Controls */
+        .audio-controls-section {
+            margin-top: 8px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .label-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .label-value {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-tertiary);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .slider-range {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Generation Actions */
+        .generation-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-default);
+            white-space: nowrap;
         }
 
         .btn-primary {
@@ -387,263 +726,107 @@
         .btn-secondary {
             background: var(--bg-tertiary);
             color: var(--text-primary);
-            border: 1px solid var(--border-subtle);
+            border: 1px solid var(--border-medium);
         }
 
         .btn-secondary:hover {
-            background: var(--bg-secondary);
-        }
-
-        /* Voice Settings Sidebar */
-        .voice-settings-card {
             background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-subtle);
-            position: sticky;
-            top: 100px;
-        }
-
-        .settings-section {
-            margin-bottom: 2rem;
-        }
-
-        .settings-section h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .settings-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .settings-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .select-dropdown {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238e8eb0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 16px;
-        }
-
-        .select-dropdown:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        /* Sliders */
-        .slider-container {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
-
-        .slider-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .slider-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .slider-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .slider-header label {
-            color: var(--text-primary);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .slider-value {
-            color: var(--primary-blue);
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .slider {
-            width: 100%;
-            height: 6px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: linear-gradient(to right, var(--bg-secondary) 0%, var(--primary-blue) 50%, var(--primary-green) 100%);
-            border-radius: 3px;
-            outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: white;
-            border: 2px solid var(--primary-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-        }
-
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: white;
-            border: 2px solid var(--primary-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-        }
-
-        .slider-hints {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
-        /* Voice Recommendations */
-        .voice-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.75rem;
-        }
-
-        .voice-chip {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .voice-chip:hover {
-            border-color: var(--primary-blue);
             transform: translateY(-2px);
         }
 
-        .voice-chip.selected {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
-            border-color: var(--primary-blue);
+        .btn-success {
+            background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
+            color: white;
         }
 
-        .voice-name {
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
+        .btn-download {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
         }
 
-        .voice-details {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        .btn-transcribe {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
         }
 
-        /* Audio Player */
-        .audio-player-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-top: 2rem;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-subtle);
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
         }
 
-        .audio-player {
-            width: 100%;
-            height: 40px;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            background: var(--bg-tertiary);
+        .btn-icon {
+            font-size: 16px;
         }
 
-        .player-actions {
+        /* Status Indicator */
+        .status-indicator {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        /* Output Console */
-        .output-console {
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
             background: var(--bg-tertiary);
+            border-radius: var(--border-radius-md);
+            margin-bottom: 20px;
             border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            margin-top: 2rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            max-height: 200px;
-            overflow-y: auto;
         }
 
-        /* Toast Notifications */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .status-indicator.offline .status-dot {
+            background: #ef4444;
+        }
+
+        /* Toast */
         .toast {
             position: fixed;
-            top: 100px;
-            right: 2rem;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
             background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius);
-            padding: 1rem 1.5rem;
+            border: 1px solid var(--border-medium);
+            border-radius: var(--border-radius-md);
+            padding: 12px 20px;
             box-shadow: var(--shadow-strong);
             z-index: 1000;
             opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-            max-width: 300px;
+            transition: all var(--transition-default);
+            max-width: 400px;
+            width: 90%;
         }
 
         .toast.show {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
 
         .toast.success {
             border-color: var(--primary-green);
             background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-green);
         }
 
         .toast.error {
             border-color: #ef4444;
             background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
         }
 
         /* Loading States */
-        .loading {
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
         .loading-spinner {
-            display: inline-block;
             width: 16px;
             height: 16px;
             border: 2px solid transparent;
@@ -652,284 +835,542 @@
             animation: spin 1s linear infinite;
         }
 
+        /* Auth Container */
+        #auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow-strong);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .auth-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .auth-logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .auth-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .auth-providers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .auth-provider-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius-md);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-default);
+        }
+
+        .auth-provider-btn:hover {
+            background: var(--bg-card);
+            border-color: var(--border-medium);
+        }
+
+        .auth-provider-btn i {
+            font-size: 18px;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* Hidden State */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .side-navigation {
+                width: 100%;
+                height: 70px;
+                flex-direction: row;
+                padding: 0 20px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+            
+            .nav-logo {
+                margin-bottom: 0;
+                width: auto;
+            }
+            
+            .nav-items {
+                flex-direction: row;
+                gap: 16px;
+                margin-left: 24px;
+            }
+            
+            .nav-item.active::before {
+                left: 50%;
+                top: auto;
+                bottom: 0;
+                transform: translateX(-50%);
+                width: 20px;
+                height: 3px;
+                border-radius: 2px 2px 0 0;
+            }
+            
+            .nav-bottom {
+                flex-direction: row;
+                margin-top: 0;
+                margin-left: auto;
+            }
+            
+            .controls-panel {
+                position: fixed;
+                right: -100%;
+                top: 70px;
+                bottom: 0;
+                width: 100%;
+                max-width: 380px;
+                transition: right 0.3s ease;
+                z-index: 1000;
+                box-shadow: var(--shadow-strong);
+            }
+            
+            .controls-panel.active {
+                right: 0;
+            }
+            
+            .controls-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: var(--bg-tertiary);
+                border-radius: var(--border-radius-md);
+                border: 1px solid var(--border-subtle);
+                color: var(--text-primary);
+                cursor: pointer;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                padding: 16px;
+                gap: 16px;
+            }
+            
+            .workspace-title {
+                font-size: 22px;
+            }
+            
+            .text-composition-header,
+            .text-composition-area,
+            .text-composition-footer {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            
+            .generation-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .voice-filters {
+                grid-template-columns: 1fr;
+            }
+            
+            .audio-workspace-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 24px;
+            }
+            
+            .workspace-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .workspace-actions {
+                width: 100%;
+            }
+            
+            .controls-content {
+                padding: 16px;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .main-layout {
-                padding: 1rem;
-            }
-            
-            .text-input-card,
-            .voice-settings-card,
-            .audio-player-card {
-                padding: 1.5rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .player-actions {
-                flex-direction: column;
-            }
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-tertiary);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-subtle);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--border-medium);
-        }
     </style>
 </head>
 <body>
-    <!-- Auth Container (Shows before login) -->
+    <!-- Auth Container -->
     <div id="auth-container">
-        <div class="login-card">
-            <div class="login-header">
-                <h1>Lumen</h1>
-                <p>AI Voice Studio</p>
-            </div>
-            
-            <div class="social-login">
-                <button class="social-btn" onclick="signInWithGoogle()">
-                    <i class="fab fa-google"></i>
-                    Continue with Google
-                </button>
-                <button class="social-btn" onclick="signInWithApple()">
-                    <i class="fab fa-apple"></i>
-                    Continue with Apple
-                </button>
-            </div>
-            
-            <div class="login-divider">or</div>
-            
-            <form id="emailLoginForm">
-                <div class="login-form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" class="login-input" placeholder="Enter your email" required>
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <div class="auth-logo-icon">L</div>
+                    <div class="auth-logo-text">Lumen</div>
                 </div>
-                
-                <div class="login-form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" class="login-input" placeholder="Enter your password" required>
-                </div>
-                
-                <button type="submit" class="login-button">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Sign In
-                </button>
-            </form>
-            
-            <div class="login-footer">
-                <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign up</a></p>
+                <h1 class="auth-title">Welcome back</h1>
+                <p class="auth-subtitle">Sign in to access Voice Studio</p>
+                <div id="firebaseui-auth-container"></div>
+            </div>
+            <div class="auth-footer">
+                By continuing, you agree to our Terms of Service and Privacy Policy
             </div>
         </div>
     </div>
 
-    <!-- App Container (Shows after login) -->
-    <div id="app-container">
-        <nav class="navbar">
-            <div class="logo">Lumen</div>
-            <div class="nav-right">
-                <button class="theme-toggle" id="theme-toggle">
+    <!-- App Container -->
+    <div id="app-container" class="app-container hidden">
+        <!-- Left Navigation -->
+        <nav class="side-navigation">
+            <div class="nav-logo">
+                <div class="nav-logo-icon">L</div>
+            </div>
+            <div class="nav-items">
+                <div class="nav-item active" data-target="workspace">
+                    <i class="fas fa-comment-dots"></i>
+                </div>
+                <div class="nav-item" data-target="audio-workspace">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="nav-item" data-target="media-import">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="nav-item" data-target="output-panel">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+            </div>
+            <div class="nav-bottom">
+                <button class="nav-item theme-toggle" id="theme-toggle">
                     <i class="fas fa-moon" id="theme-icon"></i>
                 </button>
-                <button class="btn btn-secondary" onclick="logout()">
+                <button class="nav-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
-                    Sign Out
                 </button>
             </div>
         </nav>
 
-        <div class="main-layout">
-            <!-- Main Text Area -->
-            <div class="text-input-card">
-                <div class="text-header">
-                    <h2>Voice Studio</h2>
-                    <span id="charCounter" class="char-counter">0 / 50,000</span>
-                </div>
-                
-                <div class="text-area-container">
-                    <textarea 
-                        id="textInput" 
-                        class="text-area" 
-                        placeholder="HELLOO.. HOW ARE YOU!"
-                        maxlength="50000"
-                        oninput="updateCharCounter()"
-                    >Welcome to Lumen AI Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
-                </div>
-                
-                <div class="action-buttons">
-                    <button id="previewBtn" class="btn btn-secondary">
-                        <i class="fas fa-play"></i>
-                        Preview Voice
+        <!-- Main Workspace -->
+        <main class="workspace">
+            <div class="workspace-header">
+                <h1 class="workspace-title">Voice Studio</h1>
+                <div class="workspace-actions">
+                    <button class="btn btn-secondary controls-toggle" onclick="toggleControls()">
+                        <i class="fas fa-sliders-h"></i>
+                        <span class="hidden-tablet">Settings</span>
                     </button>
-                    <button id="generateBtn" class="btn btn-primary">
-                        <i class="fas fa-magic"></i>
-                        Generate Audio
+                    <button class="btn btn-secondary" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="hidden-tablet">Sign Out</span>
                     </button>
-                    <button id="cleanupBtn" class="btn btn-secondary">
-                        <i class="fas fa-broom"></i>
-                        Clean Session
-                    </button>
-                </div>
-                
-                <div class="audio-player-card">
-                    <h3>Audio Player</h3>
-                    <audio id="audioPlayer" class="audio-player" controls></audio>
-                    
-                    <div class="player-actions">
-                        <button id="downloadBtn" class="btn btn-secondary">
-                            <i class="fas fa-download"></i>
-                            Download
-                        </button>
-                        <button id="transcribeBtn" class="btn btn-secondary">
-                            <i class="fas fa-closed-captioning"></i>
-                            Transcribe
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="output-console" id="outputConsole">
-                    🚀 Lumen Voice Studio ready. Select a voice and enter text to begin.
                 </div>
             </div>
 
-            <!-- Voice Settings Sidebar -->
-            <div class="voice-settings-card">
-                <div class="settings-section">
-                    <h3>Voice Selection</h3>
-                    
-                    <div class="settings-group">
-                        <label>Search Voices</label>
-                        <input type="text" id="voiceSearch" class="login-input" placeholder="Type to search...">
+            <!-- Status Indicator -->
+            <div id="statusIndicator" class="status-indicator">
+                <div class="status-dot"></div>
+                <span class="status-text">Loading...</span>
+            </div>
+
+            <!-- Text Composition Card -->
+            <div class="text-composition-card">
+                <div class="text-composition-header">
+                    <div class="text-composition-label">Text Composition</div>
+                    <div id="charCounter" class="text-composition-counter">0 / 50,000 characters</div>
+                </div>
+                <div class="text-composition-area">
+                    <textarea 
+                        id="text" 
+                        class="text-composition-textarea" 
+                        placeholder="Type your text here..."
+                        maxlength="50000"
+                        oninput="updateCharCounter()"
+                    >Welcome to Lumen Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
+                </div>
+                <div class="text-composition-footer">
+                    <button id="cleanupBtn" class="btn btn-secondary">
+                        <i class="fas fa-broom btn-icon"></i>
+                        Clear Session
+                    </button>
+                    <button id="previewBtn" class="btn btn-secondary">
+                        <i class="fas fa-play btn-icon"></i>
+                        Preview
+                    </button>
+                    <button id="generateBtn" class="btn btn-primary">
+                        <i class="fas fa-magic btn-icon"></i>
+                        Generate Audio
+                    </button>
+                </div>
+            </div>
+
+            <!-- Audio Workspace Card -->
+            <div class="audio-workspace-card">
+                <div class="audio-workspace-header">
+                    <h2 class="audio-workspace-title">Audio Workspace</h2>
+                </div>
+                <div class="audio-player-container">
+                    <audio id="player" class="audio-player" controls>
+                        Your browser doesn't support HTML audio.
+                    </audio>
+                </div>
+                <div id="audioActions" class="audio-workspace-actions hidden">
+                    <button id="downloadAudioBtn" class="btn btn-download">
+                        <i class="fas fa-download btn-icon"></i>
+                        Download Audio
+                    </button>
+                    <button id="transcribeAudioBtn" class="btn btn-transcribe">
+                        <i class="fas fa-closed-captioning btn-icon"></i>
+                        Transcribe Audio
+                    </button>
+                </div>
+            </div>
+
+            <!-- Media Import Card -->
+            <div class="media-import-card">
+                <h2 class="media-import-title">Media Import</h2>
+                <div class="file-upload-area" id="uploadArea">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="file-upload-text">Choose audio file or drag & drop</div>
+                    <div class="file-upload-subtext">MP3, WAV, M4A supported</div>
+                    <input id="audioUpload" type="file" class="hidden" accept="audio/*" />
+                </div>
+                <button id="transcribeUploadBtn" class="btn btn-success">
+                    <i class="fas fa-closed-captioning btn-icon"></i>
+                    Transcribe Media
+                </button>
+            </div>
+
+            <!-- Output Panel Card -->
+            <div class="output-panel-card">
+                <h2 class="output-panel-title">Output Panel</h2>
+                <div id="output" class="output-content">
+                    🚀 Lumen Voice Studio ready. Select a voice and enter text to begin creating professional audio.
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Controls Panel -->
+        <aside class="controls-panel">
+            <div class="controls-header">
+                <div class="controls-tabs">
+                    <button class="control-tab active" data-tab="settings">Settings</button>
+                    <button class="control-tab" data-tab="history">History</button>
+                </div>
+            </div>
+            <div class="controls-content">
+                <!-- Voice Library -->
+                <div class="voice-library-section">
+                    <div class="section-header">
+                        <h3 class="section-title">Voice Library</h3>
+                        <button class="section-action" id="refreshVoices">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
                     </div>
                     
-                    <div class="settings-group">
-                        <label>Language</label>
-                        <select id="languageSelect" class="select-dropdown">
-                            <option>Loading languages...</option>
+                    <input 
+                        id="voiceSearch" 
+                        class="voice-search" 
+                        type="text" 
+                        placeholder="Search voices..."
+                    />
+                    
+                    <div class="voice-filters">
+                        <select id="languageSelect" class="filter-select">
+                            <option>Loading...</option>
                         </select>
-                    </div>
-                    
-                    <div class="settings-group">
-                        <label>Gender</label>
-                        <select id="genderSelect" class="select-dropdown">
+                        <select id="genderSelect" class="filter-select">
                             <option value="All">All Genders</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     
-                    <div class="settings-group">
-                        <label>Available Voices</label>
-                        <select id="voiceSelect" class="select-dropdown" size="6">
-                            <option>Loading voices...</option>
-                        </select>
+                    <div class="voice-grid" id="voiceGrid">
+                        <div class="voice-card">
+                            <div class="voice-name">Loading...</div>
+                            <div class="voice-details">Please wait</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="settings-section">
-                    <h3>Voice Settings</h3>
-                    
-                    <div class="slider-container">
-                        <div class="slider-group">
-                            <div class="slider-header">
-                                <label for="speedSlider">Speech Rate</label>
-                                <span id="speedValue" class="slider-value">1.0x</span>
-                            </div>
+                <!-- Recommended Voices -->
+                <div class="recommended-voices-section">
+                    <h3 class="recommended-title">✨ Recommended Voices</h3>
+                    <div class="recommended-grid" id="recommendedVoices">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Audio Controls -->
+                <div class="audio-controls-section">
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span class="label-text">Playback Speed</span>
+                            <span id="speedValue" class="label-value">1.0x</span>
+                        </div>
+                        <div class="slider-container">
                             <input 
+                                id="speed" 
                                 type="range" 
-                                id="speedSlider" 
-                                class="slider"
-                                min="0.5"
-                                max="2.0"
-                                step="0.1"
+                                class="slider" 
+                                min="0.5" 
+                                max="2.0" 
+                                step="0.1" 
                                 value="1.0"
                                 oninput="updateSpeedValue(this.value)"
-                            >
-                            <div class="slider-hints">
-                                <span>Slower</span>
-                                <span>Faster</span>
+                            />
+                            <div class="slider-range">
+                                <span>0.5x</span>
+                                <span>2.0x</span>
                             </div>
                         </div>
-                        
-                        <div class="slider-group">
-                            <div class="slider-header">
-                                <label for="pitchSlider">Voice Pitch</label>
-                                <span id="pitchValue" class="slider-value">+0 Hz</span>
-                            </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <span class="label-text">Pitch Adjustment</span>
+                            <span id="pitchValue" class="label-value">+0 Hz</span>
+                        </div>
+                        <div class="slider-container">
                             <input 
+                                id="pitch" 
                                 type="range" 
-                                id="pitchSlider" 
-                                class="slider"
-                                min="-20"
-                                max="20"
-                                step="1"
+                                class="slider" 
+                                min="-20" 
+                                max="20" 
+                                step="1" 
                                 value="0"
                                 oninput="updatePitchValue(this.value)"
-                            >
-                            <div class="slider-hints">
-                                <span>Deeper (-20Hz)</span>
-                                <span>Higher (+20Hz)</span>
+                            />
+                            <div class="slider-range">
+                                <span>Deeper</span>
+                                <span>Higher</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="settings-section">
-                    <h3>Recommended Voices</h3>
-                    <div class="voice-grid" id="recommendedVoices">
-                        <!-- Recommended voices will be populated here -->
-                    </div>
-                </div>
-                
-                <div class="settings-section">
-                    <h3>Audio Upload</h3>
-                    <div class="file-upload-area">
-                        <input type="file" id="audioUpload" class="login-input" accept="audio/*" style="display: none;">
-                        <label for="audioUpload" class="btn btn-secondary" style="width: 100%; text-align: center;">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            Upload Audio
-                        </label>
-                        <button id="transcribeUploadBtn" class="btn btn-secondary" style="width: 100%; margin-top: 0.75rem;">
-                            <i class="fas fa-closed-captioning"></i>
-                            Transcribe File
-                        </button>
-                    </div>
+                <!-- Generation Actions -->
+                <div class="generation-actions">
+                    <button id="previewBtnAlt" class="btn btn-secondary">
+                        <i class="fas fa-play btn-icon"></i>
+                        Preview
+                    </button>
+                    <button id="generateBtnAlt" class="btn btn-primary">
+                        <i class="fas fa-magic btn-icon"></i>
+                        Generate
+                    </button>
                 </div>
             </div>
-        </div>
+        </aside>
     </div>
 
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
     <script>
-        // ==================== FIREBASE CONFIGURATION ====================
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAjskmFLh22fAPVpTPRXQ1exNINGOg7-2M",
             authDomain: "lumogen-auth.firebaseapp.com",
@@ -939,11 +1380,51 @@
             appId: "1:7440317744:web:c9cd20a74b3f6813b21cf5"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         let currentUserToken = null;
 
-        // ==================== UI FUNCTIONS ====================
+        // Firebase UI Config
+        const ui = new firebaseui.auth.AuthUI(auth);
+        const uiConfig = {
+            callbacks: {
+                signInSuccessWithAuthResult: function(authResult) {
+                    authResult.user.getIdToken().then(token => {
+                        fetch('/api/auth/sync', {
+                            method: 'POST',
+                            headers: {'X-Auth-Token': token}
+                        });
+                    });
+                    return false;
+                }
+            },
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                firebase.auth.EmailAuthProvider.PROVIDER_ID
+            ],
+            signInFlow: 'popup'
+        };
+
+        // Recommended Voices
+        const RECOMMENDED_VOICES = [
+            { name: 'William', gender: 'Male', short_name: 'en-AU-WilliamNeural' },
+            { name: 'Natasha', gender: 'Female', short_name: 'en-AU-NatashaNeural' },
+            { name: 'Clara', gender: 'Female', short_name: 'en-CA-ClaraNeural' },
+            { name: 'Liam', gender: 'Male', short_name: 'en-CA-LiamNeural' },
+            { name: 'Ava', gender: 'Female', short_name: 'en-US-AvaNeural' },
+            { name: 'Andrew', gender: 'Male', short_name: 'en-US-AndrewNeural', best: true },
+            { name: 'Emma', gender: 'Female', short_name: 'en-US-EmmaNeural' },
+            { name: 'Brian', gender: 'Male', short_name: 'en-US-BrianNeural' }
+        ];
+
+        // App State
+        let isLoading = false;
+        let uploadedAudioFile = null;
+        let currentAudioUrl = null;
+        let currentAudioFilename = null;
+
+        // Theme Management
         function toggleTheme() {
             const html = document.documentElement;
             const themeIcon = document.getElementById('theme-icon');
@@ -973,14 +1454,14 @@
             }
         }
 
+        // Character Counter
         function updateCharCounter() {
-            const text = document.getElementById('textInput').value;
+            const text = document.getElementById('text').value;
             const counter = document.getElementById('charCounter');
             const length = text.length;
             
-            counter.textContent = `${length.toLocaleString()} / 50,000`;
+            counter.textContent = length.toLocaleString() + ' / 50,000 characters';
             
-            // Color coding
             if (length > 45000) {
                 counter.style.color = '#ef4444';
             } else if (length > 30000) {
@@ -992,15 +1473,111 @@
             }
         }
 
+        // Slider Value Updates
         function updateSpeedValue(value) {
-            document.getElementById('speedValue').textContent = `${value}x`;
+            document.getElementById('speedValue').textContent = parseFloat(value).toFixed(1) + 'x';
         }
 
         function updatePitchValue(value) {
-            const prefix = value > 0 ? '+' : '';
-            document.getElementById('pitchValue').textContent = `${prefix}${value} Hz`;
+            const pitchValue = document.getElementById('pitchValue');
+            pitchValue.textContent = (value > 0 ? '+' : '') + value + ' Hz';
+            pitchValue.style.color = value === '0' ? 'var(--text-muted)' : 
+                                    Math.abs(value) > 10 ? '#ef4444' : '#10b981';
         }
 
+        // Controls Panel Toggle
+        function toggleControls() {
+            const controlsPanel = document.querySelector('.controls-panel');
+            controlsPanel.classList.toggle('active');
+        }
+
+        // Navigation
+        document.querySelectorAll('.nav-item[data-target]').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Scroll to target section
+                const target = this.dataset.target;
+                const element = document.querySelector(`.${target}-card`);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Tab Switching
+        document.querySelectorAll('.control-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.control-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Handle tab content switching
+                const tabId = this.dataset.tab;
+                // Add tab content handling here
+            });
+        });
+
+        // File Upload
+        function handleFileUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('audioUpload');
+            
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    uploadedAudioFile = file;
+                    uploadArea.innerHTML = `
+                        <div class="file-upload-icon" style="color: var(--primary-green);">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="file-upload-text">${file.name}</div>
+                        <div class="file-upload-subtext">${(file.size / 1024 / 1024).toFixed(1)} MB</div>
+                    `;
+                    uploadArea.classList.add('has-file');
+                    updateOutput('File uploaded: ' + file.name, 'success');
+                }
+            });
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary-blue)';
+            });
+            
+            uploadArea.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--border-medium)';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--border-medium)';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type.startsWith('audio/')) {
+                        uploadedAudioFile = file;
+                        fileInput.files = files;
+                        uploadArea.innerHTML = `
+                            <div class="file-upload-icon" style="color: var(--primary-green);">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="file-upload-text">${file.name}</div>
+                            <div class="file-upload-subtext">${(file.size / 1024 / 1024).toFixed(1)} MB</div>
+                        `;
+                        uploadArea.classList.add('has-file');
+                        updateOutput('File uploaded: ' + file.name, 'success');
+                    } else {
+                        showToast('Please upload an audio file', 'error');
+                    }
+                }
+            });
+        }
+
+        // Toast Notification
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1009,193 +1586,202 @@
             setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
+        // Output Management
         function updateOutput(message, type = 'info') {
-            const output = document.getElementById('outputConsole');
+            const output = document.getElementById('output');
             const timestamp = new Date().toLocaleTimeString();
             const prefix = type === 'error' ? '⛔' : type === 'success' ? '✅' : 'ℹ️';
-            output.textContent = `[${timestamp}] ${prefix} ${message}`;
+            output.textContent = '[' + timestamp + '] ' + prefix + ' ' + message;
             
             if (type === 'error' || type === 'success') {
                 showToast(message, type);
             }
         }
 
-        // ==================== AUTHENTICATION ====================
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('app-container').style.display = 'block';
-                currentUserToken = await user.getIdToken();
-                updateOutput(`Welcome, ${user.email}!`, 'success');
-                loadVoices();
-            } else {
-                document.getElementById('auth-container').style.display = 'flex';
-                document.getElementById('app-container').style.display = 'none';
-                currentUserToken = null;
-            }
-        });
-
-        async function signInWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            try {
-                await auth.signInWithPopup(provider);
-            } catch (error) {
-                showToast(`Sign in failed: ${error.message}`, 'error');
-            }
+        // Voice Card Creation
+        function createVoiceCard(voice, isRecommended = false) {
+            const card = document.createElement('div');
+            card.className = isRecommended ? 'voice-card' + (voice.best ? ' best' : '') : 'voice-card';
+            card.dataset.voice = voice.short_name;
+            card.innerHTML = `
+                <div class="voice-name">${voice.name || voice.display_name}</div>
+                <div class="voice-details">${voice.gender || voice.locale}</div>
+            `;
+            
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.voice-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                
+                // Set voice in select
+                const voiceSelect = document.querySelector('#voiceSelect') || { value: voice.short_name };
+                voiceSelect.value = voice.short_name;
+                
+                updateOutput('Selected voice: ' + (voice.name || voice.display_name), 'success');
+            });
+            
+            return card;
         }
 
-        async function signInWithApple() {
-            const provider = new firebase.auth.OAuthProvider('apple.com');
-            try {
-                await auth.signInWithPopup(provider);
-            } catch (error) {
-                showToast(`Sign in failed: ${error.message}`, 'error');
-            }
+        // Populate Recommended Voices
+        function populateRecommendedVoices() {
+            const container = document.getElementById('recommendedVoices');
+            container.innerHTML = '';
+            RECOMMENDED_VOICES.forEach(voice => {
+                container.appendChild(createVoiceCard(voice, true));
+            });
         }
 
-        document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+        // Load Voices from API
+        async function loadVoices() {
+            setLoading(true);
+            updateOutput('Loading voice database...');
             
             try {
-                await auth.signInWithEmailAndPassword(email, password);
-            } catch (error) {
-                showToast(`Sign in failed: ${error.message}`, 'error');
-            }
-        });
+                const headers = {};
+                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
 
-        async function logout() {
-            try {
-                await auth.signOut();
-                showToast('Signed out successfully', 'success');
-            } catch (error) {
-                showToast(`Sign out failed: ${error.message}`, 'error');
-            }
-        }
-
-        // ==================== VOICE MANAGEMENT ====================
-        async function loadVoices() {
-            try {
-                const headers = currentUserToken ? { 'X-Auth-Token': currentUserToken } : {};
                 const response = await fetch('/api/voices', { headers });
                 const data = await response.json();
                 
+                const statusIndicator = document.getElementById('statusIndicator');
+                const statusClass = data.offline_mode ? 'offline' : 'online';
+                const statusText = data.offline_mode ? 'Offline - Limited Voices' : 'Online - ' + data.total_voices + ' Voices';
+                
+                statusIndicator.className = 'status-indicator ' + statusClass;
+                statusIndicator.querySelector('.status-text').textContent = statusText;
+                
+                // Populate language select
                 const languageSelect = document.getElementById('languageSelect');
                 languageSelect.innerHTML = '<option value="All">All Languages</option>';
+                const languages = data.languages || [];
+                languages.sort().forEach(lang => {
+                    const option = document.createElement('option');
+                    option.value = lang;
+                    option.textContent = lang;
+                    languageSelect.appendChild(option);
+                });
                 
-                if (data.languages && data.languages.length > 0) {
-                    data.languages.sort().forEach(lang => {
-                        const option = document.createElement('option');
-                        option.value = lang;
-                        option.textContent = lang;
-                        languageSelect.appendChild(option);
-                    });
+                if (languages.includes('English')) {
+                    languageSelect.value = 'English';
                 }
                 
-                updateOutput(`Loaded ${data.total_voices} voices`, 'success');
+                updateOutput('Loaded ' + data.total_voices + ' voices', 'success');
                 await filterVoices();
                 
             } catch (error) {
-                updateOutput('Failed to load voices', 'error');
+                updateOutput('Failed to load voices: ' + error.message, 'error');
+            } finally {
+                setLoading(false);
             }
         }
 
+        // Filter Voices
         async function filterVoices() {
             const query = document.getElementById('voiceSearch').value.trim();
             const gender = document.getElementById('genderSelect').value;
             const language = query ? 'All' : document.getElementById('languageSelect').value;
 
             try {
-                const headers = currentUserToken ? { 'X-Auth-Token': currentUserToken } : {};
-                const url = `/api/filter_voices?language=${encodeURIComponent(language)}&search=${encodeURIComponent(query)}&gender=${encodeURIComponent(gender)}`;
+                const headers = {};
+                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
+
+                const url = '/api/filter_voices?language=' + encodeURIComponent(language) + '&search=' + encodeURIComponent(query) + '&gender=' + encodeURIComponent(gender);
                 const response = await fetch(url, { headers });
                 const data = await response.json();
 
-                const voiceSelect = document.getElementById('voiceSelect');
-                voiceSelect.innerHTML = '';
+                const voiceGrid = document.getElementById('voiceGrid');
+                voiceGrid.innerHTML = '';
 
                 if (data.voices && data.voices.length > 0) {
                     data.voices.forEach(voice => {
-                        const option = document.createElement('option');
-                        option.value = voice.short_name;
-                        option.textContent = voice.display_name;
-                        voiceSelect.appendChild(option);
+                        voiceGrid.appendChild(createVoiceCard(voice));
                     });
+                    updateOutput('Found ' + data.voices.length + ' voices');
                 } else {
-                    voiceSelect.innerHTML = '<option>No voices found</option>';
+                    voiceGrid.innerHTML = '<div class="voice-card" style="grid-column: span 2; text-align: center; padding: 24px;">No voices found</div>';
+                    updateOutput('No voices found', 'error');
                 }
+
             } catch (error) {
-                updateOutput('Filter failed', 'error');
+                updateOutput('Filter failed: ' + error.message, 'error');
             }
         }
 
-        // ==================== EVENT LISTENERS ====================
-        document.addEventListener('DOMContentLoaded', () => {
+        // Loading State
+        function setLoading(loading) {
+            isLoading = loading;
+            document.body.classList.toggle('loading', loading);
+        }
+
+        // Audio Actions
+        function showAudioActions() {
+            document.getElementById('audioActions').classList.remove('hidden');
+        }
+
+        // Authentication
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('app-container').classList.remove('hidden');
+                currentUserToken = await user.getIdToken();
+                console.log("Logged in:", user.email);
+                loadVoices();
+            } else {
+                document.getElementById('auth-container').style.display = 'flex';
+                document.getElementById('app-container').classList.add('hidden');
+                currentUserToken = null;
+                ui.start('#firebaseui-auth-container', uiConfig);
+            }
+        });
+
+        // Logout Function
+        function logout() {
+            auth.signOut();
+        }
+
+        // Initialize on Load
+        window.addEventListener('load', () => {
             initTheme();
+            populateRecommendedVoices();
+            handleFileUpload();
             updateCharCounter();
             updateSpeedValue(1.0);
             updatePitchValue(0);
             
-            // Theme toggle
+            // Event Listeners
             document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-            
-            // Voice controls
+            document.getElementById('refreshVoices').addEventListener('click', loadVoices);
             document.getElementById('voiceSearch').addEventListener('input', filterVoices);
             document.getElementById('languageSelect').addEventListener('change', filterVoices);
             document.getElementById('genderSelect').addEventListener('change', filterVoices);
             
-            // Text controls
-            document.getElementById('previewBtn').addEventListener('click', previewVoice);
-            document.getElementById('generateBtn').addEventListener('click', generateSpeech);
-            document.getElementById('cleanupBtn').addEventListener('click', cleanupSession);
+            // Button listeners (to be connected to existing functions)
+            document.getElementById('previewBtn').addEventListener('click', () => previewVoice());
+            document.getElementById('previewBtnAlt').addEventListener('click', () => previewVoice());
+            document.getElementById('generateBtn').addEventListener('click', () => generateSpeech());
+            document.getElementById('generateBtnAlt').addEventListener('click', () => generateSpeech());
+            document.getElementById('cleanupBtn').addEventListener('click', () => cleanupSession());
+            document.getElementById('transcribeUploadBtn').addEventListener('click', () => transcribeUpload());
+            document.getElementById('downloadAudioBtn').addEventListener('click', () => downloadAudio());
+            document.getElementById('transcribeAudioBtn').addEventListener('click', () => transcribeAudio());
             
-            // Audio controls
-            document.getElementById('downloadBtn').addEventListener('click', downloadAudio);
-            document.getElementById('transcribeBtn').addEventListener('click', transcribeAudio);
-            document.getElementById('transcribeUploadBtn').addEventListener('click', transcribeUpload);
-            
-            // File upload
-            document.getElementById('audioUpload').addEventListener('change', handleFileUpload);
+            // Media query for tablet/mobile
+            const mediaQuery = window.matchMedia('(max-width: 1024px)');
+            if (mediaQuery.matches) {
+                document.querySelectorAll('.hidden-tablet').forEach(el => el.classList.remove('hidden-tablet'));
+            }
         });
 
-        // ==================== PLACEHOLDER FUNCTIONS ====================
-        async function previewVoice() {
-            // Implementation from your backend
-            updateOutput('Preview feature coming soon', 'info');
-        }
-
-        async function generateSpeech() {
-            // Implementation from your backend
-            updateOutput('Generation feature coming soon', 'info');
-        }
-
-        async function cleanupSession() {
-            // Implementation from your backend
-            updateOutput('Session cleaned', 'success');
-        }
-
-        async function downloadAudio() {
-            // Implementation from your backend
-            updateOutput('Download feature coming soon', 'info');
-        }
-
-        async function transcribeAudio() {
-            // Implementation from your backend
-            updateOutput('Transcription feature coming soon', 'info');
-        }
-
-        async function transcribeUpload() {
-            // Implementation from your backend
-            updateOutput('Upload transcription feature coming soon', 'info');
-        }
-
-        function handleFileUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                updateOutput(`Uploaded: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`, 'success');
+        // Add hidden-tablet class helper
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (min-width: 1025px) {
+                .hidden-tablet {
+                    display: none;
+                }
             }
-        }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
