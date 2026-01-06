@@ -1,62 +1,40 @@
 {
-  "buildCommand": "echo 'No build needed'",
-  "outputDirectory": ".",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/proxy"
+      "source": "/api/voices",
+      "destination": "/api/proxy/voices"
+    },
+    {
+      "source": "/api/generate",
+      "destination": "/api/proxy/generate"
+    },
+    {
+      "source": "/api/preview",
+      "destination": "/api/proxy/preview"
+    },
+    {
+      "source": "/api/jobs/:jobId",
+      "destination": "/api/proxy/jobs/:jobId"
+    },
+    {
+      "source": "/api/filter_voices",
+      "destination": "/api/proxy/filter_voices"
+    },
+    {
+      "source": "/api/transcribe_upload",
+      "destination": "/api/proxy/transcribe_upload"
+    },
+    {
+      "source": "/api/transcribe_generated",
+      "destination": "/api/proxy/transcribe_generated"
+    },
+    {
+      "source": "/api/cleanup",
+      "destination": "/api/proxy/cleanup"
     },
     {
       "source": "/audio/:path*",
-      "destination": "/api/audio-proxy"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization, X-Auth-Token"
-        },
-        {
-          "key": "X-Accel-Buffering",
-          "value": "no"
-        }
-      ]
-    },
-    {
-      "source": "/audio/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=3600"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Expose-Headers",
-          "value": "Content-Range, Content-Length, Accept-Ranges"
-        },
-        {
-          "key": "X-Accel-Buffering",
-          "value": "no"
-        }
-      ]
+      "destination": "/api/audio-proxy/:path*"
     }
   ]
 }
