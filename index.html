@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AI-Powered Text-to-Speech & Audio Transcription">
-    <title>Lumen Voice Studio - Professional AI Voice Generation</title>
+    <meta name="description" content="Professional AI-Powered Text-to-Speech & Audio Transcription">
+    <title>Lumen • AI Voice Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,7 +17,6 @@
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.1.0/firebase-ui-auth.css" />
 
     <style>
-        /* ========== GLOBAL STYLES ========== */
         :root {
             --primary-blue: #2563eb;
             --primary-green: #10b981;
@@ -25,51 +24,22 @@
             --gradient-secondary: linear-gradient(135deg, #1e40af 0%, #059669 100%);
             --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #34d399 100%);
             
-            --style-orange: #f97316;
-            --style-orange-light: #fb923c;
-            --style-orange-dark: #ea580c;
-            
             --bg-primary: #0a0a0f;
             --bg-secondary: #1a1a2e;
             --bg-tertiary: #16213e;
             --bg-card: #1e1e3f;
             --bg-glass: rgba(30, 30, 63, 0.8);
-            --bg-input: rgba(255, 255, 255, 0.05);
-            
             --text-primary: #ffffff;
             --text-secondary: #b8b8d6;
             --text-muted: #8e8eb0;
-            --text-disabled: #6b7280;
             
+            --border-radius: 12px;
             --border-subtle: rgba(255, 255, 255, 0.1);
-            --border-medium: rgba(255, 255, 255, 0.2);
-            --border-strong: rgba(255, 255, 255, 0.3);
+            --border-medium: rgba(37, 99, 235, 0.3);
             
-            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.25);
-            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.3);
-            --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.4);
-            
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 24px;
-            --radius-full: 50px;
-            
-            --spacing-xs: 4px;
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
-            --spacing-xl: 32px;
-            --spacing-2xl: 48px;
-            
-            --font-xs: 0.75rem;
-            --font-sm: 0.875rem;
-            --font-base: 1rem;
-            --font-lg: 1.125rem;
-            --font-xl: 1.25rem;
-            --font-2xl: 1.5rem;
-            --font-3xl: 1.875rem;
-            --font-4xl: 2.25rem;
+            --shadow-soft: 0 4px 20px rgba(37, 99, 235, 0.1);
+            --shadow-medium: 0 8px 32px rgba(37, 99, 235, 0.2);
+            --shadow-strong: 0 20px 50px rgba(37, 99, 235, 0.3);
         }
 
         [data-theme="light"] {
@@ -78,17 +48,10 @@
             --bg-tertiary: #e8eaf6;
             --bg-card: #ffffff;
             --bg-glass: rgba(255, 255, 255, 0.9);
-            --bg-input: rgba(0, 0, 0, 0.05);
-            
             --text-primary: #1e293b;
             --text-secondary: #475569;
             --text-muted: #64748b;
-            --text-disabled: #94a3b8;
-            
             --border-subtle: rgba(0, 0, 0, 0.1);
-            --border-medium: rgba(0, 0, 0, 0.2);
-            --border-strong: rgba(0, 0, 0, 0.3);
-            
             --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
             --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
             --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.15);
@@ -102,434 +65,437 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
-            transition: all 0.3s ease;
             overflow-x: hidden;
         }
 
-        /* ========== LOGIN PAGE ========== */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: var(--spacing-lg);
-            background: var(--bg-primary);
-            position: relative;
-        }
-
-        .login-container::before {
-            content: '';
-            position: absolute;
+        /* Navigation */
+        .navbar {
+            position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .login-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-2xl);
             width: 100%;
-            max-width: 440px;
-            box-shadow: var(--shadow-strong);
-            border: 1px solid var(--border-subtle);
-            animation: fadeInUp 0.6s ease-out;
+            padding: 1rem 2rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .login-header {
-            text-align: center;
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .login-header h1 {
-            font-size: var(--font-3xl);
-            font-weight: 700;
-            margin-bottom: var(--spacing-sm);
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
             background: var(--gradient-primary);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        /* Login Container */
+        #auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            background: var(--bg-primary);
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 3rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-strong);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
         }
 
         .login-header p {
             color: var(--text-secondary);
-            font-size: var(--font-base);
+            font-size: 1rem;
+        }
+
+        .login-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .login-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .login-divider {
+            text-align: center;
+            margin: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            position: relative;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .login-divider::before {
+            left: 0;
+        }
+
+        .login-divider::after {
+            right: 0;
         }
 
         .social-login {
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
+            gap: 1rem;
         }
 
         .social-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: var(--spacing-md);
-            padding: var(--spacing-md);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
+            gap: 0.75rem;
+            padding: 0.875rem;
             background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: var(--font-base);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .social-btn:hover {
-            background: var(--bg-input);
-            transform: translateY(-1px);
-        }
-
-        .social-btn.google {
-            border-color: #4285f4;
-        }
-
-        .social-btn.apple {
-            border-color: #000000;
-        }
-
-        .social-btn.sso {
-            border-color: var(--primary-blue);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: var(--spacing-lg) 0;
-            color: var(--text-muted);
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-subtle);
-        }
-
-        .divider span {
-            padding: 0 var(--spacing-md);
-            font-size: var(--font-sm);
-        }
-
-        .email-login {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-lg);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-sm);
-        }
-
-        .form-group label {
-            font-size: var(--font-sm);
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .form-group input {
-            padding: var(--spacing-md);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-size: var(--font-base);
-            transition: all 0.2s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .forgot-password {
-            align-self: flex-end;
-            font-size: var(--font-sm);
-            color: var(--primary-blue);
-            text-decoration: none;
-            margin-top: var(--spacing-xs);
-        }
-
-        .forgot-password:hover {
-            text-decoration: underline;
-        }
-
-        .login-btn {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md);
-            font-size: var(--font-base);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: var(--spacing-sm);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
+            background: var(--bg-secondary);
+            border-color: var(--border-medium);
         }
 
         .login-footer {
             text-align: center;
-            margin-top: var(--spacing-xl);
-            padding-top: var(--spacing-lg);
-            border-top: 1px solid var(--border-subtle);
+            margin-top: 2rem;
             color: var(--text-secondary);
-            font-size: var(--font-sm);
+            font-size: 0.875rem;
         }
 
-        .signup-link {
+        .login-footer a {
             color: var(--primary-blue);
             text-decoration: none;
             font-weight: 600;
         }
 
-        .signup-link:hover {
+        .login-footer a:hover {
             text-decoration: underline;
         }
 
-        /* ========== MAIN APP ========== */
-        .app-container {
+        /* Main App Container */
+        #app-container {
             display: none;
-            min-height: 100vh;
+            padding-top: 80px;
         }
 
-        /* Header */
-        .app-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: var(--bg-glass);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 var(--spacing-xl);
-            z-index: 1000;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            font-size: var(--font-xl);
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--gradient-primary);
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-xl);
-        }
-
-        .credits {
-            background: var(--bg-tertiary);
-            padding: var(--spacing-sm) var(--spacing-md);
-            border-radius: var(--radius-full);
-            font-size: var(--font-sm);
-            color: var(--text-secondary);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .credit-time {
-            font-weight: 700;
-            color: var(--primary-green);
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            padding: var(--spacing-sm) var(--spacing-md);
-            background: var(--bg-tertiary);
-            border-radius: var(--radius-full);
-            border: 1px solid var(--border-subtle);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .user-menu:hover {
-            background: var(--bg-input);
-        }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .user-name {
-            font-size: var(--font-sm);
-            font-weight: 500;
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: calc(64px + var(--spacing-xl)) var(--spacing-xl) var(--spacing-xl);
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            padding: 2rem;
             max-width: 1400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: var(--spacing-xl);
         }
 
-        @media (min-width: 1024px) {
-            .main-content {
-                grid-template-columns: 380px 1fr;
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
             }
         }
 
-        /* Left Panel - Voice Settings */
-        .left-panel {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-xl);
-        }
-
-        .settings-card {
+        /* Text Input Area */
+        .text-input-card {
             background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-xl);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-soft);
             border: 1px solid var(--border-subtle);
         }
 
-        .settings-title {
-            font-size: var(--font-xl);
-            font-weight: 600;
-            margin-bottom: var(--spacing-lg);
-            color: var(--text-primary);
+        .text-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .setting-group {
-            margin-bottom: var(--spacing-lg);
+        .text-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
-        .setting-label {
-            display: block;
-            margin-bottom: var(--spacing-sm);
-            font-size: var(--font-sm);
+        .char-counter {
+            color: var(--text-muted);
+            font-size: 0.875rem;
             font-weight: 500;
-            color: var(--text-secondary);
         }
 
-        .voice-select {
+        .text-area-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .text-area {
             width: 100%;
-            padding: var(--spacing-md);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-size: var(--font-base);
-            transition: all 0.2s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238e8eb0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right var(--spacing-md) center;
-            background-size: 16px;
-            padding-right: calc(var(--spacing-md) * 2 + 16px);
-        }
-
-        .voice-select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .model-select {
-            width: 100%;
-            padding: var(--spacing-md);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-size: var(--font-base);
-            transition: all 0.2s ease;
-        }
-
-        .model-select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .slider-container {
-            background: var(--bg-input);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-lg);
+            min-height: 200px;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
             border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .text-area:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        .text-area::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+        }
+
+        /* Voice Settings Sidebar */
+        .voice-settings-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 100px;
+        }
+
+        .settings-section {
+            margin-bottom: 2rem;
+        }
+
+        .settings-section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .settings-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .select-dropdown {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238e8eb0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+        }
+
+        .select-dropdown:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+        }
+
+        /* Sliders */
+        .slider-container {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.5rem;
         }
 
         .slider-group {
-            margin-bottom: var(--spacing-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-group:last-child {
+            margin-bottom: 0;
         }
 
         .slider-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: var(--spacing-sm);
+            margin-bottom: 0.75rem;
         }
 
-        .slider-label {
-            font-size: var(--font-sm);
+        .slider-header label {
+            color: var(--text-primary);
+            font-size: 0.875rem;
             font-weight: 500;
-            color: var(--text-secondary);
         }
 
         .slider-value {
-            font-size: var(--font-sm);
-            font-weight: 600;
             color: var(--primary-blue);
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            font-weight: 600;
         }
 
         .slider {
             width: 100%;
-            height: 4px;
-            background: var(--border-subtle);
-            border-radius: 2px;
-            outline: none;
+            height: 6px;
             -webkit-appearance: none;
             appearance: none;
+            background: linear-gradient(to right, var(--bg-secondary) 0%, var(--primary-blue) 50%, var(--primary-green) 100%);
+            border-radius: 3px;
+            outline: none;
         }
 
         .slider::-webkit-slider-thumb {
@@ -537,232 +503,127 @@
             appearance: none;
             width: 20px;
             height: 20px;
-            background: var(--primary-blue);
+            background: white;
+            border: 2px solid var(--primary-blue);
             border-radius: 50%;
             cursor: pointer;
-            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         }
 
         .slider::-moz-range-thumb {
             width: 20px;
             height: 20px;
-            background: var(--primary-blue);
+            background: white;
+            border: 2px solid var(--primary-blue);
             border-radius: 50%;
             cursor: pointer;
-            border: none;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         }
 
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
-        }
-
-        .slider-ends {
+        .slider-hints {
             display: flex;
             justify-content: space-between;
-            margin-top: var(--spacing-xs);
-            font-size: var(--font-xs);
+            margin-top: 0.5rem;
             color: var(--text-muted);
+            font-size: 0.75rem;
         }
 
-        /* Right Panel - Text Input */
-        .right-panel {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-xl);
-        }
-
-        .text-input-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-xl);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .greeting {
-            font-size: var(--font-2xl);
-            font-weight: 700;
-            margin-bottom: var(--spacing-md);
-            color: var(--text-primary);
-        }
-
-        .char-counter {
-            text-align: right;
-            font-size: var(--font-sm);
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .char-counter strong {
-            color: var(--primary-green);
-            font-weight: 700;
-        }
-
-        .text-area {
-            width: 100%;
-            min-height: 200px;
-            padding: var(--spacing-lg);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
-            background: var(--bg-input);
-            color: var(--text-primary);
-            font-size: var(--font-base);
-            line-height: 1.6;
-            resize: vertical;
-            transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .text-area:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        .text-area::placeholder {
-            color: var(--text-muted);
-        }
-
-        .generate-btn {
-            width: 100%;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: var(--radius-md);
-            padding: var(--spacing-lg);
-            font-size: var(--font-lg);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: var(--spacing-lg);
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .content-grid {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-xl);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .content-title {
-            font-size: var(--font-lg);
-            font-weight: 600;
-            margin-bottom: var(--spacing-lg);
-            color: var(--text-primary);
-        }
-
-        .content-options {
+        /* Voice Recommendations */
+        .voice-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: var(--spacing-md);
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
         }
 
-        .content-option {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-            padding: var(--spacing-md);
+        .voice-chip {
+            background: var(--bg-tertiary);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
-        .content-option:hover {
-            background: var(--bg-input);
-            transform: translateY(-1px);
+        .voice-chip:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
         }
 
-        .content-option input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-blue);
+        .voice-chip.selected {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+            border-color: var(--primary-blue);
         }
 
-        .content-option label {
-            font-size: var(--font-sm);
-            font-weight: 500;
-            color: var(--text-primary);
-            cursor: pointer;
+        .voice-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
         }
 
-        /* Footer */
-        .app-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--spacing-lg) var(--spacing-xl);
-            border-top: 1px solid var(--border-subtle);
+        .voice-details {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Audio Player */
+        .audio-player-card {
             background: var(--bg-card);
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
         }
 
-        .footer-links {
-            display: flex;
-            gap: var(--spacing-xl);
-        }
-
-        .footer-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: var(--font-sm);
-            transition: color 0.2s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--primary-blue);
-        }
-
-        .footer-actions {
-            display: flex;
-            gap: var(--spacing-md);
-        }
-
-        .footer-btn {
-            padding: var(--spacing-sm) var(--spacing-md);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--radius-md);
+        .audio-player {
+            width: 100%;
+            height: 40px;
+            margin: 1.5rem 0;
+            border-radius: 8px;
             background: var(--bg-tertiary);
-            color: var(--text-primary);
-            font-size: var(--font-sm);
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .footer-btn:hover {
-            background: var(--bg-input);
+        .player-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        /* Toasts */
+        /* Output Console */
+        .output-console {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Toast Notifications */
         .toast {
             position: fixed;
             top: 100px;
-            right: var(--spacing-xl);
+            right: 2rem;
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.5rem;
             box-shadow: var(--shadow-strong);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-md);
-            transform: translateX(120%);
-            transition: transform 0.3s ease;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
         }
 
         .toast.show {
-            transform: translateX(0);
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .toast.success {
@@ -775,33 +636,20 @@
             background: rgba(239, 68, 68, 0.1);
         }
 
-        .toast-icon {
-            font-size: var(--font-lg);
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
         }
 
-        .toast.success .toast-icon {
-            color: var(--primary-green);
-        }
-
-        .toast.error .toast-icon {
-            color: #ef4444;
-        }
-
-        .toast-message {
-            font-size: var(--font-sm);
-            font-weight: 500;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
@@ -811,207 +659,219 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .main-content {
-                padding: calc(64px + var(--spacing-md)) var(--spacing-md) var(--spacing-md);
+            .main-layout {
+                padding: 1rem;
             }
             
-            .app-header {
-                padding: 0 var(--spacing-md);
-            }
-            
-            .header-right {
-                gap: var(--spacing-md);
-            }
-            
-            .credits {
-                display: none;
-            }
-            
-            .content-options {
-                grid-template-columns: 1fr;
-            }
-            
-            .app-footer {
-                flex-direction: column;
-                gap: var(--spacing-md);
-                padding: var(--spacing-md);
-                text-align: center;
-            }
-            
-            .footer-links {
-                gap: var(--spacing-md);
-            }
-            
-            .settings-card,
             .text-input-card,
-            .content-grid {
-                padding: var(--spacing-lg);
+            .voice-settings-card,
+            .audio-player-card {
+                padding: 1.5rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .player-actions {
+                flex-direction: column;
             }
         }
 
-        @media (max-width: 480px) {
-            .login-card {
-                padding: var(--spacing-xl);
-            }
-            
-            .app-header {
-                height: 56px;
-            }
-            
-            .main-content {
-                padding: calc(56px + var(--spacing-md)) var(--spacing-md) var(--spacing-md);
-            }
-            
-            .greeting {
-                font-size: var(--font-xl);
-            }
-            
-            .content-option {
-                padding: var(--spacing-sm);
-            }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
         }
 
-        /* Loading States */
-        .loading {
-            position: relative;
-            pointer-events: none;
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
         }
 
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            border: 2px solid transparent;
-            border-top: 2px solid var(--primary-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-subtle);
+            border-radius: 4px;
         }
 
-        .hidden {
-            display: none !important;
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-medium);
         }
     </style>
 </head>
 <body>
-    <!-- Login Container -->
-    <div id="auth-container" class="login-container">
+    <!-- Auth Container (Shows before login) -->
+    <div id="auth-container">
         <div class="login-card">
             <div class="login-header">
-                <h1>Welcome back</h1>
-                <p>Sign in to continue to Lumen</p>
+                <h1>Lumen</h1>
+                <p>AI Voice Studio</p>
             </div>
             
             <div class="social-login">
-                <button class="social-btn google" onclick="signInWithGoogle()">
+                <button class="social-btn" onclick="signInWithGoogle()">
                     <i class="fab fa-google"></i>
-                    Sign in with Google
+                    Continue with Google
                 </button>
-                <button class="social-btn apple" onclick="signInWithApple()">
+                <button class="social-btn" onclick="signInWithApple()">
                     <i class="fab fa-apple"></i>
-                    Sign in with Apple
-                </button>
-                <button class="social-btn sso" onclick="signInWithSSO()">
-                    <i class="fas fa-building"></i>
-                    Sign in with SSO
+                    Continue with Apple
                 </button>
             </div>
             
-            <div class="divider">
-                <span>or</span>
-            </div>
+            <div class="login-divider">or</div>
             
-            <form class="email-login" id="emailLoginForm">
-                <div class="form-group">
+            <form id="emailLoginForm">
+                <div class="login-form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <input type="email" id="email" class="login-input" placeholder="Enter your email" required>
                 </div>
                 
-                <div class="form-group">
+                <div class="login-form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                    <a href="#" class="forgot-password">Forgot your password?</a>
+                    <input type="password" id="password" class="login-input" placeholder="Enter your password" required>
                 </div>
                 
-                <button type="submit" class="login-btn">Sign in</button>
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
             </form>
             
             <div class="login-footer">
-                Don't have an account? <a href="#" class="signup-link">Sign up</a>
+                <p>Don't have an account? <a href="#" onclick="showSignUp()">Sign up</a></p>
             </div>
         </div>
     </div>
 
-    <!-- Main App Container -->
-    <div id="app-container" class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-microphone-alt"></i>
-                </div>
-                <span>Lumen</span>
+    <!-- App Container (Shows after login) -->
+    <div id="app-container">
+        <nav class="navbar">
+            <div class="logo">Lumen</div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign Out
+                </button>
             </div>
-            
-            <div class="header-right">
-                <div class="credits">
-                    <span class="credit-time">8:05</span> credit remaining
+        </nav>
+
+        <div class="main-layout">
+            <!-- Main Text Area -->
+            <div class="text-input-card">
+                <div class="text-header">
+                    <h2>Voice Studio</h2>
+                    <span id="charCounter" class="char-counter">0 / 50,000</span>
                 </div>
                 
-                <div class="user-menu" onclick="toggleUserMenu()">
-                    <div class="user-avatar" id="userAvatar">U</div>
-                    <div class="user-name" id="userName">User</div>
-                    <i class="fas fa-chevron-down"></i>
+                <div class="text-area-container">
+                    <textarea 
+                        id="textInput" 
+                        class="text-area" 
+                        placeholder="HELLOO.. HOW ARE YOU!"
+                        maxlength="50000"
+                        oninput="updateCharCounter()"
+                    >Welcome to Lumen AI Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
                 </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Left Panel - Voice Settings -->
-            <div class="left-panel">
-                <div class="settings-card">
-                    <h2 class="settings-title">Voice Settings</h2>
+                
+                <div class="action-buttons">
+                    <button id="previewBtn" class="btn btn-secondary">
+                        <i class="fas fa-play"></i>
+                        Preview Voice
+                    </button>
+                    <button id="generateBtn" class="btn btn-primary">
+                        <i class="fas fa-magic"></i>
+                        Generate Audio
+                    </button>
+                    <button id="cleanupBtn" class="btn btn-secondary">
+                        <i class="fas fa-broom"></i>
+                        Clean Session
+                    </button>
+                </div>
+                
+                <div class="audio-player-card">
+                    <h3>Audio Player</h3>
+                    <audio id="audioPlayer" class="audio-player" controls></audio>
                     
-                    <div class="setting-group">
-                        <label class="setting-label">Voice</label>
-                        <select class="voice-select" id="voiceSelect">
-                            <option value="rachel">🔴 Rachel</option>
-                            <option value="male">🔵 Michael</option>
-                            <option value="female">🟣 Sophia</option>
-                            <option value="neutral">🟢 Alex</option>
-                        </select>
-                    </div>
-                    
-                    <div class="setting-group">
-                        <label class="setting-label">Model</label>
-                        <select class="model-select" id="modelSelect">
-                            <option value="multilingual-v2">📌 Eleven Multilingual v2</option>
-                            <option value="multilingual-v3">✨ Eleven Multilingual v3</option>
-                            <option value="english-v1">🇺🇸 English v1</option>
-                        </select>
-                        <div style="font-size: var(--font-xs); color: var(--text-muted); margin-top: var(--spacing-xs);">
-                            The most expressive Text to Speech
-                        </div>
-                        <button style="margin-top: var(--spacing-sm); padding: var(--spacing-xs) var(--spacing-sm); font-size: var(--font-xs); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-tertiary); color: var(--text-secondary); cursor: pointer;">
-                            Try v3 (alpha)
+                    <div class="player-actions">
+                        <button id="downloadBtn" class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                        <button id="transcribeBtn" class="btn btn-secondary">
+                            <i class="fas fa-closed-captioning"></i>
+                            Transcribe
                         </button>
                     </div>
                 </div>
                 
-                <div class="settings-card">
-                    <h2 class="settings-title">Voice Parameters</h2>
+                <div class="output-console" id="outputConsole">
+                    🚀 Lumen Voice Studio ready. Select a voice and enter text to begin.
+                </div>
+            </div>
+
+            <!-- Voice Settings Sidebar -->
+            <div class="voice-settings-card">
+                <div class="settings-section">
+                    <h3>Voice Selection</h3>
+                    
+                    <div class="settings-group">
+                        <label>Search Voices</label>
+                        <input type="text" id="voiceSearch" class="login-input" placeholder="Type to search...">
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label>Language</label>
+                        <select id="languageSelect" class="select-dropdown">
+                            <option>Loading languages...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label>Gender</label>
+                        <select id="genderSelect" class="select-dropdown">
+                            <option value="All">All Genders</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <label>Available Voices</label>
+                        <select id="voiceSelect" class="select-dropdown" size="6">
+                            <option>Loading voices...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Voice Settings</h3>
                     
                     <div class="slider-container">
                         <div class="slider-group">
                             <div class="slider-header">
-                                <span class="slider-label">Speed</span>
-                                <span class="slider-value" id="speedValue">1.0x</span>
+                                <label for="speedSlider">Speech Rate</label>
+                                <span id="speedValue" class="slider-value">1.0x</span>
                             </div>
-                            <input type="range" min="0.5" max="2.0" step="0.1" value="1.0" class="slider" id="speedSlider" oninput="updateSliderValue('speedValue', this.value, 'x')">
-                            <div class="slider-ends">
+                            <input 
+                                type="range" 
+                                id="speedSlider" 
+                                class="slider"
+                                min="0.5"
+                                max="2.0"
+                                step="0.1"
+                                value="1.0"
+                                oninput="updateSpeedValue(this.value)"
+                            >
+                            <div class="slider-hints">
                                 <span>Slower</span>
                                 <span>Faster</span>
                             </div>
@@ -1019,144 +879,54 @@
                         
                         <div class="slider-group">
                             <div class="slider-header">
-                                <span class="slider-label">Stability</span>
-                                <span class="slider-value" id="stabilityValue">50%</span>
+                                <label for="pitchSlider">Voice Pitch</label>
+                                <span id="pitchValue" class="slider-value">+0 Hz</span>
                             </div>
-                            <input type="range" min="0" max="100" step="1" value="50" class="slider" id="stabilitySlider" oninput="updateSliderValue('stabilityValue', this.value, '%')">
-                            <div class="slider-ends">
-                                <span>More variable</span>
-                                <span>More stable</span>
-                            </div>
-                        </div>
-                        
-                        <div class="slider-group">
-                            <div class="slider-header">
-                                <span class="slider-label">Similarity</span>
-                                <span class="slider-value" id="similarityValue">75%</span>
-                            </div>
-                            <input type="range" min="0" max="100" step="1" value="75" class="slider" id="similaritySlider" oninput="updateSliderValue('similarityValue', this.value, '%')">
-                            <div class="slider-ends">
-                                <span>Low</span>
-                                <span>High</span>
+                            <input 
+                                type="range" 
+                                id="pitchSlider" 
+                                class="slider"
+                                min="-20"
+                                max="20"
+                                step="1"
+                                value="0"
+                                oninput="updatePitchValue(this.value)"
+                            >
+                            <div class="slider-hints">
+                                <span>Deeper (-20Hz)</span>
+                                <span>Higher (+20Hz)</span>
                             </div>
                         </div>
-                        
-                        <div class="slider-group">
-                            <div class="slider-header">
-                                <span class="slider-label">Style Exaggeration</span>
-                                <span class="slider-value" id="styleValue">0%</span>
-                            </div>
-                            <input type="range" min="0" max="100" step="1" value="0" class="slider" id="styleSlider" oninput="updateSliderValue('styleValue', this.value, '%')">
-                            <div class="slider-ends">
-                                <span>None</span>
-                                <span>Exaggerated</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="setting-group" style="margin-top: var(--spacing-lg);">
-                        <label class="setting-label">Language Override</label>
-                        <input type="text" class="model-select" placeholder="Type here to search languages..." style="margin-top: var(--spacing-xs);">
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Panel - Text Input -->
-            <div class="right-panel">
-                <div class="text-input-card">
-                    <h1 class="greeting">HELLOO.. HOW ARE YOU!</h1>
-                    
-                    <div class="char-counter">
-                        <strong id="currentChars">21</strong> / <span id="maxChars">5,000</span> characters
+                <div class="settings-section">
+                    <h3>Recommended Voices</h3>
+                    <div class="voice-grid" id="recommendedVoices">
+                        <!-- Recommended voices will be populated here -->
                     </div>
-                    
-                    <textarea 
-                        class="text-area" 
-                        id="textInput"
-                        placeholder="Start typing here or paste any text you want to turn into lifelike speech..."
-                        oninput="updateCharCounter()"
-                        maxlength="5000"
-                    >Welcome to Lumen! This is your professional AI voice generation studio. Create stunning voiceovers with our advanced text-to-speech technology. Choose from multiple voices, adjust parameters, and generate lifelike speech instantly.</textarea>
-                    
-                    <button class="generate-btn" onclick="generateSpeech()">
-                        <i class="fas fa-play"></i> Generate speech
-                    </button>
                 </div>
                 
-                <div class="content-grid">
-                    <h2 class="content-title">Get started with</h2>
-                    
-                    <div class="content-options">
-                        <div class="content-option">
-                            <input type="checkbox" id="narrate">
-                            <label for="narrate">Narrate a story</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="joke">
-                            <label for="joke">Tell a silly joke</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="advertisement">
-                            <label for="advertisement">Record an advertisement</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="languages">
-                            <label for="languages">Speak in different languages</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="movie">
-                            <label for="movie">Direct a dramatic movie scene</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="game">
-                            <label for="game">Hear from a video game character</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="podcast">
-                            <label for="podcast">Introduce your podcast</label>
-                        </div>
-                        
-                        <div class="content-option">
-                            <input type="checkbox" id="meditation" checked>
-                            <label for="meditation">Guide a meditation class</label>
-                        </div>
+                <div class="settings-section">
+                    <h3>Audio Upload</h3>
+                    <div class="file-upload-area">
+                        <input type="file" id="audioUpload" class="login-input" accept="audio/*" style="display: none;">
+                        <label for="audioUpload" class="btn btn-secondary" style="width: 100%; text-align: center;">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Upload Audio
+                        </label>
+                        <button id="transcribeUploadBtn" class="btn btn-secondary" style="width: 100%; margin-top: 0.75rem;">
+                            <i class="fas fa-closed-captioning"></i>
+                            Transcribe File
+                        </button>
                     </div>
                 </div>
             </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="app-footer">
-            <div class="footer-links">
-                <a href="#" class="footer-link">Feedback</a>
-                <a href="#" class="footer-link">Docs</a>
-                <a href="#" class="footer-link">Talk to EI</a>
-                <a href="#" class="footer-link">Settings</a>
-                <a href="#" class="footer-link">History</a>
-            </div>
-            
-            <div class="footer-actions">
-                <button class="footer-btn" onclick="toggleTheme()">
-                    <i class="fas fa-moon"></i> Theme
-                </button>
-                <button class="footer-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Sign Out
-                </button>
-            </div>
-        </footer>
+        </div>
     </div>
 
-    <!-- Toast Container -->
-    <div id="toast" class="toast hidden">
-        <div class="toast-icon"></div>
-        <div class="toast-message"></div>
-    </div>
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
 
     <script>
         // ==================== FIREBASE CONFIGURATION ====================
@@ -1169,81 +939,22 @@
             appId: "1:7440317744:web:c9cd20a74b3f6813b21cf5"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        let currentUser = null;
         let currentUserToken = null;
-
-        // ==================== AUTH FUNCTIONS ====================
-        async function checkAuthState() {
-            return new Promise((resolve) => {
-                auth.onAuthStateChanged(async (user) => {
-                    if (user) {
-                        currentUser = user;
-                        currentUserToken = await user.getIdToken();
-                        
-                        // Update UI
-                        document.getElementById('auth-container').style.display = 'none';
-                        document.getElementById('app-container').style.display = 'block';
-                        
-                        // Update user info
-                        document.getElementById('userName').textContent = user.displayName || user.email.split('@')[0];
-                        document.getElementById('userAvatar').textContent = (user.displayName || user.email).charAt(0).toUpperCase();
-                        
-                        showToast('Successfully signed in!', 'success');
-                        resolve(true);
-                    } else {
-                        currentUser = null;
-                        currentUserToken = null;
-                        document.getElementById('auth-container').style.display = 'flex';
-                        document.getElementById('app-container').style.display = 'none';
-                        resolve(false);
-                    }
-                });
-            });
-        }
-
-        async function signInWithGoogle() {
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
-            } catch (error) {
-                showToast('Google sign-in failed: ' + error.message, 'error');
-            }
-        }
-
-        async function signInWithApple() {
-            try {
-                const provider = new firebase.auth.OAuthProvider('apple.com');
-                await auth.signInWithPopup(provider);
-            } catch (error) {
-                showToast('Apple sign-in failed: ' + error.message, 'error');
-            }
-        }
-
-        async function signInWithSSO() {
-            // SSO implementation would go here
-            showToast('SSO sign-in is not configured', 'error');
-        }
-
-        async function logout() {
-            try {
-                await auth.signOut();
-                showToast('Successfully signed out', 'success');
-            } catch (error) {
-                showToast('Sign out failed: ' + error.message, 'error');
-            }
-        }
 
         // ==================== UI FUNCTIONS ====================
         function toggleTheme() {
             const html = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
             if (html.getAttribute('data-theme') === 'dark') {
                 html.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
                 localStorage.setItem('theme', 'light');
             } else {
                 html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
                 localStorage.setItem('theme', 'dark');
             }
         }
@@ -1251,192 +962,240 @@
         function initTheme() {
             const saved = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const themeIcon = document.getElementById('theme-icon');
             
             if (saved === 'dark' || (!saved && prefersDark)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
             }
-        }
-
-        function updateSliderValue(elementId, value, suffix) {
-            document.getElementById(elementId).textContent = value + suffix;
         }
 
         function updateCharCounter() {
-            const textArea = document.getElementById('textInput');
-            const currentChars = textArea.value.length;
-            const maxChars = textArea.maxLength;
+            const text = document.getElementById('textInput').value;
+            const counter = document.getElementById('charCounter');
+            const length = text.length;
             
-            document.getElementById('currentChars').textContent = currentChars;
+            counter.textContent = `${length.toLocaleString()} / 50,000`;
             
-            // Update color based on usage
-            const percentage = (currentChars / maxChars) * 100;
-            const counter = document.getElementById('currentChars');
-            
-            if (percentage > 90) {
-                counter.style.color = '#ef4444'; // Red
-            } else if (percentage > 70) {
-                counter.style.color = '#f97316'; // Orange
-            } else if (percentage > 50) {
-                counter.style.color = '#eab308'; // Yellow
+            // Color coding
+            if (length > 45000) {
+                counter.style.color = '#ef4444';
+            } else if (length > 30000) {
+                counter.style.color = '#f97316';
+            } else if (length > 15000) {
+                counter.style.color = '#eab308';
             } else {
-                counter.style.color = '#10b981'; // Green
+                counter.style.color = 'var(--text-muted)';
             }
+        }
+
+        function updateSpeedValue(value) {
+            document.getElementById('speedValue').textContent = `${value}x`;
+        }
+
+        function updatePitchValue(value) {
+            const prefix = value > 0 ? '+' : '';
+            document.getElementById('pitchValue').textContent = `${prefix}${value} Hz`;
         }
 
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
-            const toastIcon = toast.querySelector('.toast-icon');
-            const toastMessage = toast.querySelector('.toast-message');
-            
-            // Clear previous classes
-            toast.className = 'toast';
-            
-            // Set new classes and content
-            toast.classList.add(type, 'show');
-            toastMessage.textContent = message;
-            
-            if (type === 'success') {
-                toastIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
-            } else if (type === 'error') {
-                toastIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
-            } else {
-                toastIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
-            }
-            
-            // Auto-hide after 4 seconds
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
-        async function generateSpeech() {
-            const textInput = document.getElementById('textInput');
-            const voiceSelect = document.getElementById('voiceSelect');
-            const speedSlider = document.getElementById('speedSlider');
+        function updateOutput(message, type = 'info') {
+            const output = document.getElementById('outputConsole');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'error' ? '⛔' : type === 'success' ? '✅' : 'ℹ️';
+            output.textContent = `[${timestamp}] ${prefix} ${message}`;
             
-            if (!textInput.value.trim()) {
-                showToast('Please enter some text first', 'error');
-                return;
+            if (type === 'error' || type === 'success') {
+                showToast(message, type);
             }
-            
-            if (!currentUserToken) {
-                showToast('Please sign in to generate speech', 'error');
-                return;
+        }
+
+        // ==================== AUTHENTICATION ====================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('app-container').style.display = 'block';
+                currentUserToken = await user.getIdToken();
+                updateOutput(`Welcome, ${user.email}!`, 'success');
+                loadVoices();
+            } else {
+                document.getElementById('auth-container').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+                currentUserToken = null;
             }
-            
-            // Show loading state
-            const generateBtn = document.querySelector('.generate-btn');
-            const originalText = generateBtn.innerHTML;
-            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-            generateBtn.disabled = true;
+        });
+
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                showToast(`Sign in failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function signInWithApple() {
+            const provider = new firebase.auth.OAuthProvider('apple.com');
+            try {
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                showToast(`Sign in failed: ${error.message}`, 'error');
+            }
+        }
+
+        document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             
             try {
-                // Simulate API call (replace with your actual API endpoint)
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                
-                showToast('Speech generated successfully!', 'success');
-                
-                // Here you would typically:
-                // 1. Call your backend API
-                // 2. Get the audio URL
-                // 3. Play the audio or provide download link
-                
+                await auth.signInWithEmailAndPassword(email, password);
             } catch (error) {
-                showToast('Generation failed: ' + error.message, 'error');
-            } finally {
-                generateBtn.innerHTML = originalText;
-                generateBtn.disabled = false;
+                showToast(`Sign in failed: ${error.message}`, 'error');
+            }
+        });
+
+        async function logout() {
+            try {
+                await auth.signOut();
+                showToast('Signed out successfully', 'success');
+            } catch (error) {
+                showToast(`Sign out failed: ${error.message}`, 'error');
             }
         }
 
-        function toggleUserMenu() {
-            // This would typically open a user menu dropdown
-            showToast('User menu clicked', 'info');
+        // ==================== VOICE MANAGEMENT ====================
+        async function loadVoices() {
+            try {
+                const headers = currentUserToken ? { 'X-Auth-Token': currentUserToken } : {};
+                const response = await fetch('/api/voices', { headers });
+                const data = await response.json();
+                
+                const languageSelect = document.getElementById('languageSelect');
+                languageSelect.innerHTML = '<option value="All">All Languages</option>';
+                
+                if (data.languages && data.languages.length > 0) {
+                    data.languages.sort().forEach(lang => {
+                        const option = document.createElement('option');
+                        option.value = lang;
+                        option.textContent = lang;
+                        languageSelect.appendChild(option);
+                    });
+                }
+                
+                updateOutput(`Loaded ${data.total_voices} voices`, 'success');
+                await filterVoices();
+                
+            } catch (error) {
+                updateOutput('Failed to load voices', 'error');
+            }
+        }
+
+        async function filterVoices() {
+            const query = document.getElementById('voiceSearch').value.trim();
+            const gender = document.getElementById('genderSelect').value;
+            const language = query ? 'All' : document.getElementById('languageSelect').value;
+
+            try {
+                const headers = currentUserToken ? { 'X-Auth-Token': currentUserToken } : {};
+                const url = `/api/filter_voices?language=${encodeURIComponent(language)}&search=${encodeURIComponent(query)}&gender=${encodeURIComponent(gender)}`;
+                const response = await fetch(url, { headers });
+                const data = await response.json();
+
+                const voiceSelect = document.getElementById('voiceSelect');
+                voiceSelect.innerHTML = '';
+
+                if (data.voices && data.voices.length > 0) {
+                    data.voices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.short_name;
+                        option.textContent = voice.display_name;
+                        voiceSelect.appendChild(option);
+                    });
+                } else {
+                    voiceSelect.innerHTML = '<option>No voices found</option>';
+                }
+            } catch (error) {
+                updateOutput('Filter failed', 'error');
+            }
         }
 
         // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize theme
             initTheme();
-            
-            // Initialize character counter
             updateCharCounter();
+            updateSpeedValue(1.0);
+            updatePitchValue(0);
             
-            // Check auth state
-            checkAuthState();
+            // Theme toggle
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
             
-            // Email login form
-            document.getElementById('emailLoginForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                try {
-                    await auth.signInWithEmailAndPassword(email, password);
-                } catch (error) {
-                    showToast('Login failed: ' + error.message, 'error');
-                }
-            });
+            // Voice controls
+            document.getElementById('voiceSearch').addEventListener('input', filterVoices);
+            document.getElementById('languageSelect').addEventListener('change', filterVoices);
+            document.getElementById('genderSelect').addEventListener('change', filterVoices);
             
-            // Forgot password link
-            document.querySelector('.forgot-password').addEventListener('click', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                
-                if (!email) {
-                    showToast('Please enter your email first', 'error');
-                    return;
-                }
-                
-                try {
-                    await auth.sendPasswordResetEmail(email);
-                    showToast('Password reset email sent!', 'success');
-                } catch (error) {
-                    showToast('Failed to send reset email: ' + error.message, 'error');
-                }
-            });
+            // Text controls
+            document.getElementById('previewBtn').addEventListener('click', previewVoice);
+            document.getElementById('generateBtn').addEventListener('click', generateSpeech);
+            document.getElementById('cleanupBtn').addEventListener('click', cleanupSession);
             
-            // Sign up link
-            document.querySelector('.signup-link').addEventListener('click', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                if (!email || !password) {
-                    showToast('Please enter email and password', 'error');
-                    return;
-                }
-                
-                try {
-                    await auth.createUserWithEmailAndPassword(email, password);
-                    showToast('Account created successfully!', 'success');
-                } catch (error) {
-                    showToast('Sign up failed: ' + error.message, 'error');
-                }
-            });
+            // Audio controls
+            document.getElementById('downloadBtn').addEventListener('click', downloadAudio);
+            document.getElementById('transcribeBtn').addEventListener('click', transcribeAudio);
+            document.getElementById('transcribeUploadBtn').addEventListener('click', transcribeUpload);
             
-            // Content option click handlers
-            document.querySelectorAll('.content-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                    
-                    const label = this.querySelector('label').textContent;
-                    if (checkbox.checked) {
-                        showToast(`Selected: ${label}`, 'success');
-                    }
-                });
-            });
+            // File upload
+            document.getElementById('audioUpload').addEventListener('change', handleFileUpload);
         });
 
-        // ==================== RESPONSIVE HELPERS ====================
-        window.addEventListener('resize', () => {
-            // Add any responsive adjustments here
-        });
+        // ==================== PLACEHOLDER FUNCTIONS ====================
+        async function previewVoice() {
+            // Implementation from your backend
+            updateOutput('Preview feature coming soon', 'info');
+        }
+
+        async function generateSpeech() {
+            // Implementation from your backend
+            updateOutput('Generation feature coming soon', 'info');
+        }
+
+        async function cleanupSession() {
+            // Implementation from your backend
+            updateOutput('Session cleaned', 'success');
+        }
+
+        async function downloadAudio() {
+            // Implementation from your backend
+            updateOutput('Download feature coming soon', 'info');
+        }
+
+        async function transcribeAudio() {
+            // Implementation from your backend
+            updateOutput('Transcription feature coming soon', 'info');
+        }
+
+        async function transcribeUpload() {
+            // Implementation from your backend
+            updateOutput('Upload transcription feature coming soon', 'info');
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                updateOutput(`Uploaded: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`, 'success');
+            }
+        }
     </script>
 </body>
 </html>
-
