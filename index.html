@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Professional AI-Powered Text-to-Speech Studio">
-    <title>Lumen Voice Studio</title>
+    <meta name="description" content="Professional AI-Powered Text-to-Speech & Audio Transcription">
+    <title>Lumen - Professional AI Voice Generation</title>
     
-    <!-- Inter Font Family -->
+    <!-- Inter Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -22,7 +22,6 @@
 
     <style>
         :root {
-            /* Existing Color Variables - Preserved */
             --primary-blue: #2563eb;
             --primary-green: #10b981;
             --gradient-primary: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
@@ -44,16 +43,8 @@
             --shadow-soft: 0 4px 20px rgba(37, 99, 235, 0.1);
             --shadow-medium: 0 8px 32px rgba(37, 99, 235, 0.2);
             --shadow-strong: 0 20px 50px rgba(37, 99, 235, 0.3);
-            
-            /* New Layout Variables */
             --nav-width: 70px;
             --controls-width: 380px;
-            --workspace-gap: 24px;
-            --header-height: 60px;
-            --border-radius-sm: 8px;
-            --border-radius-md: 12px;
-            --border-radius-lg: 16px;
-            --transition-default: 200ms ease;
         }
 
         [data-theme="light"] {
@@ -70,7 +61,6 @@
             --shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
 
-        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -82,71 +72,144 @@
             font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            line-height: 1.5;
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Authentication Container */
+        #auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: var(--shadow-strong);
+            text-align: center;
+        }
+
+        .auth-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .auth-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .auth-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .auth-divider span {
+            padding: 0 1rem;
+        }
+
+        .auth-footer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .auth-footer a {
+            color: var(--primary-blue);
+            text-decoration: none;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main App Container */
+        #app-container {
+            display: none;
             height: 100vh;
             overflow: hidden;
-            transition: all var(--transition-default);
         }
 
-        /* Main Layout Structure */
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100%;
-            position: relative;
-        }
-
-        /* Left Navigation */
-        .side-navigation {
+        /* Navigation Bar */
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
             width: var(--nav-width);
-            background: var(--bg-secondary);
+            height: 100vh;
+            background: var(--bg-card);
             border-right: 1px solid var(--border-subtle);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0;
+            padding: 1.5rem 0;
             z-index: 100;
         }
 
         .nav-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            margin-bottom: 40px;
-        }
-
-        .nav-logo-icon {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             background: var(--gradient-primary);
-            border-radius: 8px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
             color: white;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .nav-items {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            flex: 1;
+            font-weight: 800;
         }
 
         .nav-item {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: var(--border-radius-md);
             color: var(--text-muted);
             cursor: pointer;
-            transition: all var(--transition-default);
+            transition: all 0.2s ease;
+            margin-bottom: 0.5rem;
             position: relative;
         }
 
@@ -156,561 +219,180 @@
         }
 
         .nav-item.active {
-            background: var(--bg-tertiary);
-            color: var(--primary-blue);
+            background: var(--gradient-primary);
+            color: white;
         }
 
-        .nav-item.active::before {
+        .nav-item.active::after {
             content: '';
             position: absolute;
-            left: 0;
+            right: -12px;
             top: 50%;
             transform: translateY(-50%);
-            width: 3px;
-            height: 20px;
+            width: 4px;
+            height: 24px;
             background: var(--gradient-primary);
-            border-radius: 0 2px 2px 0;
+            border-radius: 2px;
         }
 
-        .nav-item i {
-            font-size: 18px;
+        .nav-spacer {
+            flex: 1;
         }
 
-        .nav-bottom {
+        .nav-user {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-user:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Content Area */
+        .main-wrapper {
+            margin-left: var(--nav-width);
+            margin-right: var(--controls-width);
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-top: auto;
         }
 
-        /* Main Workspace */
+        /* Top Bar */
+        .top-bar {
+            height: 70px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+        }
+
+        .top-bar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--border-medium);
+        }
+
+        /* Workspace Area */
         .workspace {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 24px;
-            overflow: hidden;
-            gap: var(--workspace-gap);
-        }
-
-        .workspace-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .workspace-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .workspace-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        /* Text Composition Area */
-        .text-composition-card {
-            flex: 1;
-            background: var(--bg-card);
-            border-radius: var(--border-radius-lg);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .text-composition-header {
-            padding: 20px 24px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .text-composition-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .text-composition-counter {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .text-composition-area {
-            flex: 1;
-            padding: 20px 24px;
-        }
-
-        .text-composition-textarea {
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            border: none;
-            resize: none;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-            outline: none;
-            padding: 0;
-        }
-
-        .text-composition-textarea::placeholder {
-            color: var(--text-muted);
-            opacity: 0.7;
-        }
-
-        .text-composition-footer {
-            padding: 16px 24px;
-            border-top: 1px solid var(--border-subtle);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-
-        /* Audio Workspace */
-        .audio-workspace-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius-lg);
-            padding: 24px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .audio-workspace-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .audio-workspace-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .audio-player-container {
-            margin-bottom: 20px;
-        }
-
-        .audio-player {
-            width: 100%;
-            height: 48px;
-            border-radius: var(--border-radius-md);
-            background: var(--bg-tertiary);
-        }
-
-        .audio-workspace-actions {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        /* Media Import */
-        .media-import-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius-lg);
-            padding: 24px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .media-import-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-        }
-
-        .file-upload-area {
-            border: 2px dashed var(--border-medium);
-            border-radius: var(--border-radius-md);
-            padding: 40px 20px;
-            text-align: center;
-            background: var(--bg-tertiary);
-            cursor: pointer;
-            transition: all var(--transition-default);
-            margin-bottom: 16px;
-        }
-
-        .file-upload-area:hover {
-            border-color: var(--primary-blue);
-            background: rgba(37, 99, 235, 0.05);
-        }
-
-        .file-upload-area.has-file {
-            border-color: var(--primary-green);
-            background: rgba(16, 185, 129, 0.05);
-        }
-
-        .file-upload-icon {
-            font-size: 32px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
-
-        .file-upload-text {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .file-upload-subtext {
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        /* Output Panel */
-        .output-panel-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius-lg);
-            padding: 24px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--border-subtle);
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .output-panel-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-        }
-
-        .output-content {
-            flex: 1;
-            background: var(--bg-tertiary);
-            border-radius: var(--border-radius-md);
-            padding: 16px;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            line-height: 1.5;
-            color: var(--text-secondary);
+            padding: 2rem;
             overflow-y: auto;
+            background: var(--bg-primary);
+        }
+
+        .workspace-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
             border: 1px solid var(--border-subtle);
-        }
-
-        /* Right Controls Panel */
-        .controls-panel {
-            width: var(--controls-width);
-            background: var(--bg-secondary);
-            border-left: 1px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .controls-header {
-            padding: 24px 24px 16px;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .controls-tabs {
-            display: flex;
-            gap: 20px;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .control-tab {
-            padding: 12px 0;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            position: relative;
-            transition: color var(--transition-default);
-        }
-
-        .control-tab:hover {
-            color: var(--text-primary);
-        }
-
-        .control-tab.active {
-            color: var(--primary-blue);
-        }
-
-        .control-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--gradient-primary);
-            border-radius: 1px;
-        }
-
-        .controls-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        /* Voice Library */
-        .voice-library-section {
-            margin-bottom: 8px;
         }
 
         .section-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 1.25rem;
             font-weight: 600;
             color: var(--text-primary);
         }
 
-        .section-action {
-            font-size: 13px;
-            color: var(--primary-blue);
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .voice-search {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius-md);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .voice-search:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        .voice-filters {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .filter-select {
-            width: 100%;
-            padding: 10px 12px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius-md);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .filter-select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        .voice-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 24px;
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .voice-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius-md);
-            padding: 12px;
-            cursor: pointer;
-            transition: all var(--transition-default);
+        /* Text Composition Area */
+        .text-composition {
             position: relative;
         }
 
-        .voice-card:hover {
-            border-color: var(--primary-blue);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-soft);
+        .text-input {
+            width: 100%;
+            min-height: 300px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: none;
+            padding: 0;
         }
 
-        .voice-card.selected {
-            background: var(--gradient-primary);
-            border-color: transparent;
-            color: white;
+        .text-input::placeholder {
+            color: var(--text-muted);
         }
 
-        .voice-card.best::after {
-            content: '👑';
+        .char-counter {
             position: absolute;
-            top: -6px;
-            right: -6px;
-            background: var(--style-orange);
-            color: white;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .voice-name {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .voice-details {
-            font-size: 11px;
-            opacity: 0.8;
-        }
-
-        /* Recommended Voices */
-        .recommended-voices-section {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
-            border: 1px solid var(--border-medium);
-            border-radius: var(--border-radius-md);
-            padding: 16px;
-        }
-
-        .recommended-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .recommended-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-        }
-
-        /* Audio Controls */
-        .audio-controls-section {
-            margin-top: 8px;
-        }
-
-        .control-group {
-            margin-bottom: 20px;
-        }
-
-        .control-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .label-text {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .label-value {
-            font-size: 13px;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            font-family: 'Courier New', monospace;
+            background: var(--bg-card);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
         }
 
-        .slider-container {
-            position: relative;
-            padding: 8px 0;
-        }
-
-        .slider {
-            width: 100%;
-            height: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 2px;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--primary-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid var(--bg-primary);
-        }
-
-        .slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            background: var(--primary-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid var(--bg-primary);
-        }
-
-        .slider-range {
+        .action-buttons {
             display: flex;
-            justify-content: space-between;
-            margin-top: 4px;
-            font-size: 12px;
-            color: var(--text-muted);
+            gap: 1rem;
+            margin-top: 1.5rem;
         }
 
-        /* Generation Actions */
-        .generation-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        /* Buttons */
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 20px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: var(--border-radius-md);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
+            border-radius: 12px;
             font-weight: 500;
+            font-size: 0.875rem;
             cursor: pointer;
-            transition: all var(--transition-default);
-            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
         }
 
         .btn-primary {
@@ -719,24 +401,36 @@
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: var(--shadow-medium);
         }
 
         .btn-secondary {
             background: var(--bg-tertiary);
             color: var(--text-primary);
-            border: 1px solid var(--border-medium);
+            border: 1px solid var(--border-subtle);
         }
 
         .btn-secondary:hover {
-            background: var(--bg-card);
-            transform: translateY(-2px);
+            background: var(--border-medium);
         }
 
-        .btn-success {
-            background: linear-gradient(135deg, var(--primary-green) 0%, #059669 100%);
-            color: white;
+        /* Audio Player */
+        .audio-player {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .audio-player audio {
+            width: 100%;
+        }
+
+        .audio-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
         .btn-download {
@@ -749,63 +443,252 @@
             color: white;
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        .btn-icon {
-            font-size: 16px;
-        }
-
-        /* Status Indicator */
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
+        /* Media Import */
+        .media-import {
+            border: 2px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
             background: var(--bg-tertiary);
-            border-radius: var(--border-radius-md);
-            margin-bottom: 20px;
-            border: 1px solid var(--border-subtle);
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--primary-green);
-            animation: pulse 2s infinite;
+        .media-import:hover {
+            border-color: var(--primary-blue);
+            background: rgba(37, 99, 235, 0.05);
         }
 
-        .status-text {
-            font-size: 13px;
+        .media-import.has-file {
+            border-color: var(--primary-green);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: var(--controls-width);
+            height: 100vh;
+            background: var(--bg-card);
+            border-left: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .controls-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .controls-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .controls-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 0.875rem;
             font-weight: 500;
             color: var(--text-primary);
+            margin-bottom: 0.75rem;
         }
 
-        .status-indicator.offline .status-dot {
-            background: #ef4444;
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
         }
 
-        /* Toast */
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .voice-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .voice-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-1px);
+        }
+
+        .voice-card.selected {
+            border-color: var(--primary-blue);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .voice-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .voice-gender {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .slider-control {
+            margin-top: 1rem;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-secondary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .controls-panel {
+                transform: translateX(100%);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .mobile-nav {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--bg-card);
+                border-top: 1px solid var(--border-subtle);
+                display: flex;
+                justify-content: space-around;
+                padding: 1rem;
+                z-index: 100;
+            }
+
+            .mobile-nav-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+                color: var(--text-muted);
+                cursor: pointer;
+                font-size: 0.75rem;
+            }
+
+            .mobile-nav-item.active {
+                color: var(--primary-blue);
+            }
+
+            .workspace {
+                padding-bottom: 5rem;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
         .toast {
             position: fixed;
-            top: 24px;
+            bottom: 2rem;
             left: 50%;
-            transform: translateX(-50%) translateY(-20px);
+            transform: translateX(-50%);
             background: var(--bg-card);
             border: 1px solid var(--border-medium);
-            border-radius: var(--border-radius-md);
-            padding: 12px 20px;
-            box-shadow: var(--shadow-strong);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-medium);
             z-index: 1000;
             opacity: 0;
-            transition: all var(--transition-default);
-            max-width: 400px;
-            width: 90%;
+            transition: all 0.3s ease;
+            max-width: calc(100vw - 40px);
         }
 
         .toast.show {
@@ -824,546 +707,263 @@
             background: rgba(239, 68, 68, 0.1);
             color: #ef4444;
         }
-
-        /* Loading States */
-        .loading-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Auth Container */
-        #auth-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: var(--bg-primary);
-            padding: 20px;
-        }
-
-        .auth-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius-lg);
-            padding: 40px;
-            max-width: 450px;
-            width: 100%;
-            box-shadow: var(--shadow-strong);
-            border: 1px solid var(--border-subtle);
-        }
-
-        .auth-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .auth-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .auth-logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient-primary);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .auth-logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .auth-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .auth-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-        }
-
-        .auth-providers {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .auth-provider-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 14px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--border-radius-md);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-default);
-        }
-
-        .auth-provider-btn:hover {
-            background: var(--bg-card);
-            border-color: var(--border-medium);
-        }
-
-        .auth-provider-btn i {
-            font-size: 18px;
-        }
-
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0;
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-subtle);
-        }
-
-        .auth-footer {
-            text-align: center;
-            margin-top: 32px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border-subtle);
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        /* Hidden State */
-        .hidden {
-            display: none !important;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .app-container {
-                flex-direction: column;
-            }
-            
-            .side-navigation {
-                width: 100%;
-                height: 70px;
-                flex-direction: row;
-                padding: 0 20px;
-                border-right: none;
-                border-bottom: 1px solid var(--border-subtle);
-            }
-            
-            .nav-logo {
-                margin-bottom: 0;
-                width: auto;
-            }
-            
-            .nav-items {
-                flex-direction: row;
-                gap: 16px;
-                margin-left: 24px;
-            }
-            
-            .nav-item.active::before {
-                left: 50%;
-                top: auto;
-                bottom: 0;
-                transform: translateX(-50%);
-                width: 20px;
-                height: 3px;
-                border-radius: 2px 2px 0 0;
-            }
-            
-            .nav-bottom {
-                flex-direction: row;
-                margin-top: 0;
-                margin-left: auto;
-            }
-            
-            .controls-panel {
-                position: fixed;
-                right: -100%;
-                top: 70px;
-                bottom: 0;
-                width: 100%;
-                max-width: 380px;
-                transition: right 0.3s ease;
-                z-index: 1000;
-                box-shadow: var(--shadow-strong);
-            }
-            
-            .controls-panel.active {
-                right: 0;
-            }
-            
-            .controls-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                background: var(--bg-tertiary);
-                border-radius: var(--border-radius-md);
-                border: 1px solid var(--border-subtle);
-                color: var(--text-primary);
-                cursor: pointer;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .workspace {
-                padding: 16px;
-                gap: 16px;
-            }
-            
-            .workspace-title {
-                font-size: 22px;
-            }
-            
-            .text-composition-header,
-            .text-composition-area,
-            .text-composition-footer {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
-            
-            .generation-actions {
-                grid-template-columns: 1fr;
-            }
-            
-            .voice-filters {
-                grid-template-columns: 1fr;
-            }
-            
-            .audio-workspace-actions {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .auth-card {
-                padding: 24px;
-            }
-            
-            .workspace-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-            
-            .workspace-actions {
-                width: 100%;
-            }
-            
-            .controls-content {
-                padding: 16px;
-            }
-        }
-
-        /* Animations */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
-    <!-- Auth Container -->
+    <!-- Authentication Container -->
     <div id="auth-container">
         <div class="auth-card">
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <div class="auth-logo-icon">L</div>
-                    <div class="auth-logo-text">Lumen</div>
-                </div>
-                <h1 class="auth-title">Welcome back</h1>
-                <p class="auth-subtitle">Sign in to access Voice Studio</p>
-                <div id="firebaseui-auth-container"></div>
+            <div class="auth-logo">
+                <i class="fas fa-microphone-alt"></i>
             </div>
+            <h2 class="auth-title">Welcome back</h2>
+            <p class="auth-subtitle">Sign in to continue to Lumen</p>
+            
+            <div id="firebaseui-auth-container"></div>
+            
+            <div class="auth-divider">
+                <span>or continue with</span>
+            </div>
+            
+            <button class="btn btn-secondary" style="width: 100%;" onclick="signInWithGoogle()">
+                <i class="fab fa-google"></i>
+                Continue with Google
+            </button>
+            
             <div class="auth-footer">
-                By continuing, you agree to our Terms of Service and Privacy Policy
+                By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
             </div>
         </div>
     </div>
 
-    <!-- App Container -->
-    <div id="app-container" class="app-container hidden">
-        <!-- Left Navigation -->
-        <nav class="side-navigation">
-            <div class="nav-logo">
-                <div class="nav-logo-icon">L</div>
+    <!-- Main App Container -->
+    <div id="app-container">
+        <!-- Navigation Sidebar -->
+        <nav class="nav-sidebar">
+            <div class="nav-logo">L</div>
+            
+            <div class="nav-item active" title="Text Composition">
+                <i class="fas fa-file-text"></i>
             </div>
-            <div class="nav-items">
-                <div class="nav-item active" data-target="workspace">
-                    <i class="fas fa-comment-dots"></i>
-                </div>
-                <div class="nav-item" data-target="audio-workspace">
-                    <i class="fas fa-play-circle"></i>
-                </div>
-                <div class="nav-item" data-target="media-import">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                </div>
-                <div class="nav-item" data-target="output-panel">
-                    <i class="fas fa-file-alt"></i>
-                </div>
+            
+            <div class="nav-item" title="Voice Library">
+                <i class="fas fa-microphone"></i>
             </div>
-            <div class="nav-bottom">
-                <button class="nav-item theme-toggle" id="theme-toggle">
-                    <i class="fas fa-moon" id="theme-icon"></i>
-                </button>
-                <button class="nav-item" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
+            
+            <div class="nav-item" title="Media Import">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            
+            <div class="nav-item" title="History">
+                <i class="fas fa-history"></i>
+            </div>
+            
+            <div class="nav-spacer"></div>
+            
+            <div class="nav-item" title="Settings">
+                <i class="fas fa-cog"></i>
+            </div>
+            
+            <div class="nav-user" title="Profile">
+                U
             </div>
         </nav>
 
-        <!-- Main Workspace -->
-        <main class="workspace">
-            <div class="workspace-header">
-                <h1 class="workspace-title">Voice Studio</h1>
-                <div class="workspace-actions">
-                    <button class="btn btn-secondary controls-toggle" onclick="toggleControls()">
-                        <i class="fas fa-sliders-h"></i>
-                        <span class="hidden-tablet">Settings</span>
-                    </button>
-                    <button class="btn btn-secondary" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span class="hidden-tablet">Sign Out</span>
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <h1>Text Composition</h1>
+                <div class="top-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Status Indicator -->
-            <div id="statusIndicator" class="status-indicator">
-                <div class="status-dot"></div>
-                <span class="status-text">Loading...</span>
-            </div>
-
-            <!-- Text Composition Card -->
-            <div class="text-composition-card">
-                <div class="text-composition-header">
-                    <div class="text-composition-label">Text Composition</div>
-                    <div id="charCounter" class="text-composition-counter">0 / 50,000 characters</div>
-                </div>
-                <div class="text-composition-area">
-                    <textarea 
-                        id="text" 
-                        class="text-composition-textarea" 
-                        placeholder="Type your text here..."
-                        maxlength="50000"
-                        oninput="updateCharCounter()"
-                    >Welcome to Lumen Voice Studio! This is a demonstration of our advanced text-to-speech technology.</textarea>
-                </div>
-                <div class="text-composition-footer">
-                    <button id="cleanupBtn" class="btn btn-secondary">
-                        <i class="fas fa-broom btn-icon"></i>
-                        Clear Session
-                    </button>
-                    <button id="previewBtn" class="btn btn-secondary">
-                        <i class="fas fa-play btn-icon"></i>
-                        Preview
-                    </button>
-                    <button id="generateBtn" class="btn btn-primary">
-                        <i class="fas fa-magic btn-icon"></i>
-                        Generate Audio
-                    </button>
-                </div>
-            </div>
-
-            <!-- Audio Workspace Card -->
-            <div class="audio-workspace-card">
-                <div class="audio-workspace-header">
-                    <h2 class="audio-workspace-title">Audio Workspace</h2>
-                </div>
-                <div class="audio-player-container">
-                    <audio id="player" class="audio-player" controls>
-                        Your browser doesn't support HTML audio.
-                    </audio>
-                </div>
-                <div id="audioActions" class="audio-workspace-actions hidden">
-                    <button id="downloadAudioBtn" class="btn btn-download">
-                        <i class="fas fa-download btn-icon"></i>
-                        Download Audio
-                    </button>
-                    <button id="transcribeAudioBtn" class="btn btn-transcribe">
-                        <i class="fas fa-closed-captioning btn-icon"></i>
-                        Transcribe Audio
-                    </button>
-                </div>
-            </div>
-
-            <!-- Media Import Card -->
-            <div class="media-import-card">
-                <h2 class="media-import-title">Media Import</h2>
-                <div class="file-upload-area" id="uploadArea">
-                    <div class="file-upload-icon">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                    </div>
-                    <div class="file-upload-text">Choose audio file or drag & drop</div>
-                    <div class="file-upload-subtext">MP3, WAV, M4A supported</div>
-                    <input id="audioUpload" type="file" class="hidden" accept="audio/*" />
-                </div>
-                <button id="transcribeUploadBtn" class="btn btn-success">
-                    <i class="fas fa-closed-captioning btn-icon"></i>
-                    Transcribe Media
-                </button>
-            </div>
-
-            <!-- Output Panel Card -->
-            <div class="output-panel-card">
-                <h2 class="output-panel-title">Output Panel</h2>
-                <div id="output" class="output-content">
-                    🚀 Lumen Voice Studio ready. Select a voice and enter text to begin creating professional audio.
-                </div>
-            </div>
-        </main>
-
-        <!-- Right Controls Panel -->
-        <aside class="controls-panel">
-            <div class="controls-header">
-                <div class="controls-tabs">
-                    <button class="control-tab active" data-tab="settings">Settings</button>
-                    <button class="control-tab" data-tab="history">History</button>
-                </div>
-            </div>
-            <div class="controls-content">
-                <!-- Voice Library -->
-                <div class="voice-library-section">
+            <!-- Workspace Area -->
+            <div class="workspace">
+                <!-- Text Composition Section -->
+                <div class="workspace-section">
                     <div class="section-header">
-                        <h3 class="section-title">Voice Library</h3>
-                        <button class="section-action" id="refreshVoices">
-                            <i class="fas fa-sync-alt"></i>
-                            Refresh
+                        <h2 class="section-title">Text Composition</h2>
+                    </div>
+                    <div class="text-composition">
+                        <textarea 
+                            id="text" 
+                            class="text-input" 
+                            placeholder="Type your text here..."
+                            maxlength="50000"
+                            oninput="updateCharCounter()"
+                        >Welcome to Lumen! This is a demonstration of our advanced text-to-speech technology.</textarea>
+                        <div class="char-counter" id="charCounter">0 / 50,000 characters</div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" onclick="previewVoice()">
+                            <i class="fas fa-play"></i>
+                            Preview
+                        </button>
+                        <button class="btn btn-primary" onclick="generateSpeech()">
+                            <i class="fas fa-magic"></i>
+                            Generate Audio
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearSession()">
+                            <i class="fas fa-broom"></i>
+                            Clear Session
                         </button>
                     </div>
-                    
-                    <input 
-                        id="voiceSearch" 
-                        class="voice-search" 
-                        type="text" 
-                        placeholder="Search voices..."
-                    />
-                    
-                    <div class="voice-filters">
-                        <select id="languageSelect" class="filter-select">
-                            <option>Loading...</option>
-                        </select>
-                        <select id="genderSelect" class="filter-select">
-                            <option value="All">All Genders</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
+                </div>
+
+                <!-- Audio Player Section -->
+                <div class="workspace-section" id="audioSection" style="display: none;">
+                    <div class="section-header">
+                        <h2 class="section-title">Audio Output</h2>
                     </div>
-                    
-                    <div class="voice-grid" id="voiceGrid">
-                        <div class="voice-card">
-                            <div class="voice-name">Loading...</div>
-                            <div class="voice-details">Please wait</div>
+                    <div class="audio-player">
+                        <audio id="player" controls>
+                            Your browser doesn't support HTML audio.
+                        </audio>
+                        <div class="audio-actions">
+                            <button class="btn btn-download" onclick="downloadAudio()">
+                                <i class="fas fa-download"></i>
+                                Download Audio
+                            </button>
+                            <button class="btn btn-transcribe" onclick="transcribeAudio()">
+                                <i class="fas fa-closed-captioning"></i>
+                                Transcribe Audio
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Recommended Voices -->
-                <div class="recommended-voices-section">
-                    <h3 class="recommended-title">✨ Recommended Voices</h3>
-                    <div class="recommended-grid" id="recommendedVoices">
-                        <!-- Populated by JavaScript -->
+                <!-- Media Import Section -->
+                <div class="workspace-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Media Import</h2>
                     </div>
-                </div>
-
-                <!-- Audio Controls -->
-                <div class="audio-controls-section">
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span class="label-text">Playback Speed</span>
-                            <span id="speedValue" class="label-value">1.0x</span>
+                    <div class="media-import" onclick="document.getElementById('audioUpload').click()">
+                        <input type="file" id="audioUpload" accept="audio/*" style="display: none;" onchange="handleFileUpload(event)">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
                         </div>
-                        <div class="slider-container">
-                            <input 
-                                id="speed" 
-                                type="range" 
-                                class="slider" 
-                                min="0.5" 
-                                max="2.0" 
-                                step="0.1" 
-                                value="1.0"
-                                oninput="updateSpeedValue(this.value)"
-                            />
-                            <div class="slider-range">
-                                <span>0.5x</span>
-                                <span>2.0x</span>
-                            </div>
+                        <div class="upload-text">
+                            Click to upload or drag and drop<br>
+                            <small>MP3, WAV, M4A supported</small>
                         </div>
                     </div>
-
-                    <div class="control-group">
-                        <div class="control-label">
-                            <span class="label-text">Pitch Adjustment</span>
-                            <span id="pitchValue" class="label-value">+0 Hz</span>
-                        </div>
-                        <div class="slider-container">
-                            <input 
-                                id="pitch" 
-                                type="range" 
-                                class="slider" 
-                                min="-20" 
-                                max="20" 
-                                step="1" 
-                                value="0"
-                                oninput="updatePitchValue(this.value)"
-                            />
-                            <div class="slider-range">
-                                <span>Deeper</span>
-                                <span>Higher</span>
-                            </div>
-                        </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="transcribeMedia()">
+                            <i class="fas fa-closed-captioning"></i>
+                            Transcribe Media
+                        </button>
                     </div>
-                </div>
-
-                <!-- Generation Actions -->
-                <div class="generation-actions">
-                    <button id="previewBtnAlt" class="btn btn-secondary">
-                        <i class="fas fa-play btn-icon"></i>
-                        Preview
-                    </button>
-                    <button id="generateBtnAlt" class="btn btn-primary">
-                        <i class="fas fa-magic btn-icon"></i>
-                        Generate
-                    </button>
                 </div>
             </div>
-        </aside>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="controls-header">
+                <div class="controls-tabs">
+                    <div class="tab active" onclick="switchTab('settings')">Settings</div>
+                    <div class="tab" onclick="switchTab('history')">History</div>
+                </div>
+            </div>
+            
+            <div class="controls-content" id="settingsTab">
+                <!-- Voice Library -->
+                <div class="control-group">
+                    <label class="control-label">Voice Library</label>
+                    <div class="voice-grid" id="voiceGrid">
+                        <!-- Voice cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Language Selection -->
+                <div class="control-group">
+                    <label class="control-label" for="languageSelect">Language</label>
+                    <select id="languageSelect" class="form-control">
+                        <option>English</option>
+                        <option>Spanish</option>
+                        <option>French</option>
+                        <option>German</option>
+                    </select>
+                </div>
+
+                <!-- Model Selection -->
+                <div class="control-group">
+                    <label class="control-label" for="modelSelect">Model</label>
+                    <select id="modelSelect" class="form-control">
+                        <option>Default</option>
+                        <option>Enhanced</option>
+                    </select>
+                </div>
+
+                <!-- Playback Speed -->
+                <div class="control-group">
+                    <label class="control-label">Playback Speed</label>
+                    <div class="slider-control">
+                        <input type="range" id="speed" class="slider" min="0.5" max="2.0" step="0.1" value="1.0">
+                        <div class="slider-labels">
+                            <span>0.5x</span>
+                            <span>1.0x</span>
+                            <span>2.0x</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pitch Adjustment -->
+                <div class="control-group">
+                    <label class="control-label">Pitch Adjustment</label>
+                    <div class="slider-control">
+                        <input type="range" id="pitch" class="slider" min="-20" max="20" step="1" value="0">
+                        <div class="slider-labels">
+                            <span>-20Hz</span>
+                            <span>0Hz</span>
+                            <span>+20Hz</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Options -->
+                <div class="control-group">
+                    <label class="control-label">Advanced Options</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.875rem; color: var(--text-secondary);">Enhanced Quality</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-content hidden" id="historyTab">
+                <p style="color: var(--text-muted); text-align: center; margin-top: 2rem;">
+                    No history available yet
+                </p>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav">
+            <div class="mobile-nav-item active">
+                <i class="fas fa-file-text"></i>
+                <span>Text</span>
+            </div>
+            <div class="mobile-nav-item">
+                <i class="fas fa-microphone"></i>
+                <span>Voice</span>
+            </div>
+            <div class="mobile-nav-item">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Import</span>
+            </div>
+            <div class="mobile-nav-item">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </div>
+        </div>
     </div>
 
     <!-- Toast Notification -->
@@ -1385,8 +985,9 @@
         const auth = firebase.auth();
         let currentUserToken = null;
 
-        // Firebase UI Config
+        // Firebase UI Configuration
         const ui = new firebaseui.auth.AuthUI(auth);
+
         const uiConfig = {
             callbacks: {
                 signInSuccessWithAuthResult: function(authResult) {
@@ -1400,13 +1001,29 @@
                 }
             },
             signInOptions: [
-                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-                firebase.auth.EmailAuthProvider.PROVIDER_ID
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID
             ],
             signInFlow: 'popup'
         };
 
-        // Recommended Voices
+        // Auth State Listener
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('app-container').style.display = 'block';
+                currentUserToken = await user.getIdToken();
+                console.log("Logged in:", user.email);
+                loadVoices();
+            } else {
+                document.getElementById('auth-container').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+                currentUserToken = null;
+                ui.start('#firebaseui-auth-container', uiConfig);
+            }
+        });
+
+        // Recommended voices data
         const RECOMMENDED_VOICES = [
             { name: 'William', gender: 'Male', short_name: 'en-AU-WilliamNeural' },
             { name: 'Natasha', gender: 'Female', short_name: 'en-AU-NatashaNeural' },
@@ -1418,16 +1035,14 @@
             { name: 'Brian', gender: 'Male', short_name: 'en-US-BrianNeural' }
         ];
 
-        // App State
-        let isLoading = false;
-        let uploadedAudioFile = null;
         let currentAudioUrl = null;
         let currentAudioFilename = null;
+        let selectedVoice = null;
 
         // Theme Management
         function toggleTheme() {
             const html = document.documentElement;
-            const themeIcon = document.getElementById('theme-icon');
+            const themeIcon = document.querySelector('.theme-toggle i');
             
             if (html.getAttribute('data-theme') === 'dark') {
                 html.setAttribute('data-theme', 'light');
@@ -1440,10 +1055,11 @@
             }
         }
 
+        // Initialize theme
         function initTheme() {
             const saved = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const themeIcon = document.getElementById('theme-icon');
+            const themeIcon = document.querySelector('.theme-toggle i');
             
             if (saved === 'dark' || (!saved && prefersDark)) {
                 document.documentElement.setAttribute('data-theme', 'dark');
@@ -1454,7 +1070,7 @@
             }
         }
 
-        // Character Counter
+        // Character counter
         function updateCharCounter() {
             const text = document.getElementById('text').value;
             const counter = document.getElementById('charCounter');
@@ -1466,118 +1082,236 @@
                 counter.style.color = '#ef4444';
             } else if (length > 30000) {
                 counter.style.color = '#f97316';
-            } else if (length > 15000) {
-                counter.style.color = '#eab308';
             } else {
                 counter.style.color = 'var(--text-muted)';
             }
         }
 
-        // Slider Value Updates
-        function updateSpeedValue(value) {
-            document.getElementById('speedValue').textContent = parseFloat(value).toFixed(1) + 'x';
-        }
-
-        function updatePitchValue(value) {
-            const pitchValue = document.getElementById('pitchValue');
-            pitchValue.textContent = (value > 0 ? '+' : '') + value + ' Hz';
-            pitchValue.style.color = value === '0' ? 'var(--text-muted)' : 
-                                    Math.abs(value) > 10 ? '#ef4444' : '#10b981';
-        }
-
-        // Controls Panel Toggle
-        function toggleControls() {
-            const controlsPanel = document.querySelector('.controls-panel');
-            controlsPanel.classList.toggle('active');
-        }
-
-        // Navigation
-        document.querySelectorAll('.nav-item[data-target]').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                this.classList.add('active');
+        // Load voices
+        async function loadVoices() {
+            try {
+                const voiceGrid = document.getElementById('voiceGrid');
+                voiceGrid.innerHTML = '';
                 
-                // Scroll to target section
-                const target = this.dataset.target;
-                const element = document.querySelector(`.${target}-card`);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        // Tab Switching
-        document.querySelectorAll('.control-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.control-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Handle tab content switching
-                const tabId = this.dataset.tab;
-                // Add tab content handling here
-            });
-        });
-
-        // File Upload
-        function handleFileUpload() {
-            const uploadArea = document.getElementById('uploadArea');
-            const fileInput = document.getElementById('audioUpload');
-            
-            uploadArea.addEventListener('click', () => fileInput.click());
-            
-            fileInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    uploadedAudioFile = file;
-                    uploadArea.innerHTML = `
-                        <div class="file-upload-icon" style="color: var(--primary-green);">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="file-upload-text">${file.name}</div>
-                        <div class="file-upload-subtext">${(file.size / 1024 / 1024).toFixed(1)} MB</div>
+                RECOMMENDED_VOICES.forEach(voice => {
+                    const voiceCard = document.createElement('div');
+                    voiceCard.className = 'voice-card';
+                    if (voice.best) voiceCard.classList.add('selected');
+                    
+                    voiceCard.innerHTML = `
+                        <div class="voice-name">${voice.name}</div>
+                        <div class="voice-gender">${voice.gender}</div>
                     `;
-                    uploadArea.classList.add('has-file');
-                    updateOutput('File uploaded: ' + file.name, 'success');
-                }
-            });
-            
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = 'var(--primary-blue)';
-            });
-            
-            uploadArea.addEventListener('dragleave', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = 'var(--border-medium)';
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = 'var(--border-medium)';
+                    
+                    voiceCard.addEventListener('click', () => {
+                        document.querySelectorAll('.voice-card').forEach(card => card.classList.remove('selected'));
+                        voiceCard.classList.add('selected');
+                        selectedVoice = voice.short_name;
+                        showToast(`Selected voice: ${voice.name}`, 'success');
+                    });
+                    
+                    voiceGrid.appendChild(voiceCard);
+                });
                 
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    const file = files[0];
-                    if (file.type.startsWith('audio/')) {
-                        uploadedAudioFile = file;
-                        fileInput.files = files;
-                        uploadArea.innerHTML = `
-                            <div class="file-upload-icon" style="color: var(--primary-green);">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="file-upload-text">${file.name}</div>
-                            <div class="file-upload-subtext">${(file.size / 1024 / 1024).toFixed(1)} MB</div>
-                        `;
-                        uploadArea.classList.add('has-file');
-                        updateOutput('File uploaded: ' + file.name, 'success');
-                    } else {
-                        showToast('Please upload an audio file', 'error');
-                    }
+                if (RECOMMENDED_VOICES.length > 0) {
+                    selectedVoice = RECOMMENDED_VOICES[0].short_name;
                 }
-            });
+                
+            } catch (error) {
+                showToast('Failed to load voices', 'error');
+            }
         }
 
-        // Toast Notification
+        // Preview voice
+        async function previewVoice() {
+            const text = document.getElementById('text').value.trim();
+            
+            if (!text) {
+                showToast('Please enter text to preview', 'error');
+                return;
+            }
+            
+            if (!selectedVoice) {
+                showToast('Please select a voice', 'error');
+                return;
+            }
+            
+            try {
+                const speed = document.getElementById('speed').value;
+                const pitch = document.getElementById('pitch').value;
+                
+                const response = await fetch('/api/preview', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': currentUserToken
+                    },
+                    body: JSON.stringify({
+                        voice: selectedVoice,
+                        speed: speed,
+                        pitch: pitch,
+                        text: text.substring(0, 200)
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    showToast('Preview failed: ' + data.error, 'error');
+                    return;
+                }
+                
+                const player = document.getElementById('player');
+                player.src = data.audio_url;
+                currentAudioUrl = data.audio_url;
+                currentAudioFilename = 'preview.mp3';
+                
+                document.getElementById('audioSection').style.display = 'block';
+                showToast('Preview ready', 'success');
+                
+            } catch (error) {
+                showToast('Preview failed: ' + error.message, 'error');
+            }
+        }
+
+        // Generate speech
+        async function generateSpeech() {
+            const text = document.getElementById('text').value.trim();
+            
+            if (!text) {
+                showToast('Please enter text', 'error');
+                return;
+            }
+            
+            if (!selectedVoice) {
+                showToast('Please select a voice', 'error');
+                return;
+            }
+            
+            try {
+                const speed = document.getElementById('speed').value;
+                const pitch = document.getElementById('pitch').value;
+                
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': currentUserToken
+                    },
+                    body: JSON.stringify({
+                        voice: selectedVoice,
+                        speed: speed,
+                        pitch: pitch,
+                        text: text
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    showToast('Generation failed: ' + data.error, 'error');
+                    return;
+                }
+                
+                const player = document.getElementById('player');
+                player.src = data.audio_url;
+                currentAudioUrl = data.audio_url;
+                currentAudioFilename = data.filename;
+                
+                document.getElementById('audioSection').style.display = 'block';
+                showToast('Audio generated successfully', 'success');
+                
+            } catch (error) {
+                showToast('Generation failed: ' + error.message, 'error');
+            }
+        }
+
+        // Download audio
+        async function downloadAudio() {
+            if (!currentAudioUrl) {
+                showToast('No audio available to download', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(currentAudioUrl);
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentAudioFilename || 'audio.mp3';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                showToast('Downloaded: ' + currentAudioFilename, 'success');
+            } catch (error) {
+                showToast('Download failed: ' + error.message, 'error');
+            }
+        }
+
+        // Transcribe audio
+        async function transcribeAudio() {
+            if (!currentAudioUrl) {
+                showToast('No audio available to transcribe', 'error');
+                return;
+            }
+            
+            showToast('Transcription feature coming soon', 'info');
+        }
+
+        // Handle file upload
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const uploadLabel = document.querySelector('.upload-text');
+                uploadLabel.innerHTML = `<strong>${file.name}</strong><br><small>Click to change file</small>`;
+                document.querySelector('.media-import').classList.add('has-file');
+            }
+        }
+
+        // Transcribe media
+        async function transcribeMedia() {
+            const fileInput = document.getElementById('audioUpload');
+            if (!fileInput.files[0]) {
+                showToast('Please select an audio file first', 'error');
+                return;
+            }
+            
+            showToast('Transcription feature coming soon', 'info');
+        }
+
+        // Clear session
+        function clearSession() {
+            document.getElementById('text').value = '';
+            document.getElementById('audioSection').style.display = 'none';
+            currentAudioUrl = null;
+            currentAudioFilename = null;
+            updateCharCounter();
+            showToast('Session cleared', 'success');
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab');
+            const settingsTab = document.getElementById('settingsTab');
+            const historyTab = document.getElementById('historyTab');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'settings') {
+                tabs[0].classList.add('active');
+                settingsTab.classList.remove('hidden');
+                historyTab.classList.add('hidden');
+            } else {
+                tabs[1].classList.add('active');
+                settingsTab.classList.add('hidden');
+                historyTab.classList.remove('hidden');
+            }
+        }
+
+        // Show toast notification
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -1586,202 +1320,21 @@
             setTimeout(() => toast.classList.remove('show'), 4000);
         }
 
-        // Output Management
-        function updateOutput(message, type = 'info') {
-            const output = document.getElementById('output');
-            const timestamp = new Date().toLocaleTimeString();
-            const prefix = type === 'error' ? '⛔' : type === 'success' ? '✅' : 'ℹ️';
-            output.textContent = '[' + timestamp + '] ' + prefix + ' ' + message;
-            
-            if (type === 'error' || type === 'success') {
-                showToast(message, type);
-            }
-        }
-
-        // Voice Card Creation
-        function createVoiceCard(voice, isRecommended = false) {
-            const card = document.createElement('div');
-            card.className = isRecommended ? 'voice-card' + (voice.best ? ' best' : '') : 'voice-card';
-            card.dataset.voice = voice.short_name;
-            card.innerHTML = `
-                <div class="voice-name">${voice.name || voice.display_name}</div>
-                <div class="voice-details">${voice.gender || voice.locale}</div>
-            `;
-            
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.voice-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                
-                // Set voice in select
-                const voiceSelect = document.querySelector('#voiceSelect') || { value: voice.short_name };
-                voiceSelect.value = voice.short_name;
-                
-                updateOutput('Selected voice: ' + (voice.name || voice.display_name), 'success');
-            });
-            
-            return card;
-        }
-
-        // Populate Recommended Voices
-        function populateRecommendedVoices() {
-            const container = document.getElementById('recommendedVoices');
-            container.innerHTML = '';
-            RECOMMENDED_VOICES.forEach(voice => {
-                container.appendChild(createVoiceCard(voice, true));
-            });
-        }
-
-        // Load Voices from API
-        async function loadVoices() {
-            setLoading(true);
-            updateOutput('Loading voice database...');
-            
+        // Sign in with Google
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
             try {
-                const headers = {};
-                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
-
-                const response = await fetch('/api/voices', { headers });
-                const data = await response.json();
-                
-                const statusIndicator = document.getElementById('statusIndicator');
-                const statusClass = data.offline_mode ? 'offline' : 'online';
-                const statusText = data.offline_mode ? 'Offline - Limited Voices' : 'Online - ' + data.total_voices + ' Voices';
-                
-                statusIndicator.className = 'status-indicator ' + statusClass;
-                statusIndicator.querySelector('.status-text').textContent = statusText;
-                
-                // Populate language select
-                const languageSelect = document.getElementById('languageSelect');
-                languageSelect.innerHTML = '<option value="All">All Languages</option>';
-                const languages = data.languages || [];
-                languages.sort().forEach(lang => {
-                    const option = document.createElement('option');
-                    option.value = lang;
-                    option.textContent = lang;
-                    languageSelect.appendChild(option);
-                });
-                
-                if (languages.includes('English')) {
-                    languageSelect.value = 'English';
-                }
-                
-                updateOutput('Loaded ' + data.total_voices + ' voices', 'success');
-                await filterVoices();
-                
+                await auth.signInWithPopup(provider);
             } catch (error) {
-                updateOutput('Failed to load voices: ' + error.message, 'error');
-            } finally {
-                setLoading(false);
+                showToast('Sign in failed: ' + error.message, 'error');
             }
         }
 
-        // Filter Voices
-        async function filterVoices() {
-            const query = document.getElementById('voiceSearch').value.trim();
-            const gender = document.getElementById('genderSelect').value;
-            const language = query ? 'All' : document.getElementById('languageSelect').value;
-
-            try {
-                const headers = {};
-                if (currentUserToken) headers['X-Auth-Token'] = currentUserToken;
-
-                const url = '/api/filter_voices?language=' + encodeURIComponent(language) + '&search=' + encodeURIComponent(query) + '&gender=' + encodeURIComponent(gender);
-                const response = await fetch(url, { headers });
-                const data = await response.json();
-
-                const voiceGrid = document.getElementById('voiceGrid');
-                voiceGrid.innerHTML = '';
-
-                if (data.voices && data.voices.length > 0) {
-                    data.voices.forEach(voice => {
-                        voiceGrid.appendChild(createVoiceCard(voice));
-                    });
-                    updateOutput('Found ' + data.voices.length + ' voices');
-                } else {
-                    voiceGrid.innerHTML = '<div class="voice-card" style="grid-column: span 2; text-align: center; padding: 24px;">No voices found</div>';
-                    updateOutput('No voices found', 'error');
-                }
-
-            } catch (error) {
-                updateOutput('Filter failed: ' + error.message, 'error');
-            }
-        }
-
-        // Loading State
-        function setLoading(loading) {
-            isLoading = loading;
-            document.body.classList.toggle('loading', loading);
-        }
-
-        // Audio Actions
-        function showAudioActions() {
-            document.getElementById('audioActions').classList.remove('hidden');
-        }
-
-        // Authentication
-        auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('app-container').classList.remove('hidden');
-                currentUserToken = await user.getIdToken();
-                console.log("Logged in:", user.email);
-                loadVoices();
-            } else {
-                document.getElementById('auth-container').style.display = 'flex';
-                document.getElementById('app-container').classList.add('hidden');
-                currentUserToken = null;
-                ui.start('#firebaseui-auth-container', uiConfig);
-            }
-        });
-
-        // Logout Function
-        function logout() {
-            auth.signOut();
-        }
-
-        // Initialize on Load
-        window.addEventListener('load', () => {
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
             initTheme();
-            populateRecommendedVoices();
-            handleFileUpload();
             updateCharCounter();
-            updateSpeedValue(1.0);
-            updatePitchValue(0);
-            
-            // Event Listeners
-            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-            document.getElementById('refreshVoices').addEventListener('click', loadVoices);
-            document.getElementById('voiceSearch').addEventListener('input', filterVoices);
-            document.getElementById('languageSelect').addEventListener('change', filterVoices);
-            document.getElementById('genderSelect').addEventListener('change', filterVoices);
-            
-            // Button listeners (to be connected to existing functions)
-            document.getElementById('previewBtn').addEventListener('click', () => previewVoice());
-            document.getElementById('previewBtnAlt').addEventListener('click', () => previewVoice());
-            document.getElementById('generateBtn').addEventListener('click', () => generateSpeech());
-            document.getElementById('generateBtnAlt').addEventListener('click', () => generateSpeech());
-            document.getElementById('cleanupBtn').addEventListener('click', () => cleanupSession());
-            document.getElementById('transcribeUploadBtn').addEventListener('click', () => transcribeUpload());
-            document.getElementById('downloadAudioBtn').addEventListener('click', () => downloadAudio());
-            document.getElementById('transcribeAudioBtn').addEventListener('click', () => transcribeAudio());
-            
-            // Media query for tablet/mobile
-            const mediaQuery = window.matchMedia('(max-width: 1024px)');
-            if (mediaQuery.matches) {
-                document.querySelectorAll('.hidden-tablet').forEach(el => el.classList.remove('hidden-tablet'));
-            }
         });
-
-        // Add hidden-tablet class helper
-        const style = document.createElement('style');
-        style.textContent = `
-            @media (min-width: 1025px) {
-                .hidden-tablet {
-                    display: none;
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
