@@ -7,7 +7,6 @@ const BACKEND_URL = 'https://chichigoku-lumenify-backend.hf.space';
 export default async function handler(request) {
   const url = new URL(request.url);
   
-  // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 200,
@@ -20,7 +19,6 @@ export default async function handler(request) {
     });
   }
   
-  // Extract audio path: /api/audio-proxy/session_id/file.mp3 -> /audio/session_id/file.mp3
   const audioPath = url.pathname.replace(/^\/api\/audio-proxy/, '');
   const targetUrl = `${BACKEND_URL}/audio${audioPath}`;
   
@@ -29,7 +27,6 @@ export default async function handler(request) {
   try {
     const headers = new Headers();
     
-    // Forward Range header for streaming (critical for audio playback)
     const rangeHeader = request.headers.get('range');
     if (rangeHeader) {
       headers.set('Range', rangeHeader);
@@ -45,22 +42,17 @@ export default async function handler(request) {
       throw new Error(`Audio not found: ${response.status}`);
     }
 
-    // Clone response headers
     const responseHeaders = new Headers(response.headers);
     
-    // Add CORS headers
     responseHeaders.set('Access-Control-Allow-Origin', '*');
     responseHeaders.set('Access-Control-Expose-Headers', 'Content-Range, Content-Length, Accept-Ranges');
     
-    // Cache audio files for better performance
     responseHeaders.set('Cache-Control', 'public, max-age=3600');
     
-    // Ensure content type is set for audio
     if (!responseHeaders.has('content-type')) {
       responseHeaders.set('Content-Type', 'audio/mpeg');
     }
     
-    // Disable buffering for streaming
     responseHeaders.set('X-Accel-Buffering', 'no');
     
     return new Response(response.body, {
